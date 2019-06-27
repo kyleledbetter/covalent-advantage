@@ -1,0 +1,221 @@
+<mat-toolbar>
+  <mat-toolbar-row>
+    <div flex layout="row" layout-align="start center">
+      <mat-icon class="push-left-sm push-right">settings_applications</mat-icon>
+      <span class="push-left-xs">Operations Homepage</span>
+      <span flex></span>
+    </div>
+  </mat-toolbar-row>
+</mat-toolbar>
+<div layout-gt-sm="row" layout-align="center start" tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+  <div flex-xs="90" flex-sm="80" flex-md="80" flex-lg="75" flex-gt-lg="60" tdMediaToggle="gt-sm" [mediaClasses]="['pad-top-lg']">
+    <div layout-gt-sm="row">
+      <div flex-gt-sm>
+        <div class="pad-sm">
+          <h1 class="mat-display-1 push-none">Welcome to the Vantage Operations</h1>
+          <h3 class="mat-title push-none push-bottom-sm">Configure the Vantage engines, resources, network settings, deployments, and identity here.</h3>
+          <mat-divider></mat-divider>
+        </div>
+        <div layout-gt-sm="row">
+          <div flex-gt-sm>
+            <mat-card>
+              <mat-card-title>Setup Single-Sign-On</mat-card-title>
+              <mat-card-content>
+                <div layout="row">
+                  <p flex class="mat-body-2 push-right">Vantage Single sign-on (SSO) allows a user to use a single ID to gain access to multiple independent systems. The access works seamlessly: After an initial login, users can access each system without the need to re-enter their credentials.</p>
+                  <mat-icon class="tc-td-orange text-super pull-right-md">person</mat-icon>
+                  <mat-icon class="tc-td-teal text-super push-right-md">lock</mat-icon>
+                </div>
+              </mat-card-content>
+              <mat-divider></mat-divider>
+              <mat-card-actions>
+                <a mat-button color="primary" class="text-upper" [routerLink]="'identity'">
+                  <span>Configure Identity</span>
+                </a>
+              </mat-card-actions>
+            </mat-card>
+          </div>
+        </div>
+        <div layout-gt-sm="row">
+          <div flex-gt-sm>
+            <mat-card>
+              <mat-card-title>Vantage Deployments</mat-card-title>
+              <mat-card-subtitle>Easily deploy and manage software in your Vantage platform</mat-card-subtitle>
+              <mat-divider></mat-divider>
+              <mat-nav-list dense>
+                <ng-template let-last="last" ngFor [ngForOf]="[0,1,2,3,4]">
+                  <a mat-list-item>
+                    <mat-icon matListAvatar>apps</mat-icon>
+                    <h4 mat-line><span class="text-wrap">Analytical Capability</span></h4>
+                    <p mat-line>This Vantage capability is for ingest, modeling, wrangling and more</p>
+                    <mat-icon matTooltip="Running" class="push-right"><span class="tc-td-teal">check_circle</span></mat-icon>
+                    <span>
+                      <button mat-icon-button [matMenuTriggerFor]="menu3" aria-label="Options">
+                        <mat-icon>more_vert</mat-icon>
+                      </button>
+                      <mat-menu #menu3="matMenu" xPosition="before">
+                        <button mat-menu-item>
+                          <mat-icon>aspect_ratio</mat-icon>
+                          <span>Configure</span>
+                        </button>
+                        <button mat-menu-item>
+                          <mat-icon>bookmark_border</mat-icon>
+                          <span>Bookmark</span>
+                        </button>
+                      </mat-menu>
+                    </span>
+                  </a>
+                  <mat-divider *ngIf="!last"></mat-divider>
+                </ng-template>
+              </mat-nav-list>
+              <mat-divider></mat-divider>
+              <mat-card-actions>
+                <a mat-button color="primary" class="text-upper">
+                  <span>Configure Deployments</span>
+                </a>
+              </mat-card-actions>
+            </mat-card>
+          </div>
+          <div flex-gt-sm>
+            <mat-card>
+              <mat-card-title>Vantage APIs &amp; Services</mat-card-title>
+              <mat-card-subtitle>Configure the underlying services for Vantage features</mat-card-subtitle>
+              <mat-divider></mat-divider>
+              <mat-nav-list dense>
+                <ng-template let-last="last" ngFor [ngForOf]="[0,1,2,3,4]">
+                  <a mat-list-item>
+                    <mat-icon matListAvatar>apps</mat-icon>
+                    <h4 mat-line><span class="text-wrap">API Service</span></h4>
+                    <p mat-line>This API is used to monitor and configure this particular feature</p>
+                    <mat-icon matTooltip="Running" class="push-right"><span class="tc-td-teal">check_circle</span></mat-icon>
+                    <span>
+                      <button mat-icon-button [matMenuTriggerFor]="menu3" aria-label="Options">
+                        <mat-icon>more_vert</mat-icon>
+                      </button>
+                      <mat-menu #menu3="matMenu" xPosition="before">
+                        <button mat-menu-item>
+                          <mat-icon>aspect_ratio</mat-icon>
+                          <span>Configure</span>
+                        </button>
+                        <button mat-menu-item>
+                          <mat-icon>bookmark_border</mat-icon>
+                          <span>Bookmark</span>
+                        </button>
+                      </mat-menu>
+                    </span>
+                  </a>
+                  <mat-divider *ngIf="!last"></mat-divider>
+                </ng-template>
+              </mat-nav-list>
+              <mat-divider></mat-divider>
+              <mat-card-actions>
+                <a mat-button color="primary" class="text-upper">
+                  <span>Configure APIs &amp; Services</span>
+                </a>
+              </mat-card-actions>
+            </mat-card>
+          </div>
+        </div>
+        <div layout-gt-sm="row">
+          <div flex-gt-sm="33">
+            <mat-card tdMediaToggle="gt-sm" [mediaClasses]="['push-top']">
+              <mat-card-title>Engines</mat-card-title>
+              <mat-card-subtitle>Manage your Vantage engines</mat-card-subtitle>
+              <mat-divider></mat-divider>
+              <mat-nav-list dense>
+                <ng-template let-last="last" ngFor [ngForOf]="[0,1,2]">
+                  <a mat-list-item>
+                    <mat-icon matListAvatar>developer_board</mat-icon>
+                    <h4 mat-line><span class="text-wrap">Engine</span></h4>
+                    <p mat-line>Engine description</p>
+                  </a>
+                  <mat-divider *ngIf="!last"></mat-divider>
+                </ng-template>
+              </mat-nav-list>
+              <mat-divider></mat-divider>
+              <mat-card-actions>
+                <a mat-button color="primary" class="text-upper">
+                  <span>View More</span>
+                </a>
+              </mat-card-actions>
+            </mat-card>
+          </div>
+          <div flex-gt-sm="33">
+            <mat-card tdMediaToggle="gt-sm" [mediaClasses]="['push-top']">
+              <mat-card-title>Resources</mat-card-title>
+              <mat-card-subtitle>Adjust compute, memory and storage</mat-card-subtitle>
+              <mat-divider></mat-divider>
+              <mat-nav-list dense>
+                <ng-template let-last="last" ngFor [ngForOf]="[0,1,2]">
+                  <a mat-list-item>
+                    <mat-icon matListAvatar>cast_connected</mat-icon>
+                    <h4 mat-line><span class="text-wrap">Resource name</span></h4>
+                    <p mat-line>Resource description</p>
+                  </a>
+                  <mat-divider *ngIf="!last"></mat-divider>
+                </ng-template>
+              </mat-nav-list>
+              <mat-divider></mat-divider>
+              <mat-card-actions>
+                <a mat-button color="primary" class="text-upper">
+                  <span>View More</span>
+                </a>
+              </mat-card-actions>
+            </mat-card>
+          </div>
+          <div flex-gt-sm="33">
+            <mat-card tdMediaToggle="gt-sm" [mediaClasses]="['push-top']">
+              <mat-card-title>Network Settings</mat-card-title>
+              <mat-card-subtitle>Configure platform network settings</mat-card-subtitle>
+              <mat-divider></mat-divider>
+              <mat-nav-list dense>
+                <ng-template let-last="last" ngFor [ngForOf]="[0,1,2]">
+                  <a mat-list-item>
+                    <mat-icon matListAvatar>dvr</mat-icon>
+                    <h4 mat-line><span class="text-wrap">Network setting name</span></h4>
+                    <p mat-line>Network setting description</p>
+                  </a>
+                  <mat-divider *ngIf="!last"></mat-divider>
+                </ng-template>
+              </mat-nav-list>
+              <mat-divider></mat-divider>
+              <mat-card-actions>
+                <a mat-button color="primary" class="text-upper">
+                  <span>View More</span>
+                </a>
+              </mat-card-actions>
+            </mat-card>
+          </div>
+        </div>
+        <div layout-gt-sm="row">
+          <div flex-gt-sm>
+            <mat-card tdMediaToggle="gt-sm" class="tc-white" [mediaClasses]="['push-top']" style="background: #3F97C4 url('https://user-images.githubusercontent.com/867883/60043778-b98ee300-9675-11e9-9612-a23edbdb9612.png')" layout="column">
+              <mat-card-title>Build custom monitoring dashboards</mat-card-title>
+              <mat-card-content flex [style.height.px]="80">
+                <p class="mat-body-2">Rapidly create custom dashboards with any dataset in Vantage with Vantage Monitoring</p>
+              </mat-card-content>
+              <div class="pad">
+                <a mat-stroked-button color="white" class="text-upper" [routerLink]="'monitoring'">
+                  <span>View More</span>
+                </a>
+              </div>
+            </mat-card>
+          </div>
+          <div flex-gt-sm>
+            <mat-card tdMediaToggle="gt-sm" class="tc-white" [mediaClasses]="['push-top']" style="background: #4CAFB1 url('https://user-images.githubusercontent.com/867883/60043777-b98ee300-9675-11e9-9876-b92d872eb069.png')" layout="column">
+              <mat-card-title>Query operational data in Vantage Editor</mat-card-title>
+              <mat-card-content flex [style.height.px]="80">
+                <p class="mat-body-2">Build on Vantage's powerful capabilities and APIs to create custom solutions</p>
+              </mat-card-content>
+              <div class="pad">
+                <a mat-stroked-button color="white" class="text-upper" [routerLink]="'developer'">
+                  <span>View More</span>
+                </a>
+              </div>
+            </mat-card>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

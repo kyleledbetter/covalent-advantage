@@ -1,0 +1,102 @@
+<td-layout #layout [class]="activeTheme">
+  <td-navigation-drawer flex [sidenavTitle]="APP_TITLE" [logo]="activeTheme === 'dark-theme' ? 'assets:teradata' : 'assets:teradata-dark'" name="Firstname Lastname" email="firstname.lastname@company.com">
+    <mat-nav-list>
+      <a *ngFor="let item of routes" mat-list-item [routerLink]="[item.route]" (click)="layout.close()"><mat-icon>{{item.icon}}</mat-icon>{{item.title}}</a>
+      <mat-divider></mat-divider>
+      <td-expansion-panel-group [multi]="true" #panelGroup>
+        <td-expansion-panel label="ANALYST">
+          <a *ngFor="let item of analyst" mat-list-item [routerLink]="[item.route]" (click)="layout.close()"><mat-icon>{{item.icon}}</mat-icon>{{item.title}}</a>
+        </td-expansion-panel>
+        <td-expansion-panel label="OPERATIONS">
+          <a *ngFor="let item of operations" mat-list-item [routerLink]="[item.route]" (click)="layout.close()"><mat-icon>{{item.icon}}</mat-icon>{{item.title}}</a>
+        </td-expansion-panel>
+        <td-expansion-panel label="ADMINISTRATOR">
+          <a *ngFor="let item of admin" mat-list-item [routerLink]="[item.route]" (click)="layout.close()"><mat-icon>{{item.icon}}</mat-icon>{{item.title}}</a>
+        </td-expansion-panel>
+        <td-expansion-panel label="DEVELOPER">
+          <a *ngFor="let item of developer" mat-list-item [routerLink]="[item.route]" (click)="layout.close()"><mat-icon>{{item.icon}}</mat-icon>{{item.title}}</a>
+          <a mat-list-item>
+            <mat-icon>chrome_reader_mode</mat-icon>
+            <span flex>Data Science Notebooks</span> <mat-icon matTooltip="Open in new tab">launch</mat-icon>
+          </a>
+        </td-expansion-panel>
+      </td-expansion-panel-group>
+    </mat-nav-list>
+    <div td-navigation-drawer-menu>
+      <mat-nav-list>
+        <a *ngFor="let item of usermenu" mat-list-item><mat-icon>{{item.icon}}</mat-icon>{{item.title}}</a>
+      </mat-nav-list>
+    </div>
+  </td-navigation-drawer>
+  <td-layout-nav logo="assets:teradata" [toolbarTitle]="APP_TITLE" navigationRoute="/">
+    <button mat-icon-button td-menu-button tdLayoutToggle>
+      <mat-icon>menu</mat-icon>
+    </button>
+    <div td-toolbar-content layout="row" layout-align="start center" flex>
+      <span flex></span>
+      <a mat-icon-button matTooltip="Docs" matTooltipPosition="before" href="https://teradata.github.io/covalent/" target="_blank"><mat-icon>chrome_reader_mode</mat-icon></a>
+      <span>
+        <button class="overflow-visible" mat-icon-button [matMenuTriggerFor]="notificationsMenu">
+          <td-notification-count color="accent" [notifications]="42" [limit]=50>
+            <mat-icon>notifications</mat-icon>
+          </td-notification-count>
+        </button>
+        <mat-menu #notificationsMenu="matMenu" [overlapTrigger]="false">
+          <td-menu>
+            <div td-menu-header class="mat-subheading-2 push-none">Notifications</div>
+            <mat-nav-list dense>
+              <ng-template let-last="last" ngFor [ngForOf]="[0,1,2,3,4,5,6,7,8,9]">
+                <a mat-list-item>
+                  <mat-icon matListAvatar>today</mat-icon>
+                  <h4 matLine><span class="text-wrap">A user did an activity on an item that you've subscribed to follow actions on.</span></h4>
+                  <p matLine>22 minutes ago</p>
+                </a>
+                <mat-divider *ngIf="!last"></mat-divider>
+              </ng-template>
+            </mat-nav-list>
+            <button mat-button color="accent" td-menu-footer>
+              See All Notifications
+            </button>
+          </td-menu>
+        </mat-menu>
+      </span>
+      <span>
+        <button class="overflow-visible" mat-icon-button [matMenuTriggerFor]="userMenu">
+          <mat-icon>account_circle</mat-icon>
+        </button>
+        <mat-menu #userMenu="matMenu" [overlapTrigger]="false">
+          <td-menu>
+            <td-message sublabel="This account is mananged by your LDAP admin." color="primary"></td-message>
+            <mat-nav-list dense>
+              <mat-list-item>
+                <mat-icon matListAvatar>account_circle</mat-icon>
+                <h3 matLine><span class="text-wrap">Jack Schemer</span></h3>
+                <p matLine>jack.schemer@teradata.com</p>
+              </mat-list-item>
+            </mat-nav-list>
+            <div td-menu-footer layout="row" layout-align="space-between center">
+              <button mat-button color="accent">Edit Profile</button>
+              <button mat-button color="primary">Sign Out</button>
+            </div>
+          </td-menu>
+        </mat-menu>
+      </span>
+      <span>
+        <button mat-icon-button matTooltip="More" [mat-menu-trigger-for]="more">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu xPosition="before" #more="matMenu">
+            <button mat-menu-item *ngIf="activeTheme === 'dark-theme'" (click)="theme('dark-light')">
+              <mat-icon>brightness_high</mat-icon>
+              <span>Light Mode</span>
+            </button>
+            <button mat-menu-item *ngIf="activeTheme != 'dark-theme'" (click)="theme('dark-theme')">
+              <mat-icon>brightness_low</mat-icon>
+              <span>Dark Mode</span>
+            </button>
+        </mat-menu>
+      </span>
+    </div>
+    <router-outlet></router-outlet>
+  </td-layout-nav>
+</td-layout>

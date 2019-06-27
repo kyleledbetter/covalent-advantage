@@ -1,0 +1,257 @@
+<mat-toolbar>
+  <mat-toolbar-row>
+    <div flex layout="row" layout-align="start center">
+      <mat-icon class="push-left-sm push-right">laptop</mat-icon>
+      <span class="push-left-xs">Developer Homepage</span>
+      <span flex></span>
+    </div>
+  </mat-toolbar-row>
+</mat-toolbar>
+<div layout-gt-sm="row" layout-align="center start" class="bgc-contrast">
+  <div flex-xs="90" flex-sm="80" flex-md="80" flex-lg="75" flex-gt-lg="60" tdMediaToggle="gt-sm" class="pad-md">
+    <div layout-gt-sm="row">
+      <div flex-gt-sm>
+        <mat-grid-list gutterSize="20" cols="3" rowHeight="250px">
+          <mat-grid-tile class="mat-elevation-z3" [style.background-color]="'#131415'">
+            <img alt="Vantage Editor" src="https://user-images.githubusercontent.com/867883/59981313-2fcc1080-95b6-11e9-96bc-716441e9d2f9.png">
+            <mat-grid-tile-footer>
+              <h3 mat-line>Vantage Editor</h3>
+              <span mat-line>Query interface for scripts & vizualizations</span>
+              <mat-icon>launch</mat-icon>
+            </mat-grid-tile-footer>
+          </mat-grid-tile>
+          <mat-grid-tile class="mat-elevation-z3" [style.background-color]="'#131415'">
+            <img alt="Vantage API Catalog" src="https://user-images.githubusercontent.com/867883/59981314-2fcc1080-95b6-11e9-892a-b3c52b92d63a.png">
+            <mat-grid-tile-footer>
+              <h3 mat-line>Vantage API Catalog</h3>
+              <span mat-line>API testing and documentation</span>
+              <mat-icon>launch</mat-icon>
+            </mat-grid-tile-footer>
+          </mat-grid-tile>
+          <mat-grid-tile class="mat-elevation-z3" [style.background-color]="'#131415'">
+            <img alt="Vantage Jupyter" src="https://user-images.githubusercontent.com/867883/59981312-2fcc1080-95b6-11e9-84b5-142f7df79188.png">
+            <mat-grid-tile-footer>
+              <h3 mat-line>Vantage Jupyter</h3>
+              <span mat-line>Jupyter integrated with Teradata Vantage</span>
+              <mat-icon>launch</mat-icon>
+            </mat-grid-tile-footer>
+          </mat-grid-tile>
+        </mat-grid-list>
+      </div>
+    </div>
+  </div>
+</div>
+<div layout-gt-sm="row" layout-align="center start" tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+  <div flex-xs="90" flex-sm="80" flex-md="80" flex-lg="75" flex-gt-lg="60" tdMediaToggle="gt-sm" [mediaClasses]="['pad-top-lg']">
+    <div layout-gt-sm="row">
+      <div flex-gt-sm>
+        <div class="pad-sm">
+          <h1 class="mat-display-1 push-none">Welcome to the Vantage Developer</h1>
+          <h3 class="mat-title push-none push-bottom-sm">Browse the latest powerful developer platform tools built on Teradata Vantage.</h3>
+          <mat-divider></mat-divider>
+        </div>
+        <div layout-gt-sm="row">
+          <div flex-gt-sm>
+            <mat-card tdMediaToggle="gt-sm" class="tc-white" [mediaClasses]="['push-top']" style="background: #3F97C4 url('https://user-images.githubusercontent.com/867883/60043776-b98ee300-9675-11e9-91f1-5dfc655597d5.png')" layout="column">
+              <mat-card-title>TechBytes Bite Sized Tutorial Videos</mat-card-title>
+              <mat-card-content flex [style.height.px]="80">
+                <p class="mat-body-2">Watch out short and easy tutorial videos for each of the hundreds of powerful NewSQL and ML functions that come with Vantage!</p>
+              </mat-card-content>
+              <div class="pad">
+                <a mat-stroked-button color="white" class="text-upper">
+                  <span>View Videos</span>
+                </a>
+              </div>
+            </mat-card>
+          </div>
+          <div flex-gt-sm>
+            <mat-card tdMediaToggle="gt-sm" class="tc-white" [mediaClasses]="['push-top']" style="background: #4CAFB1 url('https://user-images.githubusercontent.com/867883/60043775-b98ee300-9675-11e9-8fcc-36cf7f81fd51.png')" layout="column">
+              <mat-card-title>Experiment with your own Vantage Sandbox</mat-card-title>
+              <mat-card-content flex [style.height.px]="80">
+                <p class="mat-body-2">You have the power and freedom to experiment with data that can pinpoint new trends, uncover insights.</p>
+              </mat-card-content>
+              <div class="pad">
+                <a mat-stroked-button color="white" class="text-upper" [routerLink]="'developer'">
+                  <span>Create Sandbox</span>
+                </a>
+              </div>
+            </mat-card>
+          </div>
+        </div>
+        <div layout-gt-sm="row">
+          <div flex-gt-sm="33">
+            <mat-card tdMediaToggle="gt-sm" [mediaClasses]="['push-top']">
+              <mat-card-title>Scripts</mat-card-title>
+              <mat-card-subtitle>Latest scripts</mat-card-subtitle>
+              <mat-divider></mat-divider>
+              <mat-nav-list>
+                <ng-template let-last="last" ngFor [ngForOf]="[0,1,2,3,4]">
+                  <a mat-list-item>
+                    <mat-icon matListAvatar>code</mat-icon>
+                    <h4 mat-line><span class="text-wrap">Year over year financials</span></h4>
+                    <p mat-line>Departmental growth from year to year (YoY)</p>
+                  </a>
+                  <mat-divider *ngIf="!last"></mat-divider>
+                </ng-template>
+              </mat-nav-list>
+              <mat-divider></mat-divider>
+              <mat-card-actions>
+                <a mat-button color="primary" class="text-upper">
+                  <span>View More</span>
+                </a>
+              </mat-card-actions>
+            </mat-card>
+          </div>
+          <div flex-gt-sm="33">
+            <mat-card tdMediaToggle="gt-sm" [mediaClasses]="['push-top']">
+              <mat-card-title>API Catalog</mat-card-title>
+              <mat-card-subtitle>Popular APIs</mat-card-subtitle>
+              <mat-divider></mat-divider>
+              <mat-nav-list>
+                <ng-template let-last="last" ngFor [ngForOf]="[0,1,2,3,4]">
+                  <a mat-list-item>
+                    <mat-icon matListAvatar>cast_connected</mat-icon>
+                    <h4 mat-line><span class="text-wrap">User Token</span></h4>
+                    <p mat-line>Secure tokens for authentication</p>
+                  </a>
+                  <mat-divider *ngIf="!last"></mat-divider>
+                </ng-template>
+              </mat-nav-list>
+              <mat-divider></mat-divider>
+              <mat-card-actions>
+                <a mat-button color="primary" class="text-upper">
+                  <span>View More</span>
+                </a>
+              </mat-card-actions>
+            </mat-card>
+          </div>
+          <div flex-gt-sm="33">
+            <mat-card tdMediaToggle="gt-sm" [mediaClasses]="['push-top']">
+              <mat-card-title>Use Cases</mat-card-title>
+              <mat-card-subtitle>Example use cases</mat-card-subtitle>
+              <mat-divider></mat-divider>
+              <mat-nav-list>
+                <ng-template let-last="last" ngFor [ngForOf]="[0,1,2,3,4]">
+                  <a mat-list-item>
+                    <mat-icon matListAvatar>dvr</mat-icon>
+                    <h4 mat-line><span class="text-wrap">Sentiment Analysis</span></h4>
+                    <p mat-line>Every online retailer wants to deliver a five-star experience</p>
+                  </a>
+                  <mat-divider *ngIf="!last"></mat-divider>
+                </ng-template>
+              </mat-nav-list>
+              <mat-divider></mat-divider>
+              <mat-card-actions>
+                <a mat-button color="primary" class="text-upper">
+                  <span>View More</span>
+                </a>
+              </mat-card-actions>
+            </mat-card>
+          </div>
+        </div>
+        <div layout-gt-sm="row">
+          <div flex-gt-sm>
+            <mat-card tdMediaToggle="gt-sm" class="tc-white" [mediaClasses]="['push-top']" style="background: #1C252A" layout="column">
+              <mat-card-title>Sample datasets</mat-card-title>
+              <mat-card-content flex [style.height.px]="80">
+                <p class="mat-body-2">Experiment with preloaded datasets for easy development, demoing and testing.</p>
+              </mat-card-content>
+              <div class="pad">
+                <a mat-stroked-button color="white" class="text-upper">
+                  <span>View More</span>
+                </a>
+              </div>
+            </mat-card>
+          </div>
+          <div flex-gt-sm>
+            <mat-card tdMediaToggle="gt-sm" class="tc-white" [mediaClasses]="['push-top']" style="background: #222E34" layout="column">
+              <mat-card-title>Shared scripts</mat-card-title>
+              <mat-card-content flex [style.height.px]="80">
+                <p class="mat-body-2">Explore SQL, R,  and Python scripts to learn from your peers and contribute.</p>
+              </mat-card-content>
+              <div class="pad">
+                <a mat-stroked-button color="white" class="text-upper">
+                  <span>View More</span>
+                </a>
+              </div>
+            </mat-card>
+          </div>
+          <div flex-gt-sm>
+            <mat-card tdMediaToggle="gt-sm" class="tc-white" [mediaClasses]="['push-top']" style="background: #2B383F" layout="column">
+              <mat-card-title>Shared reports</mat-card-title>
+              <mat-card-content flex [style.height.px]="80">
+                <p class="mat-body-2">Experiment with preloaded datasets for easy development, demoing and testing.</p>
+              </mat-card-content>
+              <div class="pad">
+                <a mat-stroked-button color="white" class="text-upper">
+                  <span>View More</span>
+                </a>
+              </div>
+            </mat-card>
+          </div>
+          <div flex-gt-sm>
+            <mat-card tdMediaToggle="gt-sm" class="tc-white" [mediaClasses]="['push-top']" style="background: #394850" layout="column">
+              <mat-card-title>Developer tools</mat-card-title>
+              <mat-card-content flex [style.height.px]="80">
+                <p class="mat-body-2">Explore SQL, R,  and Python scripts to learn from your peers and contribute.</p>
+              </mat-card-content>
+              <div class="pad">
+                <a mat-stroked-button color="white" class="text-upper">
+                  <span>View More</span>
+                </a>
+              </div>
+            </mat-card>
+          </div>
+        </div>
+        <div layout-gt-sm="row">
+          <div flex-gt-sm="50">
+            <mat-card tdMediaToggle="gt-sm" [mediaClasses]="['push-top']">
+              <mat-card-title>Developer Documentation</mat-card-title>
+              <mat-card-subtitle>Developer documentation to get started</mat-card-subtitle>
+              <mat-divider></mat-divider>
+              <mat-nav-list>
+                <ng-template let-last="last" ngFor [ngForOf]="[0,1,2,3,4]">
+                  <a mat-list-item>
+                    <mat-icon matListAvatar>local_library</mat-icon>
+                    <h4 mat-line><span class="text-wrap">Introduction to Teradata Vantage </span></h4>
+                    <p mat-line>A high level overview of the powerful features of Vantage</p>
+                  </a>
+                  <mat-divider *ngIf="!last"></mat-divider>
+                </ng-template>
+              </mat-nav-list>
+              <mat-divider></mat-divider>
+              <mat-card-actions>
+                <a mat-button color="primary" class="text-upper">
+                  <span>View More</span>
+                </a>
+              </mat-card-actions>
+            </mat-card>
+          </div>
+          <div flex-gt-sm="50">
+            <mat-card tdMediaToggle="gt-sm" [mediaClasses]="['push-top']">
+              <mat-card-title>Developer Forums</mat-card-title>
+              <mat-card-subtitle>Recent activity on your forum topics</mat-card-subtitle>
+              <mat-divider></mat-divider>
+              <mat-nav-list>
+                <ng-template let-last="last" ngFor [ngForOf]="[0,1,2,3,4]">
+                  <a mat-list-item>
+                    <mat-icon matListAvatar>forum</mat-icon>
+                    <h4 mat-line><span class="text-wrap">Find max value based on sequential events</span></h4>
+                    <p mat-line>I have the following data set</p>
+                  </a>
+                  <mat-divider *ngIf="!last"></mat-divider>
+                </ng-template>
+              </mat-nav-list>
+              <mat-divider></mat-divider>
+              <mat-card-actions>
+                <a mat-button color="primary" class="text-upper">
+                  <span>View More</span>
+                </a>
+              </mat-card-actions>
+            </mat-card>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

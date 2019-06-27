@@ -1,0 +1,108 @@
+<mat-toolbar class="z-3">
+  <mat-toolbar-row>
+      <div flex layout="row" layout-align="start center">
+        <mat-icon class="push-left-sm push-right">store</mat-icon>
+        <span class="push-left-xs" layout="row" layout-align="start center">
+          <span [routerLink]="'/browse'" class="cursor-pointer">Browse</span> <mat-icon class="push-left push-right">chevron_right</mat-icon> <span [routerLink]="'/browse/dashboards'" class="cursor-pointer">Dashboards</span> <mat-icon class="push-left push-right">chevron_right</mat-icon> <span>Dashboard Details</span>
+        </span>
+        <span flex></span>
+        <a mat-flat-button color="primary" class="push-right-xs push-left-xs mat-button-sm" [routerLink]="'/monitoring/dashboard'">
+          <mat-icon>dashboard</mat-icon>
+          <span class="text-upper push-left-xs">View Dashboard</span>
+        </a>
+        <a mat-stroked-button color="primary" class="push-right-xs push-left-xs mat-button-sm">
+          <mat-icon>share</mat-icon>
+          <span class="text-upper push-left-xs">Share</span>
+        </a>
+        <a mat-stroked-button color="primary" class="push-right-xs push-left-xs mat-button-sm">
+          <mat-icon>bookmark_outline</mat-icon>
+          <span class="text-upper push-left-xs">Bookmark</span>
+        </a>
+      </div>
+    </mat-toolbar-row>
+</mat-toolbar>
+<div layout-gt-sm="row" layout-align="center start" class="bgc-contrast z-2 mat-elevation-z1">
+  <div flex-xs="90" flex-sm="80" flex-md="80" flex-lg="75" flex-gt-lg="60" tdMediaToggle="gt-sm" class="pad-md">
+      <h3 class="mat-headline push-none">System Health</h3>
+      <mat-divider></mat-divider>
+      <div class="pad-top-sm pad-bottom-sm">
+        <p class="mat-body-1 push-none">
+          The System Health Dashboard is an excellent way to quickly evaluate the overall health of Vantage.  The equation can incorporate metrics surrounding a variety of aspects of the system, including CPU, skew, AWTs, disk space, query activity, and node and VPROC status.  It is highly customizable so the equation can be tuned to accurately report the health based on what the user deems appropriate for each separate system.
+        </p>
+      </div>
+  </div>
+</div>
+<div layout-gt-sm="row" layout-align="center start" tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+  <div flex-xs="90" flex-sm="80" flex-md="80" flex-lg="75" flex-gt-lg="60">
+    <div layout-gt-sm="row">
+      <div flex-gt-sm="75">
+        <mat-card>
+          <mat-card-title>Description</mat-card-title>
+          <mat-divider></mat-divider>
+          <mat-card-content>
+            <p class="mat-body-1">
+              The System Health Equation is comprised of degraded and critical thresholds for a set of metrics that cover a variety of different aspects of a Teradata Database system.  When data for all of the metrics in the equation is available and being collected properly, the equation calculates the health as either HEALTHY, DEGRADED, or CRITICAL.  (Keep in mind that as of Teradata Viewpoint 13.11, the name of each health state can be customized in the Teradata Systems dashboard.)  If at least one metric exceeds its degraded threshold, then the health is said to be DEGRADED.  Likewise, if at least one metric exceeds its critical threshold, then the health is said to be CRITICAL.  If all metrics are below their degraded threshold, then the system is HEALTHY.
+            </p>
+            <p class="mat-body-1">
+              The equation only takes into account metrics that are set to an "Enabled" state in the Teradata Systems dashboard.  Any metrics that are set to a "View Only" state will be displayed in the System Health dashboard, but not considered when determining the overall health.  If a metric is set to a "Disabled" state, then it won't be displayed in the System Health dashboard nor will it be included in the calculation of the system health.  At the very bottom of the thresholds settings for the System Health equation are all of the canary queries that have been configured for this Teradata Database system.  A threshold is automatically added to the equation for each canary query, though the threshold is always added with the state as "Disabled".  The state for the canary query threshold can of course be enabled later if the DBA wishes to include that canary query in the equation.
+            </p>
+            <p class="mat-body-1">
+              Given the way that the state is taken into a degraded or critical state when a single metric exceeds its threshold, it's important to carefully choose the thresholds that are set in the Teradata Systems dashboard.  When adding a new Teradata Database system to Teradata Viewpoint, knowledge of the system's performance is necessary to select the correct values.  A DBA might consult DBQL, Res Usage, or some other reporting mechanism to determine the correct initial values.  After a system is being monitored in Teradata Viewpoint, reviewing the Productivity dashboard or one of the trend reporting dashboards such as Capacity Heatmap, Metrics Analysis, or Metrics Graph should give a good indication of the typical range of values for these metrics over a given time period.
+            </p>
+            <h3>Preview</h3>
+            <img class="mat-elevation-z2" src="https://user-images.githubusercontent.com/867883/60058217-69774700-969c-11e9-820e-7b9c9a308a94.png" alt="image" width="100%" />
+            <a mat-stroked-button color="primary" class="push-top mat-button-sm" [routerLink]="'/monitoring/dashboard'">
+              <span class="text-upper push-left-xs">View Dashboard</span>
+            </a>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div flex-gt-sm="25">
+        <div class="pad-sm">
+          <h2 class="mat-headline">Tags</h2>
+          <mat-divider></mat-divider>
+          <div class="pad-sm">
+            <mat-chip-list aria-label="tags">
+              <mat-chip color="accent" selected>DBA</mat-chip>
+              <mat-chip color="accent" selected>Administrator</mat-chip>
+              <mat-chip color="accent" selected>Operations</mat-chip>
+              <mat-chip color="accent" selected>Monitoring</mat-chip>
+            </mat-chip-list>
+          </div>
+        </div>
+        <div class="pad-sm">
+          <h2 class="mat-headline">Info</h2>
+          <mat-divider></mat-divider>
+          <div>
+            <mat-list>
+              <mat-list-item>
+                <p matLine><span class="text-md">Created date</span></p>
+                <h3 matLine><span class="text-lg">June 21, 2019</span></h3>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+              <mat-list-item>
+                <p matLine><span class="text-md">Last modified date</span></p>
+                <h3 matLine><span class="text-lg">June 22, 2019</span></h3>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+              <mat-list-item>
+                <p matLine><span class="text-md">Contributor</span></p>
+                <h3 matLine><span class="text-lg">jack.schemer</span></h3>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+              <mat-list-item>
+                <p matLine><span class="text-md">Status</span></p>
+                <h3 matLine><span class="text-lg">Production</span></h3>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+              <mat-list-item>
+                <p matLine><span class="text-md">Version</span></p>
+                <h3 matLine><span class="text-lg">2.1</span></h3>
+              </mat-list-item>
+            </mat-list>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

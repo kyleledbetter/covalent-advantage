@@ -1,0 +1,138 @@
+<div layout="column" layout-fill>
+  <mat-toolbar flex="none" class="z-3">
+    <mat-toolbar-row>
+      <div flex layout="row" layout-align="start center">
+        <mat-icon class="push-left-sm push-right">settings_applications</mat-icon>
+        <span class="push-left-xs" layout="row" layout-align="start center">
+          <span [routerLink]="'/operations'" class="cursor-pointer">Operations</span>
+          <mat-icon class="push-left push-right">chevron_right</mat-icon>
+          <span>Identity</span>
+        </span>
+        <span flex></span>
+        <a mat-flat-button color="primary" class="push-right-xs push-left-xs mat-button-sm">
+          <mat-icon>add</mat-icon>
+          <span class="text-upper push-left-xs">Add Provider</span>
+        </a>
+      </div>
+    </mat-toolbar-row>
+  </mat-toolbar>
+  <td-layout-manage-list flex #manageList class="z-2" style="top:48px;position:absolute;bottom:0;">
+    <mat-nav-list td-sidenav-content>
+      <a mat-list-item class="active">
+        <mat-icon matListIcon>verified_user</mat-icon> Identity Providers
+      </a>
+      <a mat-list-item [routerLink]="'authentication'">
+        <mat-icon matListIcon>lock</mat-icon> Authentication Methods
+      </a>
+      <a mat-list-item [routerLink]="'passwords'">
+        <mat-icon matListIcon>perm_data_setting</mat-icon> Password Settings
+      </a>
+      <a mat-list-item [routerLink]="'sessions'">
+        <mat-icon matListIcon>timelapse</mat-icon> Sessions
+      </a>
+      <a mat-list-item [routerLink]="'tokens'">
+        <mat-icon matListIcon>swap_horizontal_circle</mat-icon> Tokens
+      </a>
+      <a mat-list-item [routerLink]="'keys'">
+        <mat-icon matListIcon>vpn_key</mat-icon> Keys
+      </a>
+      <a mat-list-item [routerLink]="'roles'">
+        <mat-icon matListIcon>person_pin</mat-icon> Roles
+      </a>
+      <a mat-list-item [routerLink]="'service-accounts'">
+        <mat-icon matListIcon>transfer_within_a_station</mat-icon> Service Accounts
+      </a>
+      <a mat-list-item [routerLink]="'audit-logs'">
+        <mat-icon matListIcon>receipt</mat-icon> Audit Logs
+      </a>
+    </mat-nav-list>
+    <div flex layout="column" layout-fill>
+      <mat-sidenav-container fullscreen>
+        <mat-sidenav layout="column" mode="side" #filters position="end">
+          <div class="pad-left pad-right" [style.height.px]="60" layout="row" layout-align="start center">
+            <span class="mat-title push-bottom-none" flex>
+              Identity Provider Details
+            </span>
+            <button mat-icon-button matTooltip="Close" (click)="filters.close()">
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+          <div flex class="pad mat-content">
+            <div layout="row">
+              <mat-form-field appearance="outline" flex>
+                <input matInput placeholder="Nickname" value="Azure AD">
+              </mat-form-field>
+            </div>
+            <div layout="row">
+              <mat-form-field appearance="outline" flex>
+                <textarea matInput placeholder="Description"></textarea>
+              </mat-form-field>
+            </div>
+            <div layout="row">
+              <div flex class="pad-sm">
+                <mat-slide-toggle labelPosition="after">Setting</mat-slide-toggle>
+              </div>
+            </div>
+            <div layout="row">
+              <div flex class="pad-sm">
+                <mat-slide-toggle labelPosition="after">Setting</mat-slide-toggle>
+              </div>
+            </div>
+          </div>
+          <mat-divider></mat-divider>
+          <div class="pad">
+            <button mat-flat-button color="accent" class="text-upper" (click)="filters.close()">Save</button>
+            <button mat-stroked-button color="primary" class="text-upper" (click)="filters.close()">Cancel</button>
+          </div>
+        </mat-sidenav>
+        <div layout="row" layout-align="center start" tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+          <div flex-gt-sm>
+            <mat-card>
+              <div>
+                <td-search-box class="push-left" placeholder="Search" [alwaysVisible]="true">
+                </td-search-box>
+              </div>
+              <mat-divider></mat-divider>
+              <mat-list dense>
+                <ng-template let-last="last" ngFor [ngForOf]="[0,1,2,3,4]">
+                  <mat-list-item>
+                    <mat-icon matListAvatar>verified_user</mat-icon>
+                    <h4 mat-line><span class="text-wrap">Identity Provider</span></h4>
+                    <p mat-line>desc</p>
+                    <span>
+                      <button mat-icon-button [matMenuTriggerFor]="menu3" aria-label="Options">
+                        <mat-icon>more_vert</mat-icon>
+                      </button>
+                      <mat-menu #menu3="matMenu" xPosition="before">
+                        <button mat-menu-item (click)="filters.toggle()">
+                          <mat-icon>settings</mat-icon>
+                          <span>Configure</span>
+                        </button>
+                        <button mat-menu-item>
+                          <mat-icon>cancel</mat-icon>
+                          <span>Remove</span>
+                        </button>
+                      </mat-menu>
+                    </span>
+                  </mat-list-item>
+                  <mat-divider *ngIf="!last"></mat-divider>
+                </ng-template>
+              </mat-list>
+              <mat-divider></mat-divider>
+              <td-paging-bar #pagingBarPageSize [firstLast]="true" [pageSize]="pageSize" [total]="5"
+                (change)="changePageSize($event)">
+                <span hide-xs>Rows per page:</span>
+                <mat-select [style.width.px]="50" [(ngModel)]="pageSize">
+                  <mat-option *ngFor="let size of [5, 10, 25, 50]" [value]="size">
+                    {{size}}
+                  </mat-option>
+                </mat-select>
+                <span>{{pagingBarPageSize.range}} <span hide-xs>of {{pagingBarPageSize.total}}</span></span>
+              </td-paging-bar>
+            </mat-card>
+          </div>
+        </div>
+      </mat-sidenav-container>
+    </div>
+  </td-layout-manage-list>
+</div>

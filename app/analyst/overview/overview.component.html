@@ -1,0 +1,310 @@
+<mat-toolbar>
+  <mat-toolbar-row>
+    <div flex layout="row" layout-align="start center">
+      <mat-icon class="push-left-sm push-right">verified_user</mat-icon>
+      <span class="push-left-xs">Analyst Homepage</span>
+      <span flex></span>
+    </div>
+  </mat-toolbar-row>
+</mat-toolbar>
+<div layout-gt-sm="row" layout-align="center start" tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+  <div flex-xs="90" flex-sm="80" flex-md="80" flex-lg="75" flex-gt-lg="60" tdMediaToggle="gt-sm" [mediaClasses]="['pad-top-lg']">
+    <div layout-gt-sm="row">
+      <div flex-gt-sm>
+        <div class="pad-sm">
+          <h1 class="mat-display-1 push-none">Welcome to the Vantage Analyst</h1>
+          <h3 class="mat-title push-none push-bottom-sm">Analyze paths, create analytic workflows, create models and more.</h3>
+          <mat-divider></mat-divider>
+        </div>
+        <div layout-gt-sm="row">
+          <div flex-gt-sm>
+            <mat-card>
+              <mat-card-title>Manage Users</mat-card-title>
+              <mat-card-content>
+                <div layout="row">
+                  <p flex class="mat-body-2 push-right">There are multiple permutations of a user in Vantage from normal user accounts to database users and service accounts. Manage all users in one consolidated interface.</p>
+                  <mat-icon class="tc-td-orange text-super pull-right-md">person</mat-icon>
+                  <mat-icon class="tc-td-teal text-super push-right-md">verified_user</mat-icon>
+                </div>
+              </mat-card-content>
+              <mat-divider></mat-divider>
+              <mat-card-actions>
+                <a mat-button color="primary" class="text-upper">
+                  <span>Manager Users</span>
+                </a>
+              </mat-card-actions>
+            </mat-card>
+          </div>
+        </div>
+        <div layout-gt-sm="row">
+          <div layout-gt-sm="row">
+            <div flex-gt-sm>
+              <mat-card tdMediaToggle="gt-sm" class="tc-white" [mediaClasses]="['push-top']" style="background: #4CAFB1 url('https://user-images.githubusercontent.com/867883/60043775-b98ee300-9675-11e9-8fcc-36cf7f81fd51.png')" layout="column">
+                <mat-card-title>Path Analyzer</mat-card-title>
+                <mat-card-content flex [style.height.px]="80">
+                  <p class="mat-body-2">Find opportunities to better market to their customers, improve operations and mitigate potential issues.</p>
+                </mat-card-content>
+                <div class="pad">
+                  <a mat-stroked-button color="white" class="text-upper" [routerLink]="'monitoring'">
+                    <span>View More</span>
+                  </a>
+                </div>
+              </mat-card>
+            </div>
+            <div flex-gt-sm>
+              <mat-card tdMediaToggle="gt-sm" class="tc-white" [mediaClasses]="['push-top']" style="background: #3F97C4 url('https://user-images.githubusercontent.com/867883/60043778-b98ee300-9675-11e9-9612-a23edbdb9612.png')" layout="column">
+                <mat-card-title>Modeler</mat-card-title>
+                <mat-card-content flex [style.height.px]="80">
+                  <p class="mat-body-2">Properly wrangle and model your data for optimal use in Vantage.</p>
+                </mat-card-content>
+                <div class="pad">
+                  <a mat-stroked-button color="white" class="text-upper" [routerLink]="'monitoring'">
+                    <span>View More</span>
+                  </a>
+                </div>
+              </mat-card>
+            </div>
+            <div flex-gt-sm>
+              <mat-card tdMediaToggle="gt-sm" class="tc-white" [mediaClasses]="['push-top']" style="background: #4CAFB1 url('https://user-images.githubusercontent.com/867883/60043777-b98ee300-9675-11e9-9876-b92d872eb069.png')" layout="column">
+                <mat-card-title>Workflows</mat-card-title>
+                <mat-card-content flex [style.height.px]="80">
+                  <p class="mat-body-2">Seamlessly and easily blend and transform data for deeper insights using workflows to prepare and analyze data.</p>
+                </mat-card-content>
+                <div class="pad">
+                  <a mat-stroked-button color="white" class="text-upper" [routerLink]="'developer'">
+                    <span>View More</span>
+                  </a>
+                </div>
+              </mat-card>
+            </div>
+          </div>
+        </div>
+        <div layout-gt-sm="row">
+          <div flex-gt-sm>
+            <mat-card>
+              <mat-card-title>Manage Systems</mat-card-title>
+              <mat-card-subtitle>Easily deploy and manage software in your Vantage platform</mat-card-subtitle>
+              <mat-divider></mat-divider>
+              <mat-nav-list dense>
+                <ng-template let-last="last" ngFor [ngForOf]="[0,1,2,3,4]">
+                  <a mat-list-item>
+                    <mat-icon matListAvatar>apps</mat-icon>
+                    <h4 mat-line><span class="text-wrap">sd1832.td.teradata.com</span></h4>
+                    <p mat-line>production system</p>
+                    <span>
+                      <button mat-icon-button [matMenuTriggerFor]="menu3" aria-label="Options">
+                        <mat-icon>more_vert</mat-icon>
+                      </button>
+                      <mat-menu #menu3="matMenu" xPosition="before">
+                        <button mat-menu-item>
+                          <mat-icon>aspect_ratio</mat-icon>
+                          <span>Configure</span>
+                        </button>
+                        <button mat-menu-item>
+                          <mat-icon>bookmark_border</mat-icon>
+                          <span>Bookmark</span>
+                        </button>
+                      </mat-menu>
+                    </span>
+                  </a>
+                  <mat-divider *ngIf="!last"></mat-divider>
+                </ng-template>
+              </mat-nav-list>
+              <mat-divider></mat-divider>
+              <mat-card-actions>
+                <a mat-button color="primary" class="text-upper">
+                  <span>Manage Systems</span>
+                </a>
+              </mat-card-actions>
+            </mat-card>
+          </div>
+          <div flex-gt-sm>
+            <mat-card>
+              <mat-card-title>Manage Sandboxes</mat-card-title>
+              <mat-card-subtitle>Configure the underlying services for Vantage features</mat-card-subtitle>
+              <mat-divider></mat-divider>
+              <mat-nav-list dense>
+                <ng-template let-last="last" ngFor [ngForOf]="[0,1,2,3,4]">
+                  <a mat-list-item>
+                    <mat-icon matListAvatar>apps</mat-icon>
+                    <h4 mat-line><span class="text-wrap">pa185823.td.teradata.com</span></h4>
+                    <p mat-line>Sandbox for pa185823</p>
+                    <span>
+                      <button mat-icon-button [matMenuTriggerFor]="menu3" aria-label="Options">
+                        <mat-icon>more_vert</mat-icon>
+                      </button>
+                      <mat-menu #menu3="matMenu" xPosition="before">
+                        <button mat-menu-item>
+                          <mat-icon>aspect_ratio</mat-icon>
+                          <span>Configure</span>
+                        </button>
+                        <button mat-menu-item>
+                          <mat-icon>bookmark_border</mat-icon>
+                          <span>Bookmark</span>
+                        </button>
+                      </mat-menu>
+                    </span>
+                  </a>
+                  <mat-divider *ngIf="!last"></mat-divider>
+                </ng-template>
+              </mat-nav-list>
+              <mat-divider></mat-divider>
+              <mat-card-actions>
+                <a mat-button color="primary" class="text-upper">
+                  <span>Manage Sandboxes</span>
+                </a>
+              </mat-card-actions>
+            </mat-card>
+          </div>
+        </div>
+        <div layout-gt-sm="row">
+          <div flex-gt-sm>
+            <mat-card>
+              <mat-card-title>Manage Object Stores</mat-card-title>
+              <mat-card-subtitle>Easily deploy and manage software in your Vantage platform</mat-card-subtitle>
+              <mat-divider></mat-divider>
+              <mat-nav-list dense>
+                <ng-template let-last="last" ngFor [ngForOf]="[0,1,2,3,4]">
+                  <a mat-list-item>
+                    <mat-icon matListAvatar>apps</mat-icon>
+                    <h4 mat-line><span class="text-wrap">s3.aws.teradata.amazon.com</span></h4>
+                    <p mat-line>object store description</p>
+                    <span>
+                      <button mat-icon-button [matMenuTriggerFor]="menu3" aria-label="Options">
+                        <mat-icon>more_vert</mat-icon>
+                      </button>
+                      <mat-menu #menu3="matMenu" xPosition="before">
+                        <button mat-menu-item>
+                          <mat-icon>aspect_ratio</mat-icon>
+                          <span>Configure</span>
+                        </button>
+                        <button mat-menu-item>
+                          <mat-icon>bookmark_border</mat-icon>
+                          <span>Bookmark</span>
+                        </button>
+                      </mat-menu>
+                    </span>
+                  </a>
+                  <mat-divider *ngIf="!last"></mat-divider>
+                </ng-template>
+              </mat-nav-list>
+              <mat-divider></mat-divider>
+              <mat-card-actions>
+                <a mat-button color="primary" class="text-upper">
+                  <span>Manage Object Stores</span>
+                </a>
+              </mat-card-actions>
+            </mat-card>
+          </div>
+          <div flex-gt-sm>
+            <mat-card>
+              <mat-card-title>Manage Streaming Sources</mat-card-title>
+              <mat-card-subtitle>Configure the underlying services for Vantage features</mat-card-subtitle>
+              <mat-divider></mat-divider>
+              <mat-nav-list dense>
+                <ng-template let-last="last" ngFor [ngForOf]="[0,1,2,3,4]">
+                  <a mat-list-item>
+                    <mat-icon matListAvatar>apps</mat-icon>
+                    <h4 mat-line><span class="text-wrap">Streaming Source</span></h4>
+                    <p mat-line>streaming source description</p>
+                    <span>
+                      <button mat-icon-button [matMenuTriggerFor]="menu3" aria-label="Options">
+                        <mat-icon>more_vert</mat-icon>
+                      </button>
+                      <mat-menu #menu3="matMenu" xPosition="before">
+                        <button mat-menu-item>
+                          <mat-icon>aspect_ratio</mat-icon>
+                          <span>Configure</span>
+                        </button>
+                        <button mat-menu-item>
+                          <mat-icon>bookmark_border</mat-icon>
+                          <span>Bookmark</span>
+                        </button>
+                      </mat-menu>
+                    </span>
+                  </a>
+                  <mat-divider *ngIf="!last"></mat-divider>
+                </ng-template>
+              </mat-nav-list>
+              <mat-divider></mat-divider>
+              <mat-card-actions>
+                <a mat-button color="primary" class="text-upper">
+                  <span>Manage Streaming Sources</span>
+                </a>
+              </mat-card-actions>
+            </mat-card>
+          </div>
+        </div>
+        <div layout-gt-sm="row">
+          <div flex-gt-sm>
+            <mat-card>
+              <mat-card-title>Most Recent Users</mat-card-title>
+              <mat-card-subtitle>Manage the latest users</mat-card-subtitle>
+              <mat-divider></mat-divider>
+              <mat-nav-list dense>
+                <ng-template let-last="last" ngFor [ngForOf]="[0,1,2,3,4]">
+                  <a mat-list-item>
+                    <mat-icon matListAvatar>apps</mat-icon>
+                    <h4 mat-line><span class="text-wrap">sa183023@teradata.com</span></h4>
+                    <p mat-line>service account user</p>
+                    <mat-icon matTooltip="Running" class="push-right"><span class="tc-td-teal">check_circle</span></mat-icon>
+                    <span>
+                      <button mat-icon-button [matMenuTriggerFor]="menu3" aria-label="Options">
+                        <mat-icon>more_vert</mat-icon>
+                      </button>
+                      <mat-menu #menu3="matMenu" xPosition="before">
+                        <button mat-menu-item>
+                          <mat-icon>aspect_ratio</mat-icon>
+                          <span>Configure</span>
+                        </button>
+                        <button mat-menu-item>
+                          <mat-icon>bookmark_border</mat-icon>
+                          <span>Bookmark</span>
+                        </button>
+                      </mat-menu>
+                    </span>
+                  </a>
+                  <mat-divider *ngIf="!last"></mat-divider>
+                </ng-template>
+              </mat-nav-list>
+              <mat-divider></mat-divider>
+              <mat-card-actions>
+                <a mat-button color="primary" class="text-upper">
+                  <span>Manage Users</span>
+                </a>
+              </mat-card-actions>
+            </mat-card>
+          </div>
+        </div>
+        <div layout-gt-sm="row">
+          <div flex-gt-sm>
+            <mat-card tdMediaToggle="gt-sm" class="tc-white" [mediaClasses]="['push-top']" style="background: #3F97C4 url('https://user-images.githubusercontent.com/867883/60043778-b98ee300-9675-11e9-9612-a23edbdb9612.png')" layout="column">
+              <mat-card-title>Build custom monitoring dashboards</mat-card-title>
+              <mat-card-content flex [style.height.px]="80">
+                <p class="mat-body-2">Rapidly create custom dashboards with any dataset in Vantage with Vantage Monitoring</p>
+              </mat-card-content>
+              <div class="pad">
+                <a mat-stroked-button color="white" class="text-upper" [routerLink]="'monitoring'">
+                  <span>View More</span>
+                </a>
+              </div>
+            </mat-card>
+          </div>
+          <div flex-gt-sm>
+            <mat-card tdMediaToggle="gt-sm" class="tc-white" [mediaClasses]="['push-top']" style="background: #4CAFB1 url('https://user-images.githubusercontent.com/867883/60043777-b98ee300-9675-11e9-9876-b92d872eb069.png')" layout="column">
+              <mat-card-title>Query operational data in Vantage Editor</mat-card-title>
+              <mat-card-content flex [style.height.px]="80">
+                <p class="mat-body-2">Build on Vantage's powerful capabilities and APIs to create custom solutions</p>
+              </mat-card-content>
+              <div class="pad">
+                <a mat-stroked-button color="white" class="text-upper" [routerLink]="'developer'">
+                  <span>View More</span>
+                </a>
+              </div>
+            </mat-card>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

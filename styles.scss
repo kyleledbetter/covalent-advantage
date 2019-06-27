@@ -1,0 +1,56 @@
+// Adjust your logo position
+.mat-icon {
+    &.mat-icon-logo {
+      position: relative;
+      top: -2px;
+    }
+}
+
+// Toolbar
+body {
+  .mat-toolbar-row, .mat-toolbar-single-row {
+    height: 48px;
+  }
+  .mat-toolbar-multiple-rows {
+    min-height: 48px;
+  }
+}
+
+// Buttons
+.mat-button,
+.mat-raised-button,
+.mat-flat-button,
+.mat-stroked-button {
+  &.mat-button-sm {
+    padding: 0 10px;
+    line-height: 24px;
+  }
+  mat-icon.material-icons, mat-icon.material-icons.mat-icon {
+    font-size: 16px;
+  }
+}
+
+
+// Custom CSS for Homepage
+.td-search {
+  border-radius: 20px;
+  .td-search-icon {
+    margin: 0 0 6px 6px;
+  }
+  .mat-form-field-wrapper {
+    padding: 0;
+    .mat-form-field-infix {
+      margin-top: 0;
+      padding: 0;
+    }
+    .mat-form-field-label-wrapper {
+      padding: 0 !important;
+      height: 38px;
+    }
+    .mat-input-element {
+      margin-top: 0px;
+      margin-bottom: 0;
+      height: 24px;
+    }
+  }
+}
