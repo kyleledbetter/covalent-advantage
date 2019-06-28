@@ -15,6 +15,12 @@ import { DeveloperComponent } from './developer/developer.component';
 import { DeveloperOverviewComponent } from './developer/overview/overview.component';
 import { MonitoringComponent } from './monitoring/monitoring.component';
 import { MonitoringOverviewComponent } from './monitoring/overview/overview.component';
+import { AlertsComponent } from './monitoring/alerts/alerts.component';
+import { AlertsCreateComponent } from './monitoring/alerts/create/create.component';
+import { DashboardsComponent } from './monitoring/dashboards/dashboards.component';
+import { DashboardsCreateComponent } from './monitoring/dashboards/create/create.component';
+import { ReportsComponent } from './monitoring/reports/reports.component';
+import { ReportsCreateComponent } from './monitoring/reports/create/create.component';
 import { OperationsComponent } from './operations/operations.component';
 import { OperationsOverviewComponent } from './operations/overview/overview.component';
 import { OperationsIdentityComponent } from './operations/identity/identity.component';
@@ -46,8 +52,23 @@ const routes: Routes = [
         },
         { path: 'monitoring', component: MonitoringComponent, children: [
           { path: '', component: MonitoringOverviewComponent },
+          { path: 'alerts', component: AlertsCreateComponent, children: [
+            { path: '', component: AlertsCreateComponent },
+            { path: 'create', component: AlertsCreateComponent },
+            ],
+          },
           { path: 'dashboard', component: DashboardComponent },
+          { path: 'dashboards', component: DashboardsCreateComponent, children: [
+            { path: '', component: DashboardsCreateComponent },
+            { path: 'create', component: DashboardsCreateComponent },
+            ],
+          },
           { path: 'report', component: ReportComponent },
+          { path: 'reports', component: ReportsCreateComponent, children: [
+            { path: '', component: ReportsCreateComponent },
+            { path: 'create', component: ReportsCreateComponent },
+            ],
+          },
           ],
         },
         { path: 'operations', component: OperationsComponent, children: [

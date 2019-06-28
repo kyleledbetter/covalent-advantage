@@ -4,6 +4,12 @@
       <mat-icon class="push-left-sm push-right">insert_chart</mat-icon>
       <span class="push-left-xs">Monitoring</span>
       <span flex></span>
+      <button mat-flat-button color="primary" class="push-right-xs push-left-xs mat-button-sm text-upper" [matMenuTriggerFor]="menu">Create</button>
+      <mat-menu #menu="matMenu">
+        <a mat-menu-item>Dashboard</a>
+        <a mat-menu-item [routerLink]="['reports', 'create']">Report</a>
+        <a mat-menu-item>Alert</a>
+      </mat-menu>
     </div>
   </mat-toolbar-row>
 </mat-toolbar>
@@ -30,7 +36,7 @@
       </div>
       <div flex-gt-sm="33">
         <mat-card>
-          <mat-card-subtitle class="pad push-none">Dashboard</mat-card-subtitle>
+          <mat-card-subtitle class="pad push-none">Report</mat-card-subtitle>
           <mat-card-title style="padding-top:0">System Health</mat-card-title>
           <mat-card-content>
             Leverage agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition.
@@ -45,7 +51,7 @@
       <div flex-gt-sm="33">
         <mat-card>
           <mat-card-subtitle class="pad push-none">Dashboard</mat-card-subtitle>
-          <mat-card-title style="padding-top:0">System Health</mat-card-title>
+          <mat-card-title style="padding-top:0">User Experience KPIs</mat-card-title>
           <mat-card-content>
             Leverage agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition.
           </mat-card-content>

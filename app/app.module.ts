@@ -23,6 +23,12 @@ import { DeveloperComponent } from './developer/developer.component';
 import { DeveloperOverviewComponent } from './developer/overview/overview.component';
 import { MonitoringComponent } from './monitoring/monitoring.component';
 import { MonitoringOverviewComponent } from './monitoring/overview/overview.component';
+import { AlertsComponent } from './monitoring/alerts/alerts.component';
+import { AlertsCreateComponent } from './monitoring/alerts/create/create.component';
+import { DashboardsComponent } from './monitoring/dashboards/dashboards.component';
+import { DashboardsCreateComponent } from './monitoring/dashboards/create/create.component';
+import { ReportsComponent } from './monitoring/reports/reports.component';
+import { ReportsCreateComponent } from './monitoring/reports/create/create.component';
 import { OperationsComponent } from './operations/operations.component';
 import { OperationsOverviewComponent } from './operations/overview/overview.component';
 import { OperationsIdentityComponent } from './operations/identity/identity.component';
@@ -52,12 +58,16 @@ import { CovalentTooltipEchartsModule } from '@covalent/echarts/tooltip';
     HomepageComponent,
     AdministratorComponent,
     AdministratorOverviewComponent,
+    AlertsComponent,
+    AlertsCreateComponent,
     AnalystComponent,
     AnalystOverviewComponent,
     BrowseComponent,
     BrowseOverviewComponent,
     BrowseDashboards,
     BrowseDetailDashboard,
+    DashboardsComponent,
+    DashboardsCreateComponent,
     DeveloperComponent,
     DeveloperOverviewComponent,
     MonitoringComponent,
@@ -67,6 +77,8 @@ import { CovalentTooltipEchartsModule } from '@covalent/echarts/tooltip';
     OperationsIdentityComponent,
     OperationsIdentityProvidersComponent,
     DashboardComponent,
+    ReportsComponent,
+    ReportsCreateComponent,
     ReportComponent ],
   imports:      [
     appRoutes,
