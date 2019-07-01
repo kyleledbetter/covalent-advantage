@@ -1,0 +1,79 @@
+<mat-toolbar>
+  <mat-toolbar-row>
+    <div flex layout="row" layout-align="start center">
+      <mat-icon class="push-left-sm push-right">insert_chart</mat-icon>
+      <span class="push-left-xs" layout="row" layout-align="start center">
+          <span [routerLink]="'/monitoring'" class="cursor-pointer">Monitoring</span> <mat-icon class="push-left push-right">chevron_right</mat-icon> 
+          <span [routerLink]="'../reports'" class="cursor-pointer">Reports</span> <mat-icon class="push-left push-right">chevron_right</mat-icon> <span>Create</span>
+        </span>
+      <span flex></span>
+    </div>
+  </mat-toolbar-row>
+</mat-toolbar>
+<div layout-gt-xs="row" layout-align="center start" tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+  <div flex-xs="90" flex-sm="90" flex-md="85" flex-lg="75" flex-gt-lg="75" tdMediaToggle="gt-sm" [mediaClasses]="['pad-top-lg']">
+    <div class="pad-sm">
+      <h1 class="mat-display-1 push-none">Create Report</h1>
+      <h3 class="mat-title push-none push-bottom-sm">Easily create a shareable report to add to a dashboard or your Vantage Homepage</h3>
+      <mat-divider></mat-divider>
+    </div>
+    <div layout-gt-xs="row" layout-wrap>
+      <div flex-sm="50" flex-gt-sm="25" layout-gt-xs="column">
+        <mat-card flex-gt-xs>
+          <mat-card-title class="text-lg">Company Datasets</mat-card-title>
+          <mat-card-subtitle>Browse data from your business that's been modeled for reports</mat-card-subtitle>
+          <div class="pad-left pad-right mat-body-1 text-md">
+            Discover data published by your organization into your Vantage analytics platform that has been properly modeled and trusted to be used in KPIs and datasets. 
+          </div>
+          <mat-card-actions>
+            <a mat-flat-button color="accent" class="text-upper" [routerLink]="'dashboard'">
+              <span>Browse Datasets</span>
+            </a>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+      <div flex-sm="50" flex-gt-sm="25" layout-gt-xs="column">
+        <mat-card flex-gt-xs>
+          <mat-card-title class="text-lg">Operational Datasets</mat-card-title>
+          <mat-card-subtitle>Monitor system operational data from the Vantage platform</mat-card-subtitle>
+          <div class="pad-left pad-right mat-body-1 text-md">
+            Create a report based off Teradata resource usage (CPU / IO / AWT, etc), containers, workload monitoring, query statistics and trends, high availability, and much more!
+          </div>
+          <mat-card-actions>
+            <a mat-flat-button color="accent" class="text-upper" [routerLink]="'operational'">
+              <span>Browse Datasets</span>
+            </a>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+      <div flex-sm="50" flex-gt-sm="25" layout-gt-xs="column">
+        <mat-card flex-gt-xs>
+          <mat-card-title class="text-lg">Public &amp; Sample Datasets</mat-card-title>
+          <mat-card-subtitle>Browse sample data and import public data</mat-card-subtitle>
+          <div class="pad-left pad-right mat-body-1 text-md">
+            Import public data from Agriculture, Climate, Consumer, Ecosystems, Education, Energy, Finance, Health, Government, Manufacturing, Ocean, Safety, Science & Research and more!
+          </div>
+          <mat-card-actions>
+            <a mat-flat-button color="accent" class="text-upper" [routerLink]="'dashboard'">
+              <span>Browse Datasets</span>
+            </a>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+      <div flex-sm="50" flex-gt-sm="25" layout-gt-xs="column">
+        <mat-card flex-gt-xs>
+          <mat-card-title class="text-lg">New Data</mat-card-title>
+          <mat-card-subtitle>Upload &amp; import data or connect a file system</mat-card-subtitle>
+          <div class="pad-left pad-right mat-body-1 text-md">
+            Upload spreadsheets, JSON data, connect to various file systems such as S3, and submit a new query to produce a shareable result in a report and dashboard.
+          </div>
+          <mat-card-actions>
+            <a mat-flat-button color="accent" class="text-upper" [routerLink]="'dashboard'">
+              <span>Add Data</span>
+            </a>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>

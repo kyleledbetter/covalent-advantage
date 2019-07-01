@@ -1,0 +1,58 @@
+<mat-toolbar>
+  <mat-toolbar-row>
+    <div flex layout="row" layout-align="start center">
+      <mat-icon class="push-left-sm push-right">insert_chart</mat-icon>
+      <span class="push-left-xs" layout="row" layout-align="start center">
+          <span [routerLink]="'/monitoring'" class="cursor-pointer">Monitoring</span> <mat-icon class="push-left push-right">chevron_right</mat-icon> 
+          <span [routerLink]="'/monitoring/reports'" class="cursor-pointer">Reports</span> <mat-icon class="push-left push-right">chevron_right</mat-icon> 
+          <span [routerLink]="'/monitoring/reports/create'" class="cursor-pointer">Create</span> <mat-icon class="push-left push-right">chevron_right</mat-icon> <span>Operational</span>
+        </span>
+      <span flex></span>
+    </div>
+  </mat-toolbar-row>
+</mat-toolbar>
+<div layout-gt-xs="row" layout-align="center start" tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+  <div flex-xs="90" flex-sm="90" flex-md="85" flex-lg="75" flex-gt-lg="75" tdMediaToggle="gt-sm" [mediaClasses]="['pad-top-lg']">
+    <div>
+      <mat-card>
+        <div class="pad">search datasets</div>
+        <mat-divider></mat-divider>
+        <mat-nav-list dense>
+          <ng-template let-last="last" ngFor [ngForOf]="[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14]">
+            <a mat-list-item>
+              <mat-icon matListAvatar>dashboard</mat-icon>
+              <h4 mat-line><span class="text-wrap">Operational dataset</span></h4>
+              <p mat-line>Organizational KPIs and metrics</p>
+              <span>
+                <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu" xPosition="before">
+                  <button mat-menu-item>
+                    <mat-icon>aspect_ratio</mat-icon>
+                    <span>Maximize</span>
+                  </button>
+                  <button mat-menu-item>
+                    <mat-icon>share</mat-icon>
+                    <span>Share</span>
+                  </button>
+                  <button mat-menu-item>
+                    <mat-icon>remove_circle_outline</mat-icon>
+                    <span>Remove pin</span>
+                  </button>
+                </mat-menu>
+              </span>
+            </a>
+            <mat-divider *ngIf="!last"></mat-divider>
+          </ng-template>
+        </mat-nav-list>
+        <mat-divider></mat-divider>
+        <mat-card-actions>
+          <a mat-button color="primary" class="text-upper">
+            <span>View More</span>
+          </a>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+</div>
