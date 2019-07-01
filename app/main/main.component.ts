@@ -38,7 +38,7 @@ export class MainComponent implements OnInit {
         show: true,
       },
       {
-        title: 'Monitoring',
+        title: 'Monitor',
         route: '/monitoring',
         icon: 'insert_chart',
         show: true,
@@ -52,21 +52,27 @@ export class MainComponent implements OnInit {
         show: true,
       },
       {
-        title: 'Path Analyzer',
+        title: 'Path',
         route: '/',
         icon: 'call_split',
         show: true,
       },
       {
-        title: 'Modeler',
+        title: 'Model',
         route: '/',
         icon: 'line_style',
         show: true,
       },
       {
-        title: 'Analytics Calculator',
+        title: 'Discover',
         route: '/',
-        icon: 'apps',
+        icon: 'new_releases',
+        show: true,
+      },
+      {
+        title: 'Workflow',
+        route: '/',
+        icon: 'clear_all',
         show: true,
       }
     ];
@@ -172,7 +178,7 @@ export class MainComponent implements OnInit {
         show: true,
       },
       {
-        title: 'API Catalog',
+        title: 'APIs',
         route: '/monitoring',
         icon: 'widgets',
         show: true,
