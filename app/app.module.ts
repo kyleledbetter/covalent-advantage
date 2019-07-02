@@ -31,6 +31,7 @@ import { ReportsComponent } from './monitoring/reports/reports.component';
 import { ReportsCreateComponent } from './monitoring/reports/create/create.component';
 import { ReportsCreateOverviewComponent } from './monitoring/reports/create/overview/overview.component';
 import { ReportsCreateOperationalComponent } from './monitoring/reports/create/operational/operational.component';
+import { ReportEditorComponent } from './monitoring/reports/create/editor/editor.component';
 import { OperationsComponent } from './operations/operations.component';
 import { OperationsOverviewComponent } from './operations/overview/overview.component';
 import { OperationsIdentityComponent } from './operations/identity/identity.component';
@@ -83,6 +84,7 @@ import { CovalentTooltipEchartsModule } from '@covalent/echarts/tooltip';
     ReportsCreateComponent,
     ReportsCreateOverviewComponent,
     ReportsCreateOperationalComponent,
+    ReportEditorComponent,
     ReportComponent ],
   imports:      [
     appRoutes,
