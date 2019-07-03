@@ -50,77 +50,65 @@ export class DeveloperOverviewComponent implements OnInit {
     ];
     this.scripts = [
       {
-        title: 'Analyst Homepage',
+        title: 'Deploy Models',
         route: '/analyst',
-        description: 'view_compact',
+        description: 'Deliver models in production',
         show: true,
       },
       {
-        title: 'Path',
+        title: 'Discover Data',
         route: '/',
-        description: 'call_split',
+        description: 'Discover type and location of data',
         show: true,
       },
       {
-        title: 'Model',
+        title: 'Enrich Data',
         route: '/',
-        description: 'line_style',
+        description: 'Combine and enhance existing data',
         show: true,
       },
       {
-        title: 'Discover',
+        title: 'Monitor Models',
         route: '/',
-        description: 'new_releases',
+        description: 'Monitor production and challenger models',
         show: true,
       },
       {
-        title: 'Workflow',
+        title: 'Prepare Data',
         route: '/',
-        description: 'clear_all',
+        description: 'Clean, validate and profile data',
         show: true,
       }
     ];
     this.apis = [
       {
-        title: 'Operations Homepage',
+        title: 'Access',
         route: '/operations',
-        description: 'settings_applications',
+        description: 'Defined by policies, which combine users and groups, roles, permissions, and resources to determine access levels',
         show: true,
       },
       {
-        title: 'Engines',
+        title: 'Apps',
         route: '/',
-        description: 'developer_board',
-        show: true,
-      },
-      {
-        title: 'Resources',
-        route: '/browse',
-        description: 'memory',
-        show: true,
-      },
-      {
-        title: 'Network',
-        route: '/monitoring',
-        description: 'group_work',
+        description: 'Endpoint for managing development and deployment of containerized apps and “serverless” SQL functions',
         show: true,
       },
       {
         title: 'Deployments',
+        route: '/browse',
+        description: 'Multi-container deployments into the Kubernetes infrastructure of Vantage are managed with these endpoints',
+        show: true,
+      },
+      {
+        title: 'Ingest',
+        route: '/monitoring',
+        description: 'Ingest endpoints enable customers and developers to move data from edge nodes and devices into Vantage',
+        show: true,
+      },
+      {
+        title: 'Systems',
         route: '/deployments',
-        description: 'cloud_upload',
-        show: true,
-      },
-      {
-        title: 'APIs & Services',
-        route: '/apis',
-        description: 'cast_connected',
-        show: true,
-      },
-      {
-        title: 'SSO & IAM',
-        route: '/identify',
-        description: 'person_pin',
+        description: 'Systems are defined as a high level database or data storage entity that can be accessed by users of Vantage',
         show: true,
       }
     ];
