@@ -55,10 +55,10 @@
             <mat-icon>table_chart</mat-icon>
           </mat-button-toggle>
           <mat-button-toggle class="push-xs" value="1">
-            <mat-icon>bar_chart</mat-icon>
+            <mat-icon>equalizer</mat-icon>
           </mat-button-toggle>
-          <mat-button-toggle class="push-xs" value="1">
-            <mat-icon>show_chart</mat-icon>
+          <mat-button-toggle checked class="push-xs" value="1">
+            <mat-icon>timeline</mat-icon>
           </mat-button-toggle>
           <mat-button-toggle class="push-xs" value="1">
             <mat-icon>bubble_chart</mat-icon>
@@ -67,19 +67,7 @@
             <mat-icon>multiline_chart</mat-icon>
           </mat-button-toggle>
           <mat-button-toggle class="push-xs" value="1">
-            <mat-icon>timeline</mat-icon>
-          </mat-button-toggle>
-          <mat-button-toggle class="push-xs" value="1">
-            <mat-icon>equalizer</mat-icon>
-          </mat-button-toggle>
-          <mat-button-toggle class="push-xs" value="1">
-            <mat-icon>waves</mat-icon>
-          </mat-button-toggle>
-          <mat-button-toggle class="push-xs" value="1">
-            <mat-icon>scatter_plot</mat-icon>
-          </mat-button-toggle>
-          <mat-button-toggle class="push-xs" value="1">
-            <mat-icon>score</mat-icon>
+            <mat-icon>looks_one</mat-icon>
           </mat-button-toggle>
           <mat-button-toggle class="push-xs" value="1">
             <mat-icon>grain</mat-icon>
@@ -89,62 +77,85 @@
           </mat-button-toggle>
         </div>
         <mat-divider class="push-top push-bottom"></mat-divider>
-        <span class="mat-title push-bottom-md" flex>
+        <div class="mat-title push-bottom-md" flex>
           Style &amp; Chart Options
-        </span>
+        </div>
         <div layout="row">
           <mat-form-field appearance="outline" flex>
             <mat-label>Color Scheme</mat-label>
-            <mat-select>
-              <mat-option selected value="1">Teradata Brand</mat-option>
-              <mat-option value="2">Dark Mode</mat-option>
-              <mat-option value="3">Monochromatic</mat-option>
-              <mat-option value="4">High Contrast</mat-option>
+            <mat-select value="1">
+              <mat-option value="1">Teradata Brand</mat-option>
+              <mat-option value="2">Urban Sunrise</mat-option>
+              <mat-option value="3">Hawaiian Sunrise</mat-option>
+              <mat-option value="4">California Coast</mat-option>
+              <mat-option value="5">Teradata Classic</mat-option>
+              <mat-option value="6">Razzleberry</mat-option>
+              <mat-option value="7">Volcanic Eruption</mat-option>
+              <mat-option value="8">Passion Flower</mat-option>
+              <mat-option value="9">Aqua Splash</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div layout="row" class="pull-top push-bottom-md">
+          <mat-radio-group flex layout="row" aria-label="Color Mode">
+            <mat-radio-button flex value="1" checked>Light Mode</mat-radio-button>
+            <mat-radio-button flex value="2">Dark Mode</mat-radio-button>
+          </mat-radio-group>
+        </div>
+        <div layout="row">
+          <mat-checkbox flex checked>Area Fill</mat-checkbox>
+        </div>
+        <div layout="row">
+          <mat-checkbox flex >Smooth Lines</mat-checkbox>
+        </div>
+        <div layout="row">
+          <mat-form-field appearance="outline" flex>
+            <mat-label>Legend Position</mat-label>
+            <mat-select value="5">
+              <mat-option value="1">Top</mat-option>
+              <mat-option value="2">Right</mat-option>
+              <mat-option value="3">Bottom</mat-option>
+              <mat-option value="4">Left</mat-option>
+              <mat-option value="5">Hidden</mat-option>
             </mat-select>
           </mat-form-field>
         </div>
         <div layout="row">
           <mat-form-field appearance="outline" flex>
-            <mat-label>Cars</mat-label>
-            <mat-select>
-              <mat-option value="volvo">Volvo</mat-option>
-              <mat-option value="saab">Saab</mat-option>
-              <mat-option value="mercedes">Mercedes</mat-option>
-              <mat-option value="audi">Audi</mat-option>
+            <mat-label>X-Axis</mat-label>
+            <mat-select value="2">
+              <mat-option value="1">Usage %</mat-option>
+              <mat-option value="2">Date</mat-option>
             </mat-select>
           </mat-form-field>
         </div>
         <div layout="row">
           <mat-form-field appearance="outline" flex>
-            <mat-label>Cars</mat-label>
-            <mat-select>
-              <mat-option value="volvo">Volvo</mat-option>
-              <mat-option value="saab">Saab</mat-option>
-              <mat-option value="mercedes">Mercedes</mat-option>
-              <mat-option value="audi">Audi</mat-option>
+            <mat-label>Y-Axis</mat-label>
+            <mat-select value="1">
+              <mat-option value="1">Usage %</mat-option>
+              <mat-option value="2">Date</mat-option>
             </mat-select>
           </mat-form-field>
         </div>
+        <mat-divider class="push-top push-bottom"></mat-divider>
         <div layout="row">
           <mat-form-field appearance="outline" flex>
-            <mat-label>Cars</mat-label>
-            <mat-select>
-              <mat-option value="volvo">Volvo</mat-option>
-              <mat-option value="saab">Saab</mat-option>
-              <mat-option value="mercedes">Mercedes</mat-option>
-              <mat-option value="audi">Audi</mat-option>
+            <mat-label>Sizing</mat-label>
+            <mat-select value="1">
+              <mat-option value="1">Auto</mat-option>
+              <mat-option value="2">Fixed</mat-option>
             </mat-select>
           </mat-form-field>
         </div>
-        <div layout="row">
-          <mat-form-field appearance="outline" flex>
-            <mat-label>Cars</mat-label>
-            <mat-select>
-              <mat-option value="volvo">Volvo</mat-option>
-              <mat-option value="saab">Saab</mat-option>
-              <mat-option value="mercedes">Mercedes</mat-option>
-              <mat-option value="audi">Audi</mat-option>
-            </mat-select>
+        <div layout-gt-sm="row">
+          <mat-form-field appearance="outline" flex-gt-xs="50" tdMediaToggle="gt-sm" [mediaClasses]="['push-right-xs']">
+            <mat-label>Width</mat-label>
+            <input matInput placeholder="Width" value="100%">
+          </mat-form-field>
+          <mat-form-field appearance="outline" flex-gt-xs="50">
+            <mat-label>Height</mat-label>
+            <input matInput placeholder="Height" value="100%" tdMediaToggle="gt-sm" [mediaClasses]="['push-left-xs']">
           </mat-form-field>
         </div>
       </div>

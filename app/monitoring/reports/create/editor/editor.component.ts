@@ -9,10 +9,10 @@ import { ITdDataTableColumn } from '@covalent/core/data-table';
 })
 export class ReportEditorComponent implements OnInit {
   tableColumns: ITdDataTableColumn[] = [
-    { name: 'first_name',  label: 'First name', width: 150 },
-    { name: 'last_name', label: 'Last name', width: { min: 150, max: 250 }},
-    { name: 'gender', label: 'Gender'},
+    { name: 'first_name',  label: 'username', width: 150 },
     { name: 'email', label: 'Email', width: 250},
+    { name: 'date', label: 'Timestamp', width: { min: 150, max: 250 }},
+    { name: 'balance', label: 'Usage (CPU seconds)'},
   ];
   // Chart data
   chart1: any;
