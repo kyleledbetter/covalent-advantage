@@ -4,6 +4,18 @@
       <mat-icon class="push-left-sm push-right">home</mat-icon>
       <span class="push-left-xs">Homepage</span>
       <span flex></span>
+      <span>
+          <button mat-flat-button color="primary" class="push-right-xs push-left-xs mat-button-sm text-upper" [matMenuTriggerFor]="createMenu">Create</button>
+        <mat-menu #createMenu="matMenu">
+          <a mat-menu-item>Dashboard</a>
+          <a mat-menu-item [routerLink]="['/monitoring/reports/create']">Report</a>
+          <a mat-menu-item>Alert</a>
+          <mat-divider></mat-divider>
+          <a mat-menu-item>Sandbox</a>
+          <a mat-menu-item>Stream</a>
+          <a mat-menu-item>Import Data</a>
+        </mat-menu>
+      </span>
     </div>
   </mat-toolbar-row>
 </mat-toolbar>

@@ -84,11 +84,11 @@
             <mat-card-subtitle>Latest scripts</mat-card-subtitle>
             <mat-divider></mat-divider>
             <mat-nav-list dense>
-              <ng-template let-last="last" ngFor [ngForOf]="[0,1,2,3,4]">
+              <ng-template let-item let-last="last" ngFor [ngForOf]="scripts">
                 <a mat-list-item>
                   <mat-icon matListAvatar>code</mat-icon>
-                  <h4 mat-line><span class="text-wrap">Year over year financials</span></h4>
-                  <p mat-line>Departmental growth from year to year (YoY)</p>
+                  <h4 mat-line><span class="text-wrap">{{item.title}}</span></h4>
+                  <p mat-line>{{item.description}}</p>
                 </a>
                 <mat-divider *ngIf="!last"></mat-divider>
               </ng-template>
@@ -107,11 +107,11 @@
             <mat-card-subtitle>Popular APIs</mat-card-subtitle>
             <mat-divider></mat-divider>
             <mat-nav-list dense>
-              <ng-template let-last="last" ngFor [ngForOf]="[0,1,2,3,4]">
+              <ng-template let-item let-last="last" ngFor [ngForOf]="apis">
                 <a mat-list-item>
                   <mat-icon matListAvatar>cast_connected</mat-icon>
-                  <h4 mat-line><span class="text-wrap">User Token</span></h4>
-                  <p mat-line>Secure tokens for authentication</p>
+                  <h4 mat-line><span class="text-wrap">{{item.title}}</span></h4>
+                  <p mat-line>{{item.description}}</p>
                 </a>
                 <mat-divider *ngIf="!last"></mat-divider>
               </ng-template>
@@ -130,11 +130,11 @@
             <mat-card-subtitle>Example use cases</mat-card-subtitle>
             <mat-divider></mat-divider>
             <mat-nav-list dense>
-              <ng-template let-last="last" ngFor [ngForOf]="[0,1,2,3,4]">
+              <ng-template let-item let-last="last" ngFor [ngForOf]="usecases">
                 <a mat-list-item>
                   <mat-icon matListAvatar>dvr</mat-icon>
-                  <h4 mat-line><span class="text-wrap">Sentiment Analysis</span></h4>
-                  <p mat-line>Every online retailer wants to deliver a five-star experience</p>
+                  <h4 mat-line><span class="text-wrap">{{item.title}}</span></h4>
+                  <p mat-line>{{item.description}}</p>
                 </a>
                 <mat-divider *ngIf="!last"></mat-divider>
               </ng-template>
