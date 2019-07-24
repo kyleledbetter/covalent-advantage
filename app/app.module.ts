@@ -61,7 +61,6 @@ import { CovalentCommonModule, CovalentLayoutModule, CovalentMediaModule, Covale
 } from '@covalent/core';
 
 import { CovalentSidesheetModule } from '@covalent/core/sidesheet';
-import { CovalentHelpModule } from '@covalent/experimental/help';
 import { CovalentFlavoredMarkdownModule } from '@covalent/flavored-markdown';
 import { CovalentMarkdownModule } from '@covalent/markdown';
 import { CovalentHighlightModule } from '@covalent/highlight';
@@ -174,8 +173,6 @@ import { CovalentScatterEchartsModule } from '@covalent/echarts/scatter';
     CovalentLineEchartsModule,
     CovalentTooltipEchartsModule,
     CovalentScatterEchartsModule,
-    /** Experimental Covalent Modules **/
-    CovalentHelpModule,
     ],
   bootstrap: [AppComponent],
   entryComponents: [DashboardEditorDialogComponent]

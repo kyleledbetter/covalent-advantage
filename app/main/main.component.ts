@@ -1,11 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import {
-  DraggableHelpWindowDialogComponent,
-  DraggableHelpWindowDialogService,
-  IHelpMenuDataItem,
-} from '@covalent/experimental/help';
-import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'covalent-app',
@@ -13,51 +7,6 @@ import { MatDialogRef } from '@angular/material/dialog';
   styleUrls: ['./main.component.css'],
 })
 export class MainComponent implements OnInit {
-
-  windowOpen: boolean = false;
-  ref: MatDialogRef<DraggableHelpWindowDialogComponent>;
-  currentItems: IHelpMenuDataItem[] = [
-    {
-      url: 'https://github.com/Teradata/design-system/blob/master/product/overview.md',
-      title: 'Overview',
-    },
-    {
-      url: 'https://github.com/Teradata/design-system/blob/master/product/color.md',
-      title: 'Color',
-    },
-    {
-      url: 'https://github.com/Teradata/design-system/blob/master/product/components.md',
-      title: 'Components',
-    },
-    {
-      url: 'https://github.com/Teradata/design-system/blob/master/product/iconography.md',
-      title: 'Iconography',
-    },
-    {
-      url: 'https://github.com/Teradata/design-system/blob/master/product/language-and-tone.md',
-      title: 'Language and Tone',
-    },
-    {
-      url: 'https://github.com/Teradata/design-system/blob/master/product/layouts.md',
-      title: 'Layouts',
-    },
-    {
-      url: 'https://github.com/Teradata/design-system/blob/master/product/logos.md',
-      title: 'Logos',
-    },
-    {
-      url: 'https://github.com/Teradata/design-system/blob/master/product/personality.md',
-      title: 'Personality',
-    },
-    {
-      url: 'https://github.com/Teradata/design-system/blob/master/product/templates.md',
-      title: 'Templates',
-    },
-    {
-      url: 'https://github.com/Teradata/design-system/blob/master/product/visualizations.md',
-      title: 'Visualizations',
-    },
-  ];
 
   APP_TITLE = 'VANTAGE';
 
@@ -72,8 +21,7 @@ export class MainComponent implements OnInit {
   analyst: Object[] = [];
 
   constructor(
-    private _router: Router,
-    private draggableHelpWindowDialogService: DraggableHelpWindowDialogService) {
+    private _router: Router) {
   }
 
   ngOnInit(): void {
@@ -247,24 +195,5 @@ export class MainComponent implements OnInit {
       localStorage.setItem('vantage.theme', theme);
     }
     document.getElementsByTagName('body').item(0).className = theme;
-  }
-  // Help dialog
-  openDialog(): void {
-    if (this.windowOpen) {
-      this.closeDialog();
-    }
-    this.ref = this.draggableHelpWindowDialogService.open(this.currentItems, {
-      height: '90%',
-    });
-    this.ref.afterOpened().subscribe(() => {
-      this.windowOpen = true;
-    });
-
-    this.ref.afterClosed().subscribe(() => {
-      this.windowOpen = false;
-    });
-  }
-  closeDialog(): void {
-    this.ref.close();
   }
 }
