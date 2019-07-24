@@ -10,8 +10,8 @@
 <div layout-gt-sm="row" layout-align="center start" class="pad">
   <div flex-xs="90" flex-sm="80" flex-md="80" flex-lg="75" flex-gt-lg="60" tdMediaToggle="gt-sm" [mediaClasses]="['pad-top-lg']">
     <div tdMediaToggle="sm" [mediaClasses]="['pad']">
-      <h1 class="mat-display-1 push-none">Explore solutions, scripts & share insights</h1>
-      <h3 class="mat-title push-none push-bottom-sm">Browse and test the powerful REST APIs included in the Vantage platform</h3>
+      <h1 class="mat-headline push-none" tdMediaToggle="gt-md" [mediaClasses]="['mat-display-1']">Explore solutions, scripts & share insights</h1>
+      <h3 class="mat-subheading-2 push-none push-bottom-sm" tdMediaToggle="gt-md" [mediaClasses]="['mat-title']">Browse and test the powerful REST APIs included in the Vantage platform</h3>
       <td-search-box [alwaysVisible]="true" hide-xs flex #searchBox class="mat-whiteframe-z1 td-search" placeholder="search"></td-search-box>
     </div>
   </div>
@@ -22,11 +22,13 @@
       <div layout-gt-sm="row">
         <div flex-gt-sm="33">
           <mat-card>
-            <mat-card-subtitle class="pad push-none">Teradata</mat-card-subtitle>
-            <mat-card-title style="padding-top:0">Analytics Calculator</mat-card-title>
+            <mat-card-subtitle class="pad push-none">Analyst</mat-card-subtitle>
+            <mat-card-title style="padding-top:0;">Path</mat-card-title>
             <mat-card-content [style.margin-bottom.px]="0">
-              Leverage agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition.
+              Path analysis is central to many of the analytic challenges we tackle in the field. Think for a minute about the
+              questions you are likely asking about your business that involve a path around a particular event.
             </mat-card-content>
+            <mat-divider></mat-divider>
             <mat-card-actions>
               <div layout="row">
                 <a mat-button color="primary" class="text-upper">
@@ -42,11 +44,13 @@
         </div>
         <div flex-gt-sm="33">
           <mat-card>
-            <mat-card-subtitle class="pad push-none">Teradata</mat-card-subtitle>
-            <mat-card-title style="padding-top:0">Path Analyzer</mat-card-title>
+            <mat-card-subtitle class="pad push-none">Analyst</mat-card-subtitle>
+            <mat-card-title style="padding-top:0;">Model</mat-card-title>
             <mat-card-content [style.margin-bottom.px]="0">
-              Leverage agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition.
+              Model enables the prediction of outcomes. Common business use cases include Marketing offers and recommendation
+              propensity, churn-risk scoring, predictive maintenance, and healthcare prediction.
             </mat-card-content>
+            <mat-divider></mat-divider>
             <mat-card-actions>
               <div layout="row">
                 <a mat-button color="primary" class="text-upper">
@@ -62,11 +66,13 @@
         </div>
         <div flex-gt-sm="33">
           <mat-card>
-            <mat-card-subtitle class="pad push-none">Teradata</mat-card-subtitle>
-            <mat-card-title style="padding-top:0">ML Modeler</mat-card-title>
+            <mat-card-subtitle class="pad push-none">Analyst</mat-card-subtitle>
+            <mat-card-title style="padding-top:0;">Workflow</mat-card-title>
             <mat-card-content [style.margin-bottom.px]="0">
-              Leverage agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition.
+              Enable complex, rules-based financial analytic calculations for multi-dimensional profitability analytics, financial
+              reconciliation and consolidation, regulation compliance, and compensation.
             </mat-card-content>
+            <mat-divider></mat-divider>
             <mat-card-actions>
               <div layout="row">
                 <a mat-button color="primary" class="text-upper">
@@ -95,10 +101,11 @@
           <div flex-gt-sm="33">
             <mat-card>
               <mat-card-subtitle class="pad push-none">Dashboard</mat-card-subtitle>
-              <mat-card-title style="padding-top:0">System Health</mat-card-title>
-              <mat-card-content>
+              <mat-card-title style="padding-top:0;">User Experience Dashboard</mat-card-title>
+              <div class="pad-left pad-right pad-bottom mat-body-1 text-md">
                 Leverage agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition.
-              </mat-card-content>
+              </div>
+              <mat-divider></mat-divider>
               <mat-card-actions>
                 <div layout="row">
                   <a mat-button color="primary" class="text-upper" [routerLink]="'/monitoring/dashboard'">
@@ -117,18 +124,20 @@
           </div>
           <div flex-gt-sm="33">
             <mat-card>
-              <mat-card-subtitle class="pad push-none">Dashboard</mat-card-subtitle>
-              <mat-card-title style="padding-top:0">System Health</mat-card-title>
-              <mat-card-content>
-                Leverage agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition.
-              </mat-card-content>
+              <mat-card-subtitle class="pad push-none">Use Case</mat-card-subtitle>
+              <mat-card-title style="padding-top:0;">Sentiment Analysis</mat-card-title>
+              <div class="pad-left pad-right pad-bottom mat-body-1 text-md">
+                Every online retailer wants to deliver a five star experience for their customers. This report utilizes approaches to corporate strategy foster
+                collaborative thinking to further the overall value proposition.
+              </div>
+              <mat-divider></mat-divider>
               <mat-card-actions>
                 <div layout="row">
-                  <a mat-button color="primary" class="text-upper" [routerLink]="'/monitoring/dashboard'">
+                  <a mat-button color="primary" class="text-upper" [routerLink]="'/browse/usecases/sentiment-analysis'">
                     <span>View</span>
                   </a>
                   <span flex></span>
-                  <a mat-icon-button matTooltip="Info" [routerLink]="'/browse/dashboard'">
+                  <a mat-icon-button matTooltip="Info" [routerLink]="'/browse/usecases/sentiment-analysis'">
                     <mat-icon>info</mat-icon>
                   </a>
                   <button mat-icon-button matTooltip="Bookmark">
@@ -140,14 +149,15 @@
           </div>
           <div flex-gt-sm="33">
             <mat-card>
-              <mat-card-subtitle class="pad push-none">Dashboard</mat-card-subtitle>
-              <mat-card-title style="padding-top:0">System Health</mat-card-title>
-              <mat-card-content>
+              <mat-card-subtitle class="pad push-none">Report</mat-card-subtitle>
+              <mat-card-title style="padding-top:0;">Performance to target</mat-card-title>
+              <div class="pad-left pad-right pad-bottom mat-body-1 text-md">
                 Leverage agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition.
-              </mat-card-content>
+              </div>
+              <mat-divider></mat-divider>
               <mat-card-actions>
                 <div layout="row">
-                  <a mat-button color="primary" class="text-upper" [routerLink]="'/monitoring/dashboard'">
+                  <a mat-button color="primary" class="text-upper" [routerLink]="'/monitoring/report'">
                     <span>View</span>
                   </a>
                   <span flex></span>
@@ -170,10 +180,11 @@
           <div flex-gt-sm="33">
             <mat-card>
               <mat-card-subtitle class="pad push-none">Dashboard</mat-card-subtitle>
-              <mat-card-title style="padding-top:0">System Health</mat-card-title>
+              <mat-card-title style="padding-top:0;">System Health</mat-card-title>
               <mat-card-content>
                 Leverage agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition.
               </mat-card-content>
+              <mat-divider></mat-divider>
               <mat-card-actions>
                 <div layout="row">
                   <a mat-button color="primary" class="text-upper">
@@ -193,10 +204,11 @@
           <div flex-gt-sm="33">
             <mat-card>
               <mat-card-subtitle class="pad push-none">Dashboard</mat-card-subtitle>
-              <mat-card-title style="padding-top:0">System Health</mat-card-title>
+              <mat-card-title style="padding-top:0;">System Health</mat-card-title>
               <mat-card-content>
                 Leverage agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition.
               </mat-card-content>
+              <mat-divider></mat-divider>
               <mat-card-actions>
                 <div layout="row">
                   <a mat-button color="primary" class="text-upper">
@@ -216,10 +228,11 @@
           <div flex-gt-sm="33">
             <mat-card>
               <mat-card-subtitle class="pad push-none">Dashboard</mat-card-subtitle>
-              <mat-card-title style="padding-top:0">System Health</mat-card-title>
+              <mat-card-title style="padding-top:0;">System Health</mat-card-title>
               <mat-card-content>
                 Leverage agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition.
               </mat-card-content>
+              <mat-divider></mat-divider>
               <mat-card-actions>
                 <div layout="row">
                   <a mat-button color="primary" class="text-upper">
@@ -337,6 +350,12 @@
             <mat-radio-button [routerLink]="'dashboards'">Dashboards</mat-radio-button>
           </div>
           <div class="pad-sm">
+            <mat-radio-button>Database Objects</mat-radio-button>
+          </div>
+          <div class="pad-sm">
+            <mat-radio-button>Data Lake Files</mat-radio-button>
+          </div>
+          <div class="pad-sm">
             <mat-radio-button>Datasets</mat-radio-button>
           </div>
           <div class="pad-sm">
@@ -349,7 +368,7 @@
             <mat-radio-button>Scripts</mat-radio-button>
           </div>
           <div class="pad-sm">
-            <mat-radio-button>Use Cases</mat-radio-button>
+            <mat-radio-button [routerLink]="'usecases'">Use Cases</mat-radio-button>
           </div>
         </div>
         <div class="pad-sm">

@@ -7,33 +7,42 @@
     </div>
   </mat-toolbar-row>
 </mat-toolbar>
-<div layout-gt-sm="row" layout-align="center start" class="bgc-contrast">
-  <div flex-xs="90" flex-sm="80" flex-md="80" flex-lg="75" flex-gt-lg="60" tdMediaToggle="gt-sm" class="pad-md">
-    <div layout-gt-sm="row">
-      <div flex-gt-sm>
-        <mat-grid-list gutterSize="20" cols="3" rowHeight="250px">
+<div layout="row" layout-align="center start" class="bgc-contrast">
+  <div flex-xs="95" flex-sm="80" flex-md="80" flex-lg="75" flex-gt-lg="60" tdMediaToggle="gt-sm" [mediaClasses]="['pad-md']">
+    <div layout="row">
+      <div flex>
+        <mat-grid-list [gutterSize]="(media.registerQuery('gt-sm') | async) ? '20' : '5'" cols="3" [rowHeight]="(media.registerQuery('gt-sm') | async) ? '250px' : '150px'">
           <mat-grid-tile class="mat-elevation-z3" [style.background-color]="'#131415'">
-            <img alt="Vantage Editor" src="https://user-images.githubusercontent.com/867883/59981313-2fcc1080-95b6-11e9-96bc-716441e9d2f9.png">
+            <img hide-xs alt="Vantage Editor" src="https://user-images.githubusercontent.com/867883/59981313-2fcc1080-95b6-11e9-96bc-716441e9d2f9.png">
+            <mat-icon hide-gt-xs class="icon-component tc-white">code</mat-icon>
             <mat-grid-tile-footer>
-              <h3 mat-line>Vantage Editor</h3>
-              <span mat-line>Query interface for scripts & vizualizations</span>
-              <mat-icon>launch</mat-icon>
+              <h3 mat-line><span hide-xs>Vantage</span> Editor</h3>
+              <span mat-line hide-xs>Query interface for scripts & vizualizations</span>
+              <a hide-xs href="https://appcenter.ux.ac.uda.io/editor/" mat-icon-button>
+                <mat-icon>launch</mat-icon>
+              </a>
             </mat-grid-tile-footer>
           </mat-grid-tile>
           <mat-grid-tile class="mat-elevation-z3" [style.background-color]="'#131415'">
-            <img alt="Vantage API Catalog" src="https://user-images.githubusercontent.com/867883/59981314-2fcc1080-95b6-11e9-892a-b3c52b92d63a.png">
+            <img hide-xs alt="Vantage API Catalog" src="https://user-images.githubusercontent.com/867883/59981314-2fcc1080-95b6-11e9-892a-b3c52b92d63a.png">
+            <mat-icon hide-gt-xs class="icon-component tc-white">widgets</mat-icon>
             <mat-grid-tile-footer>
-              <h3 mat-line>Vantage API Catalog</h3>
-              <span mat-line>API testing and documentation</span>
-              <mat-icon>launch</mat-icon>
+              <h3 mat-line><span hide-xs>Vantage</span>API Catalog</h3>
+              <span mat-line hide-xs>API testing and documentation</span>
+              <a hide-xs href="https://appcenter.ux.ac.uda.io/developer/apis/" mat-icon-button>
+                <mat-icon>launch</mat-icon>
+              </a>
             </mat-grid-tile-footer>
           </mat-grid-tile>
           <mat-grid-tile class="mat-elevation-z3" [style.background-color]="'#131415'">
-            <img alt="Vantage Jupyter" src="https://user-images.githubusercontent.com/867883/59981312-2fcc1080-95b6-11e9-84b5-142f7df79188.png">
+            <img hide-xs alt="Vantage Jupyter" src="https://user-images.githubusercontent.com/867883/59981312-2fcc1080-95b6-11e9-84b5-142f7df79188.png">
+            <mat-icon hide-gt-xs class="icon-component tc-white">chrome_reader_mode</mat-icon>
             <mat-grid-tile-footer>
-              <h3 mat-line>Vantage Jupyter</h3>
-              <span mat-line>Jupyter integrated with Teradata Vantage</span>
-              <mat-icon>launch</mat-icon>
+              <h3 mat-line><span hide-xs>Vantage</span>Jupyter</h3>
+              <span hide-xs mat-line>Jupyter integrated with Teradata Vantage</span>
+              <a hide-xs href="https://teradata.github.io/jupyterextensions/" target="_blank" mat-icon-button>
+                <mat-icon>launch</mat-icon>
+              </a>
             </mat-grid-tile-footer>
           </mat-grid-tile>
         </mat-grid-list>
@@ -41,23 +50,23 @@
     </div>
   </div>
 </div>
-<div layout-gt-sm="row" layout-align="center start" tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+<div layout="row" layout-align="center start" tdMediaToggle="gt-xs" [mediaClasses]="['push']">
   <div flex-xs="90" flex-sm="80" flex-md="80" flex-lg="75" flex-gt-lg="60" tdMediaToggle="gt-sm" [mediaClasses]="['pad-top-md']">
     <div>
       <div class="pad-sm">
-        <h1 class="mat-display-1 push-none">Welcome to the Vantage Developer</h1>
-        <h3 class="mat-title push-none push-bottom-sm">Browse the latest powerful developer platform tools built on Teradata Vantage.</h3>
+        <h1 class="mat-headline push-none" tdMediaToggle="gt-md" [mediaClasses]="['mat-display-1']">Welcome to Vantage Developer</h1>
+        <h3 class="mat-subheading-2 push-none push-bottom-sm" tdMediaToggle="gt-md" [mediaClasses]="['mat-title']">Browse the latest powerful developer platform tools built on Teradata Vantage.</h3>
         <mat-divider></mat-divider>
       </div>
       <div layout-gt-sm="row">
         <div flex-gt-sm>
           <mat-card tdMediaToggle="gt-sm" class="tc-white" [mediaClasses]="['push-top']" style="background: #3F97C4 url('https://user-images.githubusercontent.com/867883/60043776-b98ee300-9675-11e9-91f1-5dfc655597d5.png') top left / cover no-repeat" layout="column">
-            <mat-card-title>TechBytes Bite Sized Tutorial Videos</mat-card-title>
-            <mat-card-content flex [style.height.px]="80">
+            <mat-card-title class="text-lg" tdMediaToggle="gt-md" [mediaClasses]="['text-xl']">TechBytes Bite Sized Tutorial Videos</mat-card-title>
+            <mat-card-content flex [style.height.px]="60">
               <p class="mat-body-2">Watch out short and easy tutorial videos for each of the hundreds of powerful NewSQL and ML functions that come with Vantage!</p>
             </mat-card-content>
             <div class="pad">
-              <a mat-stroked-button color="white" class="text-upper">
+              <a mat-stroked-button color="white" class="text-upper" href="https://www.youtube.com/playlist?list=PL94YoXtBVbdqQW4CdajZ9NIyzxs6v2q8A" target="_blank">
                 <span>View Videos</span>
               </a>
             </div>
@@ -65,8 +74,8 @@
         </div>
         <div flex-gt-sm>
           <mat-card tdMediaToggle="gt-sm" class="tc-white" [mediaClasses]="['push-top']" style="background: #4CAFB1 url('https://user-images.githubusercontent.com/867883/60043775-b98ee300-9675-11e9-8fcc-36cf7f81fd51.png') top left / cover no-repeat" layout="column">
-            <mat-card-title>Experiment with your own Vantage Sandbox</mat-card-title>
-            <mat-card-content flex [style.height.px]="80">
+            <mat-card-title class="text-lg" tdMediaToggle="gt-md" [mediaClasses]="['text-xl']">Experiment with your own Vantage Sandbox</mat-card-title>
+            <mat-card-content flex [style.height.px]="60">
               <p class="mat-body-2">You have the power and freedom to experiment with data that can pinpoint new trends, uncover insights.</p>
             </mat-card-content>
             <div class="pad">
@@ -85,7 +94,7 @@
             <mat-divider></mat-divider>
             <mat-nav-list dense>
               <ng-template let-item let-last="last" ngFor [ngForOf]="scripts">
-                <a mat-list-item>
+                <a mat-list-item href="{{item.link}}">
                   <mat-icon matListAvatar>code</mat-icon>
                   <h4 mat-line><span class="text-wrap">{{item.title}}</span></h4>
                   <p mat-line>{{item.description}}</p>
@@ -95,7 +104,7 @@
             </mat-nav-list>
             <mat-divider></mat-divider>
             <mat-card-actions>
-              <a mat-button color="primary" class="text-upper">
+              <a mat-button color="primary" class="text-upper" href="https://appcenter.ux.ac.uda.io/editor/scripts">
                 <span>View More</span>
               </a>
             </mat-card-actions>
@@ -108,7 +117,7 @@
             <mat-divider></mat-divider>
             <mat-nav-list dense>
               <ng-template let-item let-last="last" ngFor [ngForOf]="apis">
-                <a mat-list-item>
+                <a mat-list-item href="{{item.link}}">
                   <mat-icon matListAvatar>cast_connected</mat-icon>
                   <h4 mat-line><span class="text-wrap">{{item.title}}</span></h4>
                   <p mat-line>{{item.description}}</p>
@@ -118,7 +127,7 @@
             </mat-nav-list>
             <mat-divider></mat-divider>
             <mat-card-actions>
-              <a mat-button color="primary" class="text-upper">
+              <a mat-button color="primary" class="text-upper" href="https://appcenter.ux.ac.uda.io/developer/apis/">
                 <span>View More</span>
               </a>
             </mat-card-actions>
@@ -131,7 +140,7 @@
             <mat-divider></mat-divider>
             <mat-nav-list dense>
               <ng-template let-item let-last="last" ngFor [ngForOf]="usecases">
-                <a mat-list-item>
+                <a mat-list-item [routerLink]="[item.route]">
                   <mat-icon matListAvatar>dvr</mat-icon>
                   <h4 mat-line><span class="text-wrap">{{item.title}}</span></h4>
                   <p mat-line>{{item.description}}</p>
@@ -141,7 +150,7 @@
             </mat-nav-list>
             <mat-divider></mat-divider>
             <mat-card-actions>
-              <a mat-button color="primary" class="text-upper">
+              <a mat-button color="primary" class="text-upper" [routerLink]="'/browse/usecases'">
                 <span>View More</span>
               </a>
             </mat-card-actions>

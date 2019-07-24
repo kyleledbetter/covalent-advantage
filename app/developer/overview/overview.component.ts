@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { TdMediaService } from '@covalent/core';
 
 @Component({
   selector: 'covalent-developer-overview',
   templateUrl: './overview.component.html',
-  styleUrls: ['./overview.component.css'],
+  styleUrls: ['./overview.component.scss'],
 })
 export class DeveloperOverviewComponent implements OnInit {
   // Sidenav routes
@@ -12,102 +13,103 @@ export class DeveloperOverviewComponent implements OnInit {
   scripts: Object[] = [];
   apis: Object[] = [];
 
-  constructor(private _router: Router) {
+  constructor(private _router: Router,
+    public media: TdMediaService) {
   }
 
   ngOnInit(): void {
     this.usecases = [
       {
         title: 'Ingest clickstream data',
-        route: '/',
+        route: '/browse/usecases/ingest-clickstream',
         description: 'In this use case we\'ll excercise APIs to get website data',
         show: true,
       },
       {
         title: 'Moving Average',
-        route: '/browse',
+        route: '/browse/usecases/moving-average',
         description: 'Technical analysis is a key finance methodology',
         show: true,
       },
       {
         title: 'Sentiment Analysis',
-        route: '/browse',
+        route: '/browse/usecases/sentiment-analysis',
         description: 'Every online retailer wants to deliver a five star experience',
         show: true,
       },
       {
         title: 'Unstructured Data',
-        route: '/browse',
+        route: '/browse/usecases/unstructured-data',
         description: 'Sometimes you may have situations where you need',
         show: true,
       },
       {
         title: 'Using Vantage\'s SSO single-sign-on',
-        route: '/monitoring',
+        route: '/browse/usecases/vantage-sso',
         description: 'This document provides a high level for using SSO',
         show: true,
       }
     ];
     this.scripts = [
       {
-        title: 'Deploy Models',
-        route: '/analyst',
-        description: 'Deliver models in production',
+        title: 'Customer Complaints',
+        link: 'https://appcenter.ux.ac.uda.io/editor/?scriptId=f875bf36-423f-45df-a857-e22efeae5a8c',
+        description: 'Complaints broken down by product',
         show: true,
       },
       {
-        title: 'Discover Data',
-        route: '/',
-        description: 'Discover type and location of data',
+        title: 'Income Analysis',
+        link: 'https://appcenter.ux.ac.uda.io/editor/?scriptId=b0f370bb-3655-4d12-8dbf-41a352193e62',
+        description: 'Customer income by geo location',
         show: true,
       },
       {
         title: 'Enrich Data',
-        route: '/',
+        link: 'https://appcenter.ux.ac.uda.io/editor/?scriptId=b0f370bb-3655-4d12-8dbf-41a352193e62',
         description: 'Combine and enhance existing data',
         show: true,
       },
       {
         title: 'Monitor Models',
-        route: '/',
+        link: 'https://appcenter.ux.ac.uda.io/editor/?scriptId=b0f370bb-3655-4d12-8dbf-41a352193e62',
         description: 'Monitor production and challenger models',
         show: true,
       },
       {
-        title: 'Prepare Data',
-        route: '/',
-        description: 'Clean, validate and profile data',
+        title: 'Stored Procedure',
+        link: 'https://appcenter.ux.ac.uda.io/editor/?scriptId=32b0e539-a9e6-4470-a95e-9593139f4966',
+        description: 'An advanced stored procedure to analyze employee data',
         show: true,
       }
     ];
     this.apis = [
       {
         title: 'Access',
-        route: '/operations',
+        link: 'https://appcenter.ux.ac.uda.io/developer/apis/access',
         description: 'Defined by policies, which combine users and groups, roles, permissions, and resources to determine access levels',
         show: true,
       },
       {
         title: 'Apps',
-        route: '/',
+        link: 'https://appcenter.ux.ac.uda.io/developer/apis/apps',
         description: 'Endpoint for managing development and deployment of containerized apps and “serverless” SQL functions',
         show: true,
       },
       {
-        title: 'Deployments',
-        route: '/browse',
+        title: 'Ingest',
+        link: 'https://appcenter.ux.ac.uda.io/developer/apis/apps',
         description: 'Multi-container deployments into the Kubernetes infrastructure of Vantage are managed with these endpoints',
         show: true,
       },
       {
-        title: 'Ingest',
-        route: '/monitoring',
+        title: 'Notifications',
+        link: 'https://appcenter.ux.ac.uda.io/developer/apis/notifications',
         description: 'Ingest endpoints enable customers and developers to move data from edge nodes and devices into Vantage',
         show: true,
       },
       {
         title: 'Systems',
-        route: '/deployments',
+        link: 'https://appcenter.ux.ac.uda.io/developer/apis/systems',
         description: 'Systems are defined as a high level database or data storage entity that can be accessed by users of Vantage',
         show: true,
       }

@@ -1,0 +1,231 @@
+Moving Average - Financial Trend Analysis
+================
+Steven Smallberg, Software Engineer
+([email](mailto:steven.smallberg@teradata.com))
+
+# Introduction
+
+Technical analysis is a key finance methodology that employs past market
+data to forecast a security’s future price movements. In this **Vantage
+EXPERIENCE**, we will use the **NewSQL Engine** analytic function
+**MovingAverage** to analyze the closing price of the Dow Jones
+Industrial Average (DJIA), a stock index of 30 of the largest
+publically-owned American companies, over the first financial quarter of
+2019.
+
+The **EXPERIENCE** section, we will walk through six types of moving
+averages in a matter of seconds. Each example will provide SQL code and
+a simple visualization illustrating the behavior of the indicator. The
+output will append a column to the input data with the name
+`adj_close_*mavg`, where `*` is a letter indicating the type of moving
+average.
+
+| trade\_date |     open |     high |      low |    close | adj\_close |    volume | name | adj\_close\_cmavg |
+| :---------- | -------: | -------: | -------: | -------: | ---------: | --------: | :--- | ----------------: |
+| 2019-01-02  | 23058.61 | 23413.47 | 22928.59 | 23346.24 |   23346.24 | 321570000 | DJIA |          23346.24 |
+| 2019-01-03  | 23176.39 | 23176.39 | 22638.41 | 22686.22 |   22686.22 | 424240000 | DJIA |          23016.23 |
+| 2019-01-04  | 22894.92 | 23518.64 | 22894.92 | 23433.16 |   23433.16 | 396020000 | DJIA |          23155.21 |
+| 2019-01-07  | 23474.26 | 23687.74 | 23301.59 | 23531.35 |   23531.35 | 334200000 | DJIA |          23249.24 |
+| 2019-01-08  | 23680.32 | 23864.65 | 23581.45 | 23787.45 |   23787.45 | 317420000 | DJIA |          23356.88 |
+
+5 records
+
+Afterwards, we encourage you to **EXPLORE Vantage** by using longer-term
+historic data, and tuning parameters to customize your technical
+analysis.
+
+# Using this document
+
+You can experience the **MovingAverage** function by running the demo
+SQL file (`moving-average-demo.sql`) in **Teradata Studio**. The
+**EXPERIENCE** section overviews the different moving average
+calculations at a high level. For more detail regarding the specific
+algorithms, consult the (**MovingAverage**
+documentation)\[<https://docs-dev.teradata.com/reader/CY8A6b0PLAnnQEkPjdwUCA/R6_jzOgHlaSviuJm2od8Cg>\].
+
+The visualizations were produced in R. Note that the relationships
+between the moving average and the underlying data depicted in the
+visualizations depend on various tuning parameters such as the window
+size and damping factor.
+
+The **EXPERIENCE** section takes under 2 seconds to run in its entirety.
+
+# About the data
+
+The `dow_jones_2019_q1` dataset has 61 rows, each representing a unique
+trading day in the first financial quarter of 2019, and 8 columns,
+representing the following features:
+
+  - `trade_date`: trading day (excludes weekends and holidays)
+  - `open`: opening price
+  - `high`: highest intraday price
+  - `low`: lowest intraday price
+  - `close`: closing price, adjusted for splits
+  - `adj_close`: adjusted closing price, for dividends and splits
+  - `volume`: number of shares traded
+  - `name`: security name
+
+The dataset has not been modified from its raw form except to rename
+columns and to add the `name` column.
+
+# EXPERIENCE
+
+The moving average essentially smoothes the data, filtering out the
+noise from short-term fluctuations in price. Based on past prices, it is
+considered a “lagging” indicator—in the following examples, we will see
+that the moving average lines are shifted slightly right of the
+underlying data.
+
+The moving average is a series of averages across different subsets of
+the complete dataset. In this section, we will **EXPERIENCE** six types
+of moving moving averages, which differ in their implementations and
+this smoothing methods.
+
+#### Example 1: Cumulative moving average
+
+The cumulative moving average at a given point is the average of all of
+the data from the beginning of the series up to that (“current”) point.
+
+In this case, the cumulative moving average at a particular date
+represents the average DJIA adjusted closing price across all trading
+days from the start of the financial quarter (January 2, 2019) up to
+that point.
+
+``` sql
+SELECT * FROM MovingAverage (
+  ON DevPlatform_DB.dow_jones_2019_q1 PARTITION BY name ORDER BY trade_date
+    USING
+    MAvgType ('C')
+    TargetColumns ('adj_close')
+) AS dt ORDER BY trade_date;
+```
+
+![](moving-average-demo_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+
+#### Example 2: Exponential moving average
+
+The exponential moving average is more responsive to new information.
+Unlike a simple moving average, which applies equal weight to all
+obervations in the window, the exponential moving average assigns more
+weight to recent observations by exponentially decreasing weights of
+older values. Note that weights never reach zero.
+
+The key tuning parameter is the damping factor *alpha* (α), which
+determines the rate of decrease. As *alpha* increases, weights of older
+values decrease faster. The calculation of the exponential moving
+average begins with a simple moving average over a specified number of
+observations until the damping factor is applied.
+
+``` sql
+SELECT * FROM MovingAverage (
+  ON DevPlatform_DB.dow_jones_2019_q1 PARTITION BY name ORDER BY trade_date
+  USING
+  MAvgType ('E')
+  TargetColumns ('adj_close')
+  StartRows(10)
+  Alpha(0.25)
+  IncludeFirst('true')
+) AS dt ORDER BY trade_date;
+```
+
+![](moving-average-demo_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+
+#### Example 3: Modified moving average
+
+The modified moving average at a given point is calculated by adding the
+new value to the previous moving average and then subtracting the
+previous average value from the resulting sum. (The first point of the
+modified moving average is calculated the same way as the simple moving
+average.)
+
+This method is convenient because it requires tracking of only the
+previous moving average value rather than all of its components.
+
+``` sql
+SELECT * FROM MovingAverage (
+  ON DevPlatform_DB.dow_jones_2019_q1 PARTITION BY name ORDER BY trade_date
+    USING
+    MAvgType ('M')
+    TargetColumns ('adj_close')
+    WindowSize(10)
+    IncludeFirst('true')
+) AS dt ORDER BY trade_date;
+```
+
+![](moving-average-demo_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+
+#### Example 4: Simple moving average
+
+The simple moving average at a given point is the unweighted mean of the
+previous *n* observations, where *n* is the window size.
+
+``` sql
+SELECT * FROM MovingAverage (
+    ON DevPlatform_DB.dow_jones_2019_q1 PARTITION BY name ORDER BY trade_date
+    USING
+    MAvgType ('S')
+    TargetColumns ('adj_close')
+    WindowSize(10)
+    IncludeFirst('true')
+) AS dt ORDER BY trade_date;
+```
+
+![](moving-average-demo_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
+
+#### Example 5: Triangular moving average
+
+The triangular moving average is less responsive to new information. It
+is “double-smoothed”—essentially, an average of averages. That is, the
+triangular moving average at a given point is the mean of the previous
+*n* simple moving averages, where *n* is the window size.
+
+``` sql
+SELECT * FROM MovingAverage (
+    ON DevPlatform_DB.dow_jones_2019_q1 PARTITION BY name ORDER BY trade_date
+    USING
+    MAvgType ('T')
+    TargetColumns ('adj_close')
+    WindowSize(10)
+    IncludeFirst('true')
+) AS dt ORDER BY trade_date;
+```
+
+![](moving-average-demo_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+
+#### Example 6: Weighted moving average
+
+The weighted moving average, similarly to the exponential moving
+average, is more responsive to new information. The weighted moving
+average assigns more weight to recent observations by arithmetically
+decreasing weights of older values (unlike the exponential moving
+average, which expoentially decreases weights). The weights decrease
+until they reach zero.
+
+The number of old values to use when calculating the new weighted moving
+average is specified by the window size.
+
+``` sql
+SELECT * FROM MovingAverage (
+    ON DevPlatform_DB.dow_jones_2019_q1 PARTITION BY name ORDER BY trade_date
+    USING
+    MAvgType ('W')
+    TargetColumns ('adj_close')
+    WindowSize(10)
+    IncludeFirst('true')
+) AS dt ORDER BY trade_date;
+```
+
+![](moving-average-demo_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
+
+# EXPLORE
+
+We encourage you to **EXPLORE MovingAverage** by playing with the
+customizable elements of the function. Using the complete data
+stretching back to January 1985, tweak window sizes and damping factors
+to see how the moving average smooths the data—that is, how it lags and
+how sensitive it is to noise as data comes in.
+
+Beyond finance, you can apply moving averages to other fields. You can
+use it to measure computer performance, such as average CPU utilization,
+or remove pixelization from a digital image. Bring in your own data and
+experiment\!

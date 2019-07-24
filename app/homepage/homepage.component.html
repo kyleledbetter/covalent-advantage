@@ -1,13 +1,16 @@
-<mat-toolbar>
+<mat-toolbar class="z-3 absolute">
   <mat-toolbar-row>
     <div flex layout="row" layout-align="start center">
       <mat-icon class="push-left-sm push-right">home</mat-icon>
       <span class="push-left-xs">Homepage</span>
       <span flex></span>
       <span>
-          <button mat-flat-button color="primary" class="push-right-xs push-left-xs mat-button-sm text-upper" [matMenuTriggerFor]="createMenu">Create</button>
+        <button mat-flat-button color="primary" class="push-right-xs push-left-xs mat-button-sm" [matMenuTriggerFor]="createMenu">
+          <span class="text-upper push-right-xs">Create</span>
+          <mat-icon>arrow_drop_down</mat-icon>
+        </button>
         <mat-menu #createMenu="matMenu">
-          <a mat-menu-item>Dashboard</a>
+          <a mat-menu-item [routerLink]="['/monitoring/dashboards/create']">Dashboard</a>
           <a mat-menu-item [routerLink]="['/monitoring/reports/create']">Report</a>
           <a mat-menu-item>Alert</a>
           <mat-divider></mat-divider>
@@ -16,347 +19,509 @@
           <a mat-menu-item>Import Data</a>
         </mat-menu>
       </span>
+      <button mat-stroked-button (click)="filters.toggle()" class="push-right-xs push-left-xs mat-button-sm">
+        <mat-icon>settings</mat-icon>
+        <span class="text-upper push-left-xs" hide-xs>Customize</span>
+      </button>
     </div>
   </mat-toolbar-row>
 </mat-toolbar>
-<div layout="row" layout-align="center start" tdMediaToggle="gt-xs" [mediaClasses]="['push']">
-  <div flex-xs="90" flex-sm="80" flex-md="80" flex-lg="75" flex-gt-lg="60" tdMediaToggle="gt-sm" [mediaClasses]="['pad-top-lg']">
-    <div class="pad">
-      <h1 class="mat-display-1 push-none">Welcome back Jack!</h1>
-      <h3 class="mat-title push-none push-bottom-sm">Here are your updates on the latest trends, alerts and notifications</h3>
-      <td-search-box [alwaysVisible]="true" flex #searchBox class="mat-whiteframe-z1 td-search" placeholder="search"></td-search-box>
-      <div layout="row">
-        <span class="mat-caption tc-grey-600 pad-sm" flex>
-          Ex: “what are the total sales from last month?”
-        </span>
-        <a href="#" mat-button color="primary">View search history</a>
+<mat-sidenav-container fullscreen style="top:48px;">
+  <mat-sidenav layout="column" [mode]="(media.registerQuery('gt-sm') | async) ? 'side' : 'over'" #filters position="end">
+    <td-sidesheet>
+      <td-sidesheet-header>
+        <td-sidesheet-title>Customize Homepage</td-sidesheet-title>
+        <button mat-icon-button td-sidesheet-header-action>
+          <mat-icon matTooltipPosition="before" matTooltip="Close" (click)="filters.toggle()">close</mat-icon>
+        </button>
+      </td-sidesheet-header>
+      <td-sidesheet-content>
+        <div class="pad-xs">
+          <h4 class="mat-title push-none">Homepage Layout</h4>
+          <p class="mat-body-1 push-none push-bottom-sm">Select a layout for your Vantage Homepage.</p>
+          <mat-divider></mat-divider>
+        </div>
+        <div layout-gt-xs="row" layout-wrap>
+          <div flex="50">
+            <mat-card flex-gt-xs>
+              <div layout="row" layout-wrap class="bgc-contrast pad-xs layout-cards">
+                <div flex="33">
+                  <mat-card>&nbsp;</mat-card>
+                </div>
+                <div flex="33">
+                  <mat-card>&nbsp;</mat-card>
+                </div>
+                <div flex="33">
+                  <mat-card>&nbsp;</mat-card>
+                </div>
+                <div flex="60">
+                  <mat-card>&nbsp;</mat-card>
+                </div>
+                <div flex="40">
+                  <mat-card>&nbsp;</mat-card>
+                </div>
+              </div>
+            </mat-card>
+          </div>
+          <div flex="50">
+            <mat-card flex-gt-xs>
+              <div layout="row" layout-wrap class="bgc-contrast pad-xs layout-cards">
+                <div flex="60">
+                  <mat-card>&nbsp;</mat-card>
+                </div>
+                <div flex="40">
+                  <mat-card>&nbsp;</mat-card>
+                </div>
+                <div flex="60">
+                  <mat-card>&nbsp;</mat-card>
+                </div>
+                <div flex="40">
+                  <mat-card>&nbsp;</mat-card>
+                </div>
+              </div>
+            </mat-card>
+          </div>
+          <div flex="50">
+            <mat-card flex-gt-xs>
+              <div layout="row" layout-wrap class="bgc-contrast pad-xs layout-cards tall">
+                <div flex="30">
+                  <mat-card>&nbsp;</mat-card>
+                </div>
+                <div flex="70">
+                  <mat-card>&nbsp;</mat-card>
+                </div>
+              </div>
+            </mat-card>
+          </div>
+          <div flex="50">
+            <mat-card flex-gt-xs>
+              <div layout="row" layout-wrap class="bgc-contrast pad-xs layout-cards tall">
+                <div flex="50">
+                  <mat-card>&nbsp;</mat-card>
+                </div>
+                <div flex="50">
+                  <mat-card>&nbsp;</mat-card>
+                </div>
+              </div>
+            </mat-card>
+          </div>
+        </div>
+        <mat-divider class="push-top push-bottom"></mat-divider>
+        <div class="pad-xs">
+          <h4 class="mat-title push-none">Edit Profile</h4>
+          <p class="mat-body-1 push-none push-bottom-sm">Update your interest in your profile for more relevant recommendations.</p>
+          <a mat-button color="primary" class="text-upper" [routerLink]="['/profile']">Update Profile</a>
+        </div>
+        <mat-divider class="push-top push-bottom"></mat-divider>
+        <div class="pad-xs">
+          <h4 class="mat-title push-none">Discover Content</h4>
+          <p class="mat-body-1 push-none push-bottom-sm">Browse content generated by employees in your company.
+          </p>
+          <a mat-button color="primary" class="text-upper" [routerLink]="['/browse']">Browse</a>
+        </div>
+      </td-sidesheet-content>
+      <td-sidesheet-actions>
+        <button (click)="filters.toggle()" mat-raised-button class="text-upper" color="accent">Apply</button>
+        <button (click)="filters.toggle()" mat-button class="text-upper">Cancel</button>
+      </td-sidesheet-actions>
+    </td-sidesheet>
+  </mat-sidenav>
+  <div layout="row" layout-align="center start" tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+    <div flex-xs="90" flex-sm="80" flex-md="80" flex-lg="75" flex-gt-lg="60" tdMediaToggle="gt-sm"
+      [mediaClasses]="['pad-top-lg']">
+      <div class="pad">
+        <h1 class="mat-headline push-none" tdMediaToggle="gt-md" [mediaClasses]="['mat-display-1']">Welcome back Jack!
+        </h1>
+        <h3 class="mat-subheading-2 push-none push-bottom-sm" tdMediaToggle="gt-md" [mediaClasses]="['mat-title']">Here
+          are your updates on the latest trends, alerts and notifications</h3>
+        <td-search-box [alwaysVisible]="true" flex #searchBox class="mat-whiteframe-z1 td-search" placeholder="search">
+        </td-search-box>
+        <div layout="row">
+          <span hide-xs class="mat-caption tc-grey-600 pad-sm" flex>
+            Ex: “what are the total sales from last month?”
+          </span>
+          <a href="#" mat-button color="primary">View search history</a>
+        </div>
       </div>
-    </div>
-    <div layout-gt-sm="row">
-      <div flex-gt-sm="60">
-        <mat-card tdMediaToggle="gt-sm" [mediaClasses]="['push-top']">
-          <mat-card-title>
-            <div layout="row">
-              <span flex>My pinned report</span>
-              <span>
-                <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
-                  <mat-icon>more_vert</mat-icon>
-                </button>
-                <mat-menu #menu="matMenu" xPosition="before">
-                  <button mat-menu-item>
-                    <mat-icon>aspect_ratio</mat-icon>
-                    <span>Maximize</span>
+      <div layout-gt-sm="row">
+        <div flex-gt-sm="60">
+          <mat-card tdMediaToggle="gt-sm" [mediaClasses]="['push-top']">
+            <mat-card-title>
+              <div layout="row">
+                <span flex>Performance to target</span>
+                <span>
+                  <button hide-xs mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                    <mat-icon>more_vert</mat-icon>
                   </button>
-                  <button mat-menu-item>
-                    <mat-icon>share</mat-icon>
-                    <span>Share</span>
-                  </button>
-                  <button mat-menu-item>
-                    <mat-icon>remove_circle_outline</mat-icon>
-                    <span>Remove pin</span>
-                  </button>
-                </mat-menu>
-              </span>
-            </div>
-          </mat-card-title>
-          <mat-card-subtitle>Recent activity from select members</mat-card-subtitle>
-          <mat-divider></mat-divider>
-          <td-chart [style.height.px]="284"
-                    [config]="chart1">
-          </td-chart>
-          <mat-divider></mat-divider>
-          <mat-card-actions>
-            <a mat-button color="primary" class="text-upper" [routerLink]="'/monitoring/report'">
-              <span>View Report</span>
-            </a>
-            <a mat-button class="tc-grey-600 text-upper">
-              <span>Edit Code</span>
-            </a>
-          </mat-card-actions>
-        </mat-card>
-      </div>
-      <div flex-gt-sm="40">
-        <mat-card tdMediaToggle="gt-sm" [mediaClasses]="['push-top']">
-          <mat-card-title>Key updates</mat-card-title>
-          <mat-card-subtitle>Recent activity from select members</mat-card-subtitle>
-          <mat-divider></mat-divider>
-          <mat-nav-list>
-            <ng-template let-last="last" ngFor [ngForOf]="[0,1,2,3]">
-              <a mat-list-item>
-                <mat-icon matListAvatar>info</mat-icon>
-                <h4 mat-line><span class="text-wrap">A user bookmarked your report</span></h4>
-                <p mat-line>22 minutes ago</p>
+                  <mat-menu #menu="matMenu" xPosition="before">
+                    <button mat-menu-item>
+                      <mat-icon>aspect_ratio</mat-icon>
+                      <span>Maximize</span>
+                    </button>
+                    <button mat-menu-item>
+                      <mat-icon>share</mat-icon>
+                      <span>Share</span>
+                    </button>
+                    <button mat-menu-item>
+                      <mat-icon>remove_circle_outline</mat-icon>
+                      <span>Remove pin</span>
+                    </button>
+                  </mat-menu>
+                </span>
+              </div>
+            </mat-card-title>
+            <mat-card-subtitle>Yearly progress report</mat-card-subtitle>
+            <mat-divider></mat-divider>
+            <td-chart [style.height.px]="304" [config]="chart1">
+            </td-chart>
+            <mat-divider></mat-divider>
+            <mat-card-actions>
+              <a mat-button color="primary" class="text-upper" [routerLink]="'/monitoring/report'">
+                <span>View Report</span>
               </a>
-              <mat-divider *ngIf="!last"></mat-divider>
-            </ng-template>
-          </mat-nav-list>
-          <mat-divider></mat-divider>
-          <mat-card-actions>
-            <a mat-button color="primary" class="text-upper">
-              <span>View More</span>
-            </a>
-          </mat-card-actions>
-        </mat-card>
+              <a mat-button class="tc-grey-600 text-upper"
+                href="https://appcenter.ux.ac.uda.io/editor/?scriptId=f875bf36-423f-45df-a857-e22efeae5a8c">
+                <span>Edit Code</span>
+              </a>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+        <div flex-gt-sm="40">
+          <mat-card tdMediaToggle="gt-sm" [mediaClasses]="['push-top']">
+            <mat-card-title>
+              <div layout="row">
+                <span flex>Key updates</span>
+                <span>
+                  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                  <mat-menu #menu="matMenu" xPosition="before">
+                    <button mat-menu-item>
+                      <mat-icon>remove_circle_outline</mat-icon>
+                      <span>Remove card</span>
+                    </button>
+                  </mat-menu>
+                </span>
+              </div>
+            </mat-card-title>
+            <mat-card-subtitle>Recent activity from select members</mat-card-subtitle>
+            <mat-divider></mat-divider>
+            <mat-nav-list dense>
+              <ng-template let-item let-last="last" ngFor [ngForOf]="updates">
+                <a mat-list-item>
+                  <mat-icon matListAvatar flex="none">{{item.icon}}</mat-icon>
+                  <h4 mat-line><span class="text-wrap">{{item.title}}</span></h4>
+                  <p mat-line>{{item.date}}</p>
+                </a>
+                <mat-divider *ngIf="!last"></mat-divider>
+              </ng-template>
+            </mat-nav-list>
+            <mat-divider></mat-divider>
+            <mat-card-actions>
+              <a mat-button color="primary" class="text-upper">
+                <span>View More</span>
+              </a>
+            </mat-card-actions>
+          </mat-card>
+        </div>
       </div>
-    </div>
-    <div layout-gt-sm="row">
-      <div flex-gt-sm>
-        <mat-card tdMediaToggle="gt-sm" [mediaClasses]="['push-top']">
-          <div class="pad">
-            <div layout="row" layout-align="start center">
-              <span flex>Pinned report</span>
-              <span>
-                <button mat-icon-button [matMenuTriggerFor]="menu2" aria-label="Example icon-button with a menu">
-                  <mat-icon>more_vert</mat-icon>
-                </button>
-                <mat-menu #menu2="matMenu" xPosition="before">
-                  <button mat-menu-item>
-                    <mat-icon>aspect_ratio</mat-icon>
-                    <span>Maximize</span>
-                  </button>
-                  <button mat-menu-item>
-                    <mat-icon>share</mat-icon>
-                    <span>Share</span>
-                  </button>
-                  <button mat-menu-item>
-                    <mat-icon>remove_circle_outline</mat-icon>
-                    <span>Remove pin</span>
-                  </button>
-                </mat-menu>
-              </span>
-            </div>
-          </div>
-          <mat-divider></mat-divider>
-          <td-chart [style.height.px]="200"
-                    [config]="chart2">
-          </td-chart>
-        </mat-card>
-      </div>
-      <div flex-gt-sm>
-        <mat-card tdMediaToggle="gt-sm" [mediaClasses]="['push-top']">
-          <div class="pad">
-            <div layout="row" layout-align="start center">
-              <span flex>Pinned report</span>
-              <span>
-                <button mat-icon-button [matMenuTriggerFor]="menu3" aria-label="Example icon-button with a menu">
-                  <mat-icon>more_vert</mat-icon>
-                </button>
-                <mat-menu #menu3="matMenu" xPosition="before">
-                  <button mat-menu-item>
-                    <mat-icon>aspect_ratio</mat-icon>
-                    <span>Maximize</span>
-                  </button>
-                  <button mat-menu-item>
-                    <mat-icon>share</mat-icon>
-                    <span>Share</span>
-                  </button>
-                  <button mat-menu-item>
-                    <mat-icon>remove_circle_outline</mat-icon>
-                    <span>Remove pin</span>
-                  </button>
-                </mat-menu>
-              </span>
-            </div>
-          </div>
-          <mat-divider></mat-divider>
-          <td-chart [style.height.px]="200"
-                    [config]="chart3">
-          </td-chart>
-        </mat-card>
-      </div>
-      <div flex-gt-sm>
-        <mat-card tdMediaToggle="gt-sm" [mediaClasses]="['push-top']">
-          <div class="pad">
-            <div layout="row" layout-align="start center">
-              <span flex>Pinned report</span>
-              <span>
-                <button mat-icon-button [matMenuTriggerFor]="menu4" aria-label="Example icon-button with a menu">
-                  <mat-icon>more_vert</mat-icon>
-                </button>
-                <mat-menu #menu4="matMenu" xPosition="before">
-                  <button mat-menu-item>
-                    <mat-icon>aspect_ratio</mat-icon>
-                    <span>Maximize</span>
-                  </button>
-                  <button mat-menu-item>
-                    <mat-icon>share</mat-icon>
-                    <span>Share</span>
-                  </button>
-                  <button mat-menu-item>
-                    <mat-icon>remove_circle_outline</mat-icon>
-                    <span>Remove pin</span>
-                  </button>
-                </mat-menu>
-              </span>
-            </div>
-          </div>
-          <mat-divider></mat-divider>
-          <td-chart [style.height.px]="200"
-                    [config]="chart4">
-          </td-chart>
-        </mat-card>
-      </div>
-    </div>
-    <div layout-gt-sm="row">
-      <div flex-gt-sm>
-        <mat-card tdMediaToggle="gt-sm" class="tc-white" [mediaClasses]="['push-top']" style="background: #4CAFB1 url('https://user-images.githubusercontent.com/867883/60043775-b98ee300-9675-11e9-8fcc-36cf7f81fd51.png') top left / cover no-repeat" layout="column">
-          <mat-card-title>Explore and create inights in Vantage Analyst</mat-card-title>
-          <mat-card-content flex [style.height.px]="80">
-            <p class="mat-body-2">Reveal powerful customer analystics using Vantage Analyst</p>
-          </mat-card-content>
-          <div class="pad">
-            <a mat-stroked-button color="white" class="text-upper" [routerLink]="'analyst'">
-              <span>View More</span>
-            </a>
-          </div>
-        </mat-card>
-      </div>
-      <div flex-gt-sm>
-        <mat-card tdMediaToggle="gt-sm" class="tc-white" [mediaClasses]="['push-top']" style="background: #3F97C4 url('https://user-images.githubusercontent.com/867883/60043778-b98ee300-9675-11e9-9612-a23edbdb9612.png') top left / cover no-repeat" layout="column">
-          <mat-card-title>Find answers in seconds with Vantage Monitoring</mat-card-title>
-          <mat-card-content flex [style.height.px]="80">
-            <p class="mat-body-2">Rapidly create custom dashboards with any dataset in Vantage with Vantage Monitoring</p>
-          </mat-card-content>
-          <div class="pad">
-            <a mat-stroked-button color="white" class="text-upper" [routerLink]="'monitoring'">
-              <span>View More</span>
-            </a>
-          </div>
-        </mat-card>
-      </div>
-      <div flex-gt-sm>
-        <mat-card tdMediaToggle="gt-sm" class="tc-white" [mediaClasses]="['push-top']" style="background: #4CAFB1 url('https://user-images.githubusercontent.com/867883/60043777-b98ee300-9675-11e9-9876-b92d872eb069.png') top left / cover no-repeat" layout="column">
-          <mat-card-title>Build custom integrations with Vantage Developer</mat-card-title>
-          <mat-card-content flex [style.height.px]="80">
-             <p class="mat-body-2">Build on Vantage's powerful capabilities and APIs to create custom solutions</p>
-          </mat-card-content>
-          <div class="pad">
-            <a mat-stroked-button color="white" class="text-upper" [routerLink]="'developer'">
-              <span>View More</span>
-            </a>
-          </div>
-        </mat-card>
-      </div>
-    </div>
-    <div layout-gt-sm="row">
-      <div flex-gt-sm="60">
-        <mat-card tdMediaToggle="gt-sm" [mediaClasses]="['push-top']">
-          <mat-card-title>Custom threshold alerts</mat-card-title>
-          <mat-card-subtitle>Recent activity from select members</mat-card-subtitle>
-          <mat-divider></mat-divider>
-          <ng-template let-last="last" ngFor [ngForOf]="[0,1,2]">
+      <div layout-gt-sm="row">
+        <div flex-gt-sm>
+          <mat-card tdMediaToggle="gt-sm" [mediaClasses]="['push-top']">
             <div class="pad">
-              <h3 class="mat-headline push-none">Job response time is outside thresholds</h3>
-              <p class="push-none tc-faded">22 minutes ago</p>
-              <td-chart [style.height.px]="150"
-                        [config]="chart5">
-              </td-chart>
+              <div layout="row" layout-align="start center">
+                <span flex>Customer Satisfaction (CSAT)</span>
+                <span>
+                  <button mat-icon-button [matMenuTriggerFor]="menu2" aria-label="Example icon-button with a menu">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                  <mat-menu #menu2="matMenu" xPosition="before">
+                    <button mat-menu-item>
+                      <mat-icon>aspect_ratio</mat-icon>
+                      <span>Maximize</span>
+                    </button>
+                    <button mat-menu-item>
+                      <mat-icon>share</mat-icon>
+                      <span>Share</span>
+                    </button>
+                    <button mat-menu-item>
+                      <mat-icon>remove_circle_outline</mat-icon>
+                      <span>Remove pin</span>
+                    </button>
+                  </mat-menu>
+                </span>
+              </div>
             </div>
-            <mat-divider *ngIf="!last"></mat-divider>
-          </ng-template>
-          <mat-divider></mat-divider>
-          <mat-card-actions>
-            <a mat-button color="primary" class="text-upper">
-              <span>View More</span>
-            </a>
-          </mat-card-actions>
-        </mat-card>
-      </div>
-      <div flex-gt-sm="40">
-        <mat-card tdMediaToggle="gt-sm" [mediaClasses]="['push-top']">
-          <mat-card-title>Forum posts</mat-card-title>
-          <mat-card-subtitle>Recent activity from select members</mat-card-subtitle>
-          <mat-divider></mat-divider>
-          <mat-nav-list>
-            <ng-template let-last="last" ngFor [ngForOf]="[0,1,2,3,4,5]">
-              <a mat-list-item>
-                <h3 matLine>Ali Connors</h3>
-                <h4 mat-line><span class="text-wrap">Re: check your latest dashboard updates</span></h4>
-                <p mat-line>Hey i double checked on my end and everything looks good</p>
-                <span class="text-sm tc-faded">22 min ago</span>
+            <mat-divider></mat-divider>
+            <td-chart [style.height.px]="200" [config]="chart2">
+            </td-chart>
+            <mat-divider></mat-divider>
+            <mat-card-actions>
+              <a mat-button color="primary" class="text-upper" [routerLink]="'/monitoring/report'">
+                <span>View Report</span>
               </a>
+              <a mat-button class="tc-grey-600 text-upper"
+                href="https://appcenter.ux.ac.uda.io/editor/?scriptId=f875bf36-423f-45df-a857-e22efeae5a8c">
+                <span>Edit Code</span>
+              </a>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+        <div flex-gt-sm>
+          <mat-card tdMediaToggle="gt-sm" [mediaClasses]="['push-top']">
+            <div class="pad">
+              <div layout="row" layout-align="start center">
+                <span flex>System Usability Score (SUS)</span>
+                <span>
+                  <button mat-icon-button [matMenuTriggerFor]="menu3" aria-label="Example icon-button with a menu">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                  <mat-menu #menu3="matMenu" xPosition="before">
+                    <button mat-menu-item>
+                      <mat-icon>aspect_ratio</mat-icon>
+                      <span>Maximize</span>
+                    </button>
+                    <button mat-menu-item>
+                      <mat-icon>share</mat-icon>
+                      <span>Share</span>
+                    </button>
+                    <button mat-menu-item>
+                      <mat-icon>remove_circle_outline</mat-icon>
+                      <span>Remove pin</span>
+                    </button>
+                  </mat-menu>
+                </span>
+              </div>
+            </div>
+            <mat-divider></mat-divider>
+            <td-chart [style.height.px]="200" [config]="chart3">
+            </td-chart>
+            <mat-divider></mat-divider>
+            <mat-card-actions>
+              <a mat-button color="primary" class="text-upper" [routerLink]="'/monitoring/report'">
+                <span>View Report</span>
+              </a>
+              <a mat-button class="tc-grey-600 text-upper"
+                href="https://appcenter.ux.ac.uda.io/editor/?scriptId=f875bf36-423f-45df-a857-e22efeae5a8c">
+                <span>Edit Code</span>
+              </a>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+        <div flex-gt-sm>
+          <mat-card tdMediaToggle="gt-sm" [mediaClasses]="['push-top']">
+            <div class="pad">
+              <div layout="row" layout-align="start center">
+                <span flex>Feature (API) Usage</span>
+                <span>
+                  <button mat-icon-button [matMenuTriggerFor]="menu4" aria-label="Example icon-button with a menu">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                  <mat-menu #menu4="matMenu" xPosition="before">
+                    <button mat-menu-item>
+                      <mat-icon>aspect_ratio</mat-icon>
+                      <span>Maximize</span>
+                    </button>
+                    <button mat-menu-item>
+                      <mat-icon>share</mat-icon>
+                      <span>Share</span>
+                    </button>
+                    <button mat-menu-item>
+                      <mat-icon>remove_circle_outline</mat-icon>
+                      <span>Remove pin</span>
+                    </button>
+                  </mat-menu>
+                </span>
+              </div>
+            </div>
+            <mat-divider></mat-divider>
+            <td-chart [style.height.px]="200" [config]="chart4">
+            </td-chart>
+            <mat-divider></mat-divider>
+            <mat-card-actions>
+              <a mat-button color="primary" class="text-upper" [routerLink]="'/monitoring/report'">
+                <span>View Report</span>
+              </a>
+              <a mat-button class="tc-grey-600 text-upper"
+                href="https://appcenter.ux.ac.uda.io/editor/?scriptId=f875bf36-423f-45df-a857-e22efeae5a8c">
+                <span>Edit Code</span>
+              </a>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+      </div>
+      <div layout-gt-sm="row">
+        <div flex-gt-sm>
+          <mat-card tdMediaToggle="gt-sm" class="tc-white" [mediaClasses]="['push-top']"
+            style="background: #4CAFB1 url('https://user-images.githubusercontent.com/867883/60043775-b98ee300-9675-11e9-8fcc-36cf7f81fd51.png') top left / cover no-repeat"
+            layout="column">
+            <mat-card-title class="text-lg" tdMediaToggle="gt-md" [mediaClasses]="['text-xl']">Explore &amp; create
+              inights in Vantage Analyst</mat-card-title>
+            <mat-card-content flex [style.height.px]="80">
+              <p class="mat-body-2">Reveal powerful customer analytics using Vantage Analyst</p>
+            </mat-card-content>
+            <div class="pad">
+              <a mat-stroked-button color="white" class="text-upper" [routerLink]="'analyst'">
+                <span>View More</span>
+              </a>
+            </div>
+          </mat-card>
+        </div>
+        <div flex-gt-sm>
+          <mat-card tdMediaToggle="gt-sm" class="tc-white" [mediaClasses]="['push-top']"
+            style="background: #3F97C4 url('https://user-images.githubusercontent.com/867883/60043778-b98ee300-9675-11e9-9612-a23edbdb9612.png') top left / cover no-repeat"
+            layout="column">
+            <mat-card-title class="text-lg" tdMediaToggle="gt-md" [mediaClasses]="['text-xl']">Find answers in seconds
+              with Vantage Monitoring</mat-card-title>
+            <mat-card-content flex [style.height.px]="80">
+              <p class="mat-body-2">Rapidly create custom dashboards with any dataset in Vantage with Vantage Monitoring
+              </p>
+            </mat-card-content>
+            <div class="pad">
+              <a mat-stroked-button color="white" class="text-upper" [routerLink]="'monitoring'">
+                <span>View More</span>
+              </a>
+            </div>
+          </mat-card>
+        </div>
+        <div flex-gt-sm>
+          <mat-card tdMediaToggle="gt-sm" class="tc-white" [mediaClasses]="['push-top']"
+            style="background: #4CAFB1 url('https://user-images.githubusercontent.com/867883/60043777-b98ee300-9675-11e9-9876-b92d872eb069.png') top left / cover no-repeat"
+            layout="column">
+            <mat-card-title class="text-lg" tdMediaToggle="gt-md" [mediaClasses]="['text-xl']">Build custom integrations
+              with Vantage Developer</mat-card-title>
+            <mat-card-content flex [style.height.px]="80">
+              <p class="mat-body-2">Build on Vantage's powerful capabilities and APIs to create custom solutions</p>
+            </mat-card-content>
+            <div class="pad">
+              <a mat-stroked-button color="white" class="text-upper" [routerLink]="'developer'">
+                <span>View More</span>
+              </a>
+            </div>
+          </mat-card>
+        </div>
+      </div>
+      <!--
+      <div layout-gt-sm="row">
+        <div flex-gt-sm="60">
+          <mat-card tdMediaToggle="gt-sm" [mediaClasses]="['push-top']">
+            <mat-card-title>Custom threshold alerts</mat-card-title>
+            <mat-card-subtitle>Recent activity from select members</mat-card-subtitle>
+            <mat-divider></mat-divider>
+            <ng-template let-last="last" ngFor [ngForOf]="[0,1,2]">
+              <div class="pad">
+                <h3 class="mat-headline push-none">Job response time is outside thresholds</h3>
+                <p class="push-none tc-faded">22 minutes ago</p>
+                <td-chart [style.height.px]="150" [config]="chart5">
+                </td-chart>
+              </div>
               <mat-divider *ngIf="!last"></mat-divider>
             </ng-template>
-          </mat-nav-list>
-          <mat-divider></mat-divider>
-          <mat-card-actions>
-            <a mat-button color="primary" class="text-upper">
-              <span>View More</span>
-            </a>
-          </mat-card-actions>
-        </mat-card>
-      </div>
-    </div>
-    <div layout-gt-sm="row">
-      <div flex-gt-sm="33">
-        <mat-card tdMediaToggle="gt-sm" [mediaClasses]="['push-top']">
-          <mat-card-title>Recommended</mat-card-title>
-          <mat-card-subtitle>Recent activity from select members</mat-card-subtitle>
-          <mat-divider></mat-divider>
-          <mat-nav-list>
-            <ng-template let-last="last" ngFor [ngForOf]="[0,1,2,3,4]">
-              <a mat-list-item>
-                <mat-icon matListAvatar>trending_up</mat-icon>
-                <h4 mat-line><span class="text-wrap">Global social sentiment</span></h4>
-                <p mat-line>Twitter, LinkedIn & Facebook reactions</p>
+            <mat-divider></mat-divider>
+            <mat-card-actions>
+              <a mat-button color="primary" class="text-upper">
+                <span>View More</span>
               </a>
-              <mat-divider *ngIf="!last"></mat-divider>
-            </ng-template>
-          </mat-nav-list>
-          <mat-divider></mat-divider>
-          <mat-card-actions>
-            <a mat-button color="primary" class="text-upper">
-              <span>View More</span>
-            </a>
-          </mat-card-actions>
-        </mat-card>
-      </div>
-      <div flex-gt-sm="33">
-        <mat-card tdMediaToggle="gt-sm" [mediaClasses]="['push-top']">
-          <mat-card-title>Shared</mat-card-title>
-          <mat-card-subtitle>Recent activity from select members</mat-card-subtitle>
-          <mat-divider></mat-divider>
-          <mat-nav-list>
-            <ng-template let-last="last" ngFor [ngForOf]="[0,1,2,3,4]">
-              <a mat-list-item>
-                <mat-icon matListAvatar>dashboard</mat-icon>
-                <h4 mat-line><span class="text-wrap">Marketing org dashboard</span></h4>
-                <p mat-line>Organizational KPIs and metrics</p>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+        <div flex-gt-sm="40">
+          <mat-card tdMediaToggle="gt-sm" [mediaClasses]="['push-top']">
+            <mat-card-title>Forum posts</mat-card-title>
+            <mat-card-subtitle>Recent activity from select members</mat-card-subtitle>
+            <mat-divider></mat-divider>
+            <mat-nav-list>
+              <ng-template let-last="last" ngFor [ngForOf]="[0,1,2,3,4,5]">
+                <a mat-list-item>
+                  <h3 matLine>Ali Connors</h3>
+                  <h4 mat-line><span class="text-wrap">Re: check your latest dashboard updates</span></h4>
+                  <p mat-line>Hey i double checked on my end and everything looks good</p>
+                  <span class="text-sm tc-faded">22 min ago</span>
+                </a>
+                <mat-divider *ngIf="!last"></mat-divider>
+              </ng-template>
+            </mat-nav-list>
+            <mat-divider></mat-divider>
+            <mat-card-actions>
+              <a mat-button color="primary" class="text-upper">
+                <span>View More</span>
               </a>
-              <mat-divider *ngIf="!last"></mat-divider>
-            </ng-template>
-          </mat-nav-list>
-          <mat-divider></mat-divider>
-          <mat-card-actions>
-            <a mat-button color="primary" class="text-upper">
-              <span>View More</span>
-            </a>
-          </mat-card-actions>
-        </mat-card>
+            </mat-card-actions>
+          </mat-card>
+        </div>
       </div>
-      <div flex-gt-sm="33">
-        <mat-card tdMediaToggle="gt-sm" [mediaClasses]="['push-top']">
-          <mat-card-title>Bookmarks</mat-card-title>
-          <mat-card-subtitle>Recent activity from select members</mat-card-subtitle>
-          <mat-divider></mat-divider>
-          <mat-nav-list>
-            <ng-template let-last="last" ngFor [ngForOf]="[0,1,2,3,4]">
-              <a mat-list-item>
-                <mat-icon matListAvatar>bookmark</mat-icon>
-                <h4 mat-line><span class="text-wrap">Year over year financials</span></h4>
-                <p mat-line>Departmental growth from year to year (YoY)</p>
+    -->
+      <div layout-gt-sm="row">
+        <div flex-gt-sm="33">
+          <mat-card tdMediaToggle="gt-sm" [mediaClasses]="['push-top']">
+            <mat-card-title>Recommended</mat-card-title>
+            <mat-card-subtitle>Recent activity from select members</mat-card-subtitle>
+            <mat-divider></mat-divider>
+            <mat-nav-list>
+              <ng-template let-last="last" ngFor [ngForOf]="[0,1,2,3,4]">
+                <a mat-list-item>
+                  <mat-icon matListAvatar>trending_up</mat-icon>
+                  <h4 mat-line><span class="text-wrap">Global social sentiment</span></h4>
+                  <p mat-line>Twitter, LinkedIn & Facebook reactions</p>
+                </a>
+                <mat-divider *ngIf="!last"></mat-divider>
+              </ng-template>
+            </mat-nav-list>
+            <mat-divider></mat-divider>
+            <mat-card-actions>
+              <a mat-button color="primary" class="text-upper">
+                <span>View More</span>
               </a>
-              <mat-divider *ngIf="!last"></mat-divider>
-            </ng-template>
-          </mat-nav-list>
-          <mat-divider></mat-divider>
-          <mat-card-actions>
-            <a mat-button color="primary" class="text-upper">
-              <span>View More</span>
-            </a>
-          </mat-card-actions>
-        </mat-card>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+        <div flex-gt-sm="33">
+          <mat-card tdMediaToggle="gt-sm" [mediaClasses]="['push-top']">
+            <mat-card-title>Shared</mat-card-title>
+            <mat-card-subtitle>Recent activity from select members</mat-card-subtitle>
+            <mat-divider></mat-divider>
+            <mat-nav-list>
+              <ng-template let-last="last" ngFor [ngForOf]="[0,1,2,3,4]">
+                <a mat-list-item>
+                  <mat-icon matListAvatar>dashboard</mat-icon>
+                  <h4 mat-line><span class="text-wrap">Marketing org dashboard</span></h4>
+                  <p mat-line>Organizational KPIs and metrics</p>
+                </a>
+                <mat-divider *ngIf="!last"></mat-divider>
+              </ng-template>
+            </mat-nav-list>
+            <mat-divider></mat-divider>
+            <mat-card-actions>
+              <a mat-button color="primary" class="text-upper">
+                <span>View More</span>
+              </a>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+        <div flex-gt-sm="33">
+          <mat-card tdMediaToggle="gt-sm" [mediaClasses]="['push-top']">
+            <mat-card-title>Bookmarks</mat-card-title>
+            <mat-card-subtitle>Recent activity from select members</mat-card-subtitle>
+            <mat-divider></mat-divider>
+            <mat-nav-list>
+              <ng-template let-last="last" ngFor [ngForOf]="[0,1,2,3,4]">
+                <a mat-list-item>
+                  <mat-icon matListAvatar>bookmark</mat-icon>
+                  <h4 mat-line><span class="text-wrap">Year over year financials</span></h4>
+                  <p mat-line>Departmental growth from year to year (YoY)</p>
+                </a>
+                <mat-divider *ngIf="!last"></mat-divider>
+              </ng-template>
+            </mat-nav-list>
+            <mat-divider></mat-divider>
+            <mat-card-actions>
+              <a mat-button color="primary" class="text-upper">
+                <span>View More</span>
+              </a>
+            </mat-card-actions>
+          </mat-card>
+        </div>
       </div>
     </div>
   </div>
-</div>
+</mat-sidenav-container>

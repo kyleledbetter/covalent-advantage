@@ -1,0 +1,118 @@
+<h1 mat-dialog-title>Add Report</h1>
+<mat-divider></mat-divider>
+<div mat-dialog-content>
+  <td-search-box placeholder="Search reports" [alwaysVisible]="true" >
+  </td-search-box>
+  <mat-divider></mat-divider>
+  <td-expansion-panel-group [multi]="multi" #panelGroup>
+    <ng-template let-last="last" ngFor [ngForOf]="[0,1,2,3,4,5,6,7,8,9]">
+      <td-expansion-panel>
+        <ng-template td-expansion-panel-header>
+          <mat-selection-list dense>
+            <mat-list-option>
+              <mat-icon matListAvatar>insert_chart</mat-icon>
+              <h4 mat-line><span class="text-wrap">Report name</span></h4>
+              <p mat-line>report description</p>
+            </mat-list-option>
+            <mat-divider *ngIf="!last"></mat-divider>
+          </mat-selection-list>
+        </ng-template>
+        <div class="pad">
+          <td-chart [style.height.px]="250">
+            <td-chart-tooltip [trigger]="'item'">
+            </td-chart-tooltip>
+            <td-chart-x-axis [show]="true" [position]="'top'" [type]="'time'" [splitLine]="{show: false}" [boundaryGap]="false">
+            </td-chart-x-axis>
+            <td-chart-y-axis [show]="true" [type]="'value'">
+            </td-chart-y-axis>
+            <td-chart-series td-line [symbolSize]="14" [data]="[{
+                                'name': '2018-10-29T03:27:33.932Z',
+                                'value': [
+                                  '2018-10-29T03:27:33.932Z',
+                                  200
+                                ]
+                              }, {
+                                'name': '2018-10-30T03:27:33.932Z',
+                                'value': [
+                                  '2018-10-30T03:27:33.932Z',
+                                  50
+                                ]
+                              },{
+                                'name': '2018-10-31T03:27:33.932Z',
+                                'value': [
+                                  '2018-10-31T03:27:33.932Z',
+                                  100
+                                ]
+                              }]" [name]="'Revenue'" [symbol]="'roundRect'" [color]="'#F2724B'">
+              <td-chart-series-tooltip>
+                <ng-template let-params let-ticket="ticket" tdTooltipFormatter>
+                  <ng-container *ngIf="params">
+                    <div layout="row" layout-align="start center">
+                      <mat-icon>
+                        <span class="tc-accent">account_balance</span>
+                      </mat-icon>
+                      <span class="mat-caption pad-left-sm">
+                        {{params.seriesName + ': ' + params.value[1]}}
+                      </span>
+                    </div>
+                    <div class="mat-caption">
+                      at {{(params.name | date:'medium')}}
+                    </div>
+                  </ng-container>
+                </ng-template>
+              </td-chart-series-tooltip>
+            </td-chart-series>
+            <td-chart-series td-line [symbolSize]="14" [data]="[{
+                                'name': '2018-10-29T03:28:59.797Z',
+                                'value': [
+                                  '2018-10-29T03:28:59.797Z',
+                                  200
+                                ]
+                              }, {
+                                'name': '2018-10-29T13:28:59.797Z',
+                                'value': [
+                                  '2018-10-29T13:28:59.797Z',
+                                  50
+                                ]
+                              }, {
+                                'name': '2018-11-01T03:28:59.797Z',
+                                'value': [
+                                  '2018-11-01T03:28:59.797Z',
+                                  100
+                                ]
+                              }]" [name]="'Sales'" [symbol]="'roundRect'" [color]="'#4CAFB1'">
+              <td-chart-series-tooltip>
+                <ng-template let-params let-ticket="ticket" tdTooltipFormatter>
+                  <ng-container *ngIf="params">
+                    <div layout="row" layout-align="start center">
+                      <mat-icon>
+                        <span class="tc-primary">attach_money</span>
+                      </mat-icon>
+                      <span class="mat-caption pad-left-sm">
+                        {{params.seriesName + ': ' + params.value[1]}}
+                      </span>
+                    </div>
+                    <div class="mat-caption">
+                      at {{(params.name | date:'medium')}}
+                    </div>
+                  </ng-container>
+                </ng-template>
+              </td-chart-series-tooltip>
+            </td-chart-series>
+          </td-chart>
+        </div>
+      </td-expansion-panel>
+    </ng-template>
+  </td-expansion-panel-group>
+  <mat-divider></mat-divider>
+  <td-paging-bar #pagingBar [firstLast]="firstLast" [pageSize]="10" [total]="1345" (change)="change($event)">
+    {{pagingBar.range}} of {{pagingBar.total}}
+  </td-paging-bar>
+</div>
+<mat-divider></mat-divider>
+<div mat-dialog-actions>
+  <div layout="row" flex layout-align="end center">
+    <button mat-button class="text-upper push-right tc-contrast" (click)="onNoClick()">Cancel</button>
+    <button mat-flat-button color="accent" class="text-upper" [mat-dialog-close]="data.showChart" cdkFocusInitial>Insert Report</button>
+  </div>
+</div>

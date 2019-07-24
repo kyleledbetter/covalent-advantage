@@ -7,17 +7,17 @@
     </div>
   </mat-toolbar-row>
 </mat-toolbar>
-<div layout-gt-sm="row" layout-align="center start" tdMediaToggle="gt-xs" [mediaClasses]="['push']">
-  <div flex-xs="90" flex-sm="80" flex-md="80" flex-lg="75" flex-gt-lg="60" tdMediaToggle="gt-sm" [mediaClasses]="['pad-top-lg']">
-    <div layout-gt-sm="row">
-      <div flex-gt-sm>
+<div layout-gt-xs="row" layout-align="center start" tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+  <div flex-xs="90" flex-sm="80" flex-md="80" flex-lg="75" flex-gt-lg="60" tdMediaToggle="gt-xs" [mediaClasses]="['pad-top-lg']">
+    <div>
+      <div >
         <div class="pad-sm">
-          <h1 class="mat-display-1 push-none">Welcome to the Vantage Operations</h1>
-          <h3 class="mat-title push-none push-bottom-sm">Configure the Vantage engines, resources, network settings, deployments, and identity here.</h3>
+          <h1 class="mat-headline push-none" tdMediaToggle="gt-md" [mediaClasses]="['mat-display-1']">Welcome to the Vantage Operations</h1>
+          <h3 class="mat-subheading-2 push-none push-bottom-sm" tdMediaToggle="gt-md" [mediaClasses]="['mat-title']">Configure the Vantage engines, resources, network settings, deployments, and identity here.</h3>
           <mat-divider></mat-divider>
         </div>
-        <div layout-gt-sm="row">
-          <div flex-gt-sm>
+        <div layout-gt-xs="row">
+          <div flex-gt-xs>
             <mat-card>
               <mat-card-title>Setup Single-Sign-On</mat-card-title>
               <mat-card-content>
@@ -36,8 +36,8 @@
             </mat-card>
           </div>
         </div>
-        <div layout-gt-sm="row">
-          <div flex-gt-sm>
+        <div layout-gt-xs="row">
+          <div flex-gt-xs="50">
             <mat-card>
               <mat-card-title>Vantage Deployments</mat-card-title>
               <mat-card-subtitle>Easily deploy and manage software in your Vantage platform</mat-card-subtitle>
@@ -76,7 +76,7 @@
               </mat-card-actions>
             </mat-card>
           </div>
-          <div flex-gt-sm>
+          <div flex-gt-xs="50">
             <mat-card>
               <mat-card-title>Vantage APIs &amp; Services</mat-card-title>
               <mat-card-subtitle>Configure the underlying services for Vantage features</mat-card-subtitle>
@@ -116,9 +116,9 @@
             </mat-card>
           </div>
         </div>
-        <div layout-gt-sm="row">
-          <div flex-gt-sm="33">
-            <mat-card tdMediaToggle="gt-sm" [mediaClasses]="['push-top']">
+        <div layout-gt-xs="row">
+          <div flex-gt-xs="33">
+            <mat-card tdMediaToggle="gt-xs" [mediaClasses]="['push-top']">
               <mat-card-title>Engines</mat-card-title>
               <mat-card-subtitle>Manage your Vantage engines</mat-card-subtitle>
               <mat-divider></mat-divider>
@@ -140,8 +140,8 @@
               </mat-card-actions>
             </mat-card>
           </div>
-          <div flex-gt-sm="33">
-            <mat-card tdMediaToggle="gt-sm" [mediaClasses]="['push-top']">
+          <div flex-gt-xs="33">
+            <mat-card tdMediaToggle="gt-xs" [mediaClasses]="['push-top']">
               <mat-card-title>Resources</mat-card-title>
               <mat-card-subtitle>Adjust compute, memory and storage</mat-card-subtitle>
               <mat-divider></mat-divider>
@@ -163,8 +163,8 @@
               </mat-card-actions>
             </mat-card>
           </div>
-          <div flex-gt-sm="33">
-            <mat-card tdMediaToggle="gt-sm" [mediaClasses]="['push-top']">
+          <div flex-gt-xs="33">
+            <mat-card tdMediaToggle="gt-xs" [mediaClasses]="['push-top']">
               <mat-card-title>Network Settings</mat-card-title>
               <mat-card-subtitle>Configure platform network settings</mat-card-subtitle>
               <mat-divider></mat-divider>
@@ -187,10 +187,10 @@
             </mat-card>
           </div>
         </div>
-        <div layout-gt-sm="row">
-          <div flex-gt-sm>
-            <mat-card tdMediaToggle="gt-sm" class="tc-white" [mediaClasses]="['push-top']" style="background: #3F97C4 url('https://user-images.githubusercontent.com/867883/60043778-b98ee300-9675-11e9-9612-a23edbdb9612.png') top left / cover no-repeat" layout="column">
-              <mat-card-title>Build custom monitoring dashboards</mat-card-title>
+        <div layout-gt-xs="row">
+          <div flex-gt-xs>
+            <mat-card tdMediaToggle="gt-xs" class="tc-white" [mediaClasses]="['push-top']" style="background: #3F97C4 url('https://user-images.githubusercontent.com/867883/60043778-b98ee300-9675-11e9-9612-a23edbdb9612.png') top left / cover no-repeat" layout="column">
+              <mat-card-title class="text-lg" tdMediaToggle="gt-md" [mediaClasses]="['text-xl']">Build custom monitoring dashboards</mat-card-title>
               <mat-card-content flex [style.height.px]="80">
                 <p class="mat-body-2">Rapidly create custom dashboards with any dataset in Vantage with Vantage Monitoring</p>
               </mat-card-content>
@@ -201,9 +201,9 @@
               </div>
             </mat-card>
           </div>
-          <div flex-gt-sm>
-            <mat-card tdMediaToggle="gt-sm" class="tc-white" [mediaClasses]="['push-top']" style="background: #4CAFB1 url('https://user-images.githubusercontent.com/867883/60043777-b98ee300-9675-11e9-9876-b92d872eb069.png') top left / cover no-repeat" layout="column">
-              <mat-card-title>Query operational data in Vantage Editor</mat-card-title>
+          <div flex-gt-xs>
+            <mat-card tdMediaToggle="gt-xs" class="tc-white" [mediaClasses]="['push-top']" style="background: #4CAFB1 url('https://user-images.githubusercontent.com/867883/60043777-b98ee300-9675-11e9-9876-b92d872eb069.png') top left / cover no-repeat" layout="column">
+              <mat-card-title class="text-lg" tdMediaToggle="gt-md" [mediaClasses]="['text-xl']">Query operational data in Vantage Editor</mat-card-title>
               <mat-card-content flex [style.height.px]="80">
                 <p class="mat-body-2">Build on Vantage's powerful capabilities and APIs to create custom solutions</p>
               </mat-card-content>

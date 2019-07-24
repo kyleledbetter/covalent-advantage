@@ -19,6 +19,13 @@ import { BrowseComponent } from './browse/browse.component';
 import { BrowseOverviewComponent } from './browse/overview/overview.component';
 import { BrowseDashboards } from './browse/dashboards/dashboards.component';
 import { BrowseDetailDashboard } from './browse/dashboards/dashboard.component';
+import { BrowseUsecases } from './browse/usecases/usecases.component';
+import { BrowseDetailUsecase } from './browse/usecases/usecase.component';
+import { UsecaseIngestClickstream } from './browse/usecases/usecase/ingest-clickstream.component';
+import { UsecaseMovingAverage } from './browse/usecases/usecase/moving-average.component';
+import { UsecaseSentimentAnalysis } from './browse/usecases/usecase/sentiment-analysis.component';
+import { UsecaseUnstructuredData } from './browse/usecases/usecase/unstructured-data.component';
+import { UsecaseVantageSSO } from './browse/usecases/usecase/vantage-sso.component';
 import { DeveloperComponent } from './developer/developer.component';
 import { DeveloperOverviewComponent } from './developer/overview/overview.component';
 import { MonitoringComponent } from './monitoring/monitoring.component';
@@ -27,6 +34,8 @@ import { AlertsComponent } from './monitoring/alerts/alerts.component';
 import { AlertsCreateComponent } from './monitoring/alerts/create/create.component';
 import { DashboardsComponent } from './monitoring/dashboards/dashboards.component';
 import { DashboardsCreateComponent } from './monitoring/dashboards/create/create.component';
+import { DashboardsCreateOverviewComponent } from './monitoring/dashboards/create/overview/overview.component';
+import { DashboardEditorComponent, DashboardEditorDialogComponent } from './monitoring/dashboards/create/editor/editor.component';
 import { ReportsComponent } from './monitoring/reports/reports.component';
 import { ReportsCreateComponent } from './monitoring/reports/create/create.component';
 import { ReportsCreateOverviewComponent } from './monitoring/reports/create/overview/overview.component';
@@ -38,6 +47,8 @@ import { OperationsIdentityComponent } from './operations/identity/identity.comp
 import { OperationsIdentityProvidersComponent } from './operations/identity/identity-providers/identity-providers.component';
 import { DashboardComponent } from './monitoring/dashboards/dashboard/dashboard.component';
 import { ReportComponent } from './monitoring/reports/report/report.component';
+import { ProfileComponent } from './profile/profile.component';
+import { ProfileOverviewComponent } from './profile/overview/overview.component';
 
 import { MatButtonModule, MatListModule, MatCardModule, MatMenuModule, MatInputModule, MatButtonToggleModule, MatIconModule,
          MatProgressSpinnerModule, MatSelectModule, MatSlideToggleModule, MatDialogModule, MatSnackBarModule, MatToolbarModule,
@@ -46,13 +57,19 @@ import { MatButtonModule, MatListModule, MatCardModule, MatMenuModule, MatInputM
 
 import { CovalentCommonModule, CovalentLayoutModule, CovalentMediaModule, CovalentExpansionPanelModule,
          CovalentStepsModule, CovalentLoadingModule, CovalentDialogsModule, CovalentSearchModule, CovalentPagingModule,
-         CovalentNotificationsModule, CovalentMenuModule, CovalentDataTableModule, CovalentMessageModule } from '@covalent/core';
+  CovalentNotificationsModule, CovalentMenuModule, CovalentDataTableModule, CovalentMessageModule
+} from '@covalent/core';
 
-
+import { CovalentSidesheetModule } from '@covalent/core/sidesheet';
+import { CovalentHelpModule } from '@covalent/experimental/help';
+import { CovalentFlavoredMarkdownModule } from '@covalent/flavored-markdown';
+import { CovalentMarkdownModule } from '@covalent/markdown';
+import { CovalentHighlightModule } from '@covalent/highlight';
 import { CovalentBaseEchartsModule } from '@covalent/echarts/base';
 import { CovalentBarEchartsModule } from '@covalent/echarts/bar';
 import { CovalentLineEchartsModule } from '@covalent/echarts/line';
 import { CovalentTooltipEchartsModule } from '@covalent/echarts/tooltip';
+import { CovalentScatterEchartsModule } from '@covalent/echarts/scatter';
 
 @NgModule({
   declarations: [ 
@@ -69,8 +86,18 @@ import { CovalentTooltipEchartsModule } from '@covalent/echarts/tooltip';
     BrowseOverviewComponent,
     BrowseDashboards,
     BrowseDetailDashboard,
+    BrowseUsecases,
+    BrowseDetailUsecase,
+    UsecaseIngestClickstream,
+    UsecaseMovingAverage,
+    UsecaseSentimentAnalysis,
+    UsecaseUnstructuredData,
+    UsecaseVantageSSO,
     DashboardsComponent,
     DashboardsCreateComponent,
+    DashboardsCreateOverviewComponent,
+    DashboardEditorDialogComponent,
+    DashboardEditorComponent,
     DeveloperComponent,
     DeveloperOverviewComponent,
     MonitoringComponent,
@@ -85,7 +112,9 @@ import { CovalentTooltipEchartsModule } from '@covalent/echarts/tooltip';
     ReportsCreateOverviewComponent,
     ReportsCreateOperationalComponent,
     ReportEditorComponent,
-    ReportComponent ],
+    ReportComponent,
+    ProfileComponent,
+    ProfileOverviewComponent],
   imports:      [
     appRoutes,
     BrowserModule,
@@ -134,12 +163,21 @@ import { CovalentTooltipEchartsModule } from '@covalent/echarts/tooltip';
     CovalentMenuModule,
     CovalentDataTableModule,
     CovalentMessageModule,
+    /** Additional Covalent Modules **/
+    CovalentSidesheetModule,
+    CovalentHighlightModule,
+    CovalentMarkdownModule,
+    CovalentFlavoredMarkdownModule,
     /** Echarts **/
     CovalentBaseEchartsModule,
     CovalentBarEchartsModule,
     CovalentLineEchartsModule,
     CovalentTooltipEchartsModule,
+    CovalentScatterEchartsModule,
+    /** Experimental Covalent Modules **/
+    CovalentHelpModule,
     ],
-  bootstrap:    [ AppComponent ]
+  bootstrap: [AppComponent],
+  entryComponents: [DashboardEditorDialogComponent]
 })
 export class AppModule { }

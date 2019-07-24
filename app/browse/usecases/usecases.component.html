@@ -1,0 +1,226 @@
+<mat-toolbar>
+  <mat-toolbar-row>
+      <div flex layout="row" layout-align="start center">
+        <mat-icon class="push-left-sm push-right">store</mat-icon>
+        <span class="push-left-xs" layout="row" layout-align="start center">
+          <span [routerLink]="'/browse'" class="cursor-pointer">Browse</span> <mat-icon class="push-left push-right">chevron_right</mat-icon> <span>Use Cases</span>
+        </span>
+        <span flex></span>
+      </div>
+    </mat-toolbar-row>
+</mat-toolbar>
+<div layout-gt-sm="row" layout-align="center start" tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+  <div flex-xs="90" flex-sm="80" flex-md="80" flex-lg="75" flex-gt-lg="60" tdMediaToggle="gt-sm" [mediaClasses]="['pad-top-lg']">
+    <div layout-gt-sm="row">
+      <div flex-gt-sm="75" tdMediaToggle="gt-sm" [mediaClasses]="['push-right']">
+        <div class="pad-sm">
+          <h2 class="mat-headline">Featured Use Cases</h2>
+          <mat-divider></mat-divider>
+        </div>
+        <div layout-gt-sm="row">
+          <div flex-gt-sm="33">
+            <mat-card>
+              <mat-card-subtitle class="pad push-none">Use Cases</mat-card-subtitle>
+              <mat-card-title style="padding-top:0;">Moving Average</mat-card-title>
+              <div class="pad-left pad-right pad-bottom mat-body-1 text-md">
+                Technical analysis is a key finance methodology. Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition.
+              </div>
+              <mat-divider></mat-divider>
+              <mat-card-actions>
+                <div layout="row">
+                  <a mat-button color="primary" class="text-upper" [routerLink]="'moving-average'">
+                    <span>View</span>
+                  </a>
+                  <span flex></span>
+                  <a mat-icon-button matTooltip="Info" [routerLink]="'moving-average'">
+                    <mat-icon>info</mat-icon>
+                  </a>
+                  <button mat-icon-button matTooltip="Bookmark">
+                    <mat-icon>bookmark_outline</mat-icon>
+                  </button>
+                </div>
+              </mat-card-actions>
+            </mat-card>
+          </div>
+          <div flex-gt-sm="33">
+            <mat-card>
+              <mat-card-subtitle class="pad push-none">Use Cases</mat-card-subtitle>
+              <mat-card-title style="padding-top:0;">Sentiment Analysis</mat-card-title>
+              <div class="pad-left pad-right pad-bottom mat-body-1 text-md">
+                Every online retailer wants to deliver a five star experience. Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition.
+              </div>
+              <mat-divider></mat-divider>
+              <mat-card-actions>
+                <div layout="row">
+                  <a mat-button color="primary" class="text-upper" [routerLink]="'sentiment-analysis'">
+                    <span>View</span>
+                  </a>
+                  <span flex></span>
+                  <a mat-icon-button matTooltip="Info" [routerLink]="'sentiment-analysis'">
+                    <mat-icon>info</mat-icon>
+                  </a>
+                  <button mat-icon-button matTooltip="Bookmark">
+                    <mat-icon>bookmark_outline</mat-icon>
+                  </button>
+                </div>
+              </mat-card-actions>
+            </mat-card>
+          </div>
+          <div flex-gt-sm="33">
+            <mat-card>
+              <mat-card-subtitle class="pad push-none">Use Cases</mat-card-subtitle>
+              <mat-card-title style="padding-top:0;">Unstructured Data</mat-card-title>
+              <div class="pad-left pad-right pad-bottom mat-body-1 text-md">
+                Sometimes you may have situations where you need to use unstructured data for approaches to corporate strategy foster collaborative thinking to further the overall value.
+              </div>
+              <mat-divider></mat-divider>
+              <mat-card-actions>
+                <div layout="row">
+                  <a mat-button color="primary" class="text-upper" [routerLink]="'unstructured-data'">
+                    <span>View</span>
+                  </a>
+                  <span flex></span>
+                  <a mat-icon-button matTooltip="Info" [routerLink]="'unstructured-data'">
+                    <mat-icon>info</mat-icon>
+                  </a>
+                  <button mat-icon-button matTooltip="Bookmark">
+                    <mat-icon>bookmark_outline</mat-icon>
+                  </button>
+                </div>
+              </mat-card-actions>
+            </mat-card>
+          </div>
+        </div>
+        <div layout-gt-sm="row">
+          <div flex-gt-sm>
+            <mat-card>
+              <div class="pad">search</div>
+              <mat-divider></mat-divider>
+              <mat-nav-list>
+                <ng-template let-item let-last="last" ngFor [ngForOf]="usecases">
+                  <a mat-list-item [routerLink]="[item.route]">
+                    <mat-icon matListAvatar>dvr</mat-icon>
+                    <h4 mat-line><span class="text-wrap">{{item.title}}</span></h4>
+                    <p mat-line>{{item.description}}</p>
+                    <span>
+                      <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Menu">
+                        <mat-icon>more_vert</mat-icon>
+                      </button>
+                      <mat-menu #menu="matMenu" xPosition="before">
+                        <button mat-menu-item>
+                          <mat-icon>aspect_ratio</mat-icon>
+                          <span>Maximize</span>
+                        </button>
+                        <button mat-menu-item>
+                          <mat-icon>share</mat-icon>
+                          <span>Share</span>
+                        </button>
+                        <button mat-menu-item>
+                          <mat-icon>remove_circle_outline</mat-icon>
+                          <span>Remove pin</span>
+                        </button>
+                      </mat-menu>
+                    </span>
+                  </a>
+                  <mat-divider *ngIf="!last"></mat-divider>
+                </ng-template>
+              </mat-nav-list>
+              <mat-divider></mat-divider>
+              <mat-card-actions>
+                <a mat-button color="primary" class="text-upper">
+                  <span>View More</span>
+                </a>
+              </mat-card-actions>
+            </mat-card>
+          </div>
+        </div>
+      </div>
+      <div flex-gt-sm="25">
+        <div class="pad-sm">
+          <h2 class="mat-headline">Filter</h2>
+          <mat-divider></mat-divider>
+          <div class="pad-sm">
+            <mat-slide-toggle labelPosition="after">Bookmarked</mat-slide-toggle>
+          </div>
+          <div class="pad-sm">
+            <mat-slide-toggle labelPosition="after">Shared with me</mat-slide-toggle>
+          </div>
+          <div class="pad-sm">
+            <mat-slide-toggle labelPosition="after">My content</mat-slide-toggle>
+          </div>
+        </div>
+        <div class="pad-sm">
+          <div layout="row">
+            <h2 class="mat-headline" flex>Type</h2>
+            <a mat-button color="accent" [routerLink]="'/browse'">CLEAR</a>
+          </div>
+          <mat-divider></mat-divider>
+          <div class="pad-sm">
+            <mat-radio-button>Application</mat-radio-button>
+          </div>
+          <div class="pad-sm">
+            <mat-radio-button [routerLink]="'../dashboards'">Dashboards</mat-radio-button>
+          </div>
+          <div class="pad-sm">
+            <mat-radio-button>Datasets</mat-radio-button>
+          </div>
+          <div class="pad-sm">
+            <mat-radio-button>Notebooks</mat-radio-button>
+          </div>
+          <div class="pad-sm">
+            <mat-radio-button>Reports</mat-radio-button>
+          </div>
+          <div class="pad-sm">
+            <mat-radio-button>Scripts</mat-radio-button>
+          </div>
+          <div class="pad-sm">
+            <mat-radio-button checked>Use Cases</mat-radio-button>
+          </div>
+        </div>
+        <div class="pad-sm">
+          <h2 class="mat-headline">Tags</h2>
+          <mat-divider></mat-divider>
+          <div class="pad-sm">
+            <mat-checkbox>Analytics</mat-checkbox>
+          </div>
+          <div class="pad-sm">
+            <mat-checkbox>Compute</mat-checkbox>
+          </div>
+          <div class="pad-sm">
+            <mat-checkbox>CRM</mat-checkbox>
+          </div>
+          <div class="pad-sm">
+            <mat-checkbox>Developer</mat-checkbox>
+          </div>
+          <div class="pad-sm">
+            <mat-checkbox>Email</mat-checkbox>
+          </div>
+          <div class="pad-sm">
+            <mat-checkbox>Machine Learning</mat-checkbox>
+          </div>
+          <div class="pad-sm">
+            <mat-checkbox>Mobile</mat-checkbox>
+          </div>
+          <div class="pad-sm">
+            <mat-checkbox>Monitoring</mat-checkbox>
+          </div>
+          <div class="pad-sm">
+            <mat-checkbox>Networking</mat-checkbox>
+          </div>
+          <div class="pad-sm">
+            <mat-checkbox>Operations</mat-checkbox>
+          </div>
+          <div class="pad-sm">
+            <mat-checkbox>Security</mat-checkbox>
+          </div>
+          <div class="pad-sm">
+            <mat-checkbox>Social</mat-checkbox>
+          </div>
+          <div class="pad-sm">
+            <mat-checkbox>Storage</mat-checkbox>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

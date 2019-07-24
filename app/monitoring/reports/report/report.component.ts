@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ITdDataTableColumn } from '@covalent/core/data-table';
+import { ChartThemeSelectorService } from '../../../utilities/theme';
+import { getThemes } from '@covalent/echarts/base';
 
 @Component({
   selector: 'covalent-report',
@@ -17,8 +19,16 @@ export class ReportComponent implements OnInit {
   // Chart data
   chart1: any;
   tableData: any[];
+  // Theme
+  themes: string[] = getThemes();
+  selectedTheme: string = this.themes[0];
 
-  constructor(private _router: Router) {
+  constructor(
+    private _router: Router,
+    private _chartThemeSelectorService: ChartThemeSelectorService,
+    public themeSelector: ChartThemeSelectorService,
+  ) {
+    this._chartThemeSelectorService.select(this.selectedTheme)
   }
 
   ngOnInit(): void {
@@ -27,150 +37,153 @@ export class ReportComponent implements OnInit {
       tooltip: {
         trigger: 'axis',
         axisPointer: {
-            type: 'cross',
-            crossStyle: {
-                color: '#999'
-            }
+          type: 'cross',
+          crossStyle: {
+            color: '#999'
+          }
         }
-    },
-    grid: {
-      borderColor: 'transparent',
-      show: false,
-      left: '10%',
-      right: '10%',
-      bottom: '15%',
-      top: '15%',
-    },
-    toolbox: {
+      },
+      grid: {
+        borderColor: 'transparent',
+        show: false,
+        left: '10%',
+        right: '10%',
+        bottom: '15%',
+        top: '15%',
+      },
+      toolbox: {
         feature: {
-            dataView: {show: true, readOnly: false},
-            magicType: {show: true, type: ['line', 'bar']},
-            restore: {show: true},
-            saveAsImage: {show: true}
+          dataView: { show: true, readOnly: false },
+          magicType: { show: true, type: ['line', 'bar'] },
+          restore: { show: true },
+          saveAsImage: { show: true }
         },
         show: false
-    },
-    legend: {
-        data:['蒸发量','降水量','平均温度'],
+      },
+      legend: {
+        data: ['蒸发量', '降水量', '平均温度'],
         show: false,
-    },
-    xAxis: [
+      },
+      xAxis: [
         {
-            type: 'category',
-            axisLine: {
-              lineStyle: {
-                color: '#aaa',
-              },
+          type: 'category',
+          axisLine: {
+            lineStyle: {
+              color: '#aaa',
             },
-            data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-            axisPointer: {
-                type: 'shadow'
-            }
+          },
+          data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+          axisPointer: {
+            type: 'shadow'
+          },
+          splitLine: {
+            show: false
+          }
         }
-    ],
-    yAxis: [
+      ],
+      yAxis: [
         {
-            type: 'value',
-            axisLine: {
-              lineStyle: {
-                color: '#aaa',
-              },
+          type: 'value',
+          axisLine: {
+            lineStyle: {
+              color: '#aaa',
             },
-            name: 'Actual',
-            min: 0,
-            max: 100,
-            interval: 50,
-            axisLabel: {
-                formatter: '{value}%'
-            },
-            splitLine: {
-                show: false
-            }
+          },
+          name: 'Actual',
+          min: 0,
+          max: 100,
+          interval: 50,
+          axisLabel: {
+            formatter: '{value}%'
+          },
+          splitLine: {
+            show: false
+          }
         },
         {
-            type: 'value',
-            axisLine: {
-              lineStyle: {
-                color: '#aaa',
-              },
+          type: 'value',
+          axisLine: {
+            lineStyle: {
+              color: '#aaa',
             },
-            name: 'Target',
-            min: 0,
-            max: 100,
-            interval: 5,
-            axisLabel: {
-                formatter: '{value}%'
-            },
-            splitLine: {
-                lineStyle: {
-                    color: 'rgba(0,0,0,0.03)'
-                }
+          },
+          name: 'Target',
+          min: 0,
+          max: 100,
+          interval: 5,
+          axisLabel: {
+            formatter: '{value}%'
+          },
+          splitLine: {
+            lineStyle: {
+              color: 'rgba(0,0,0,0.03)'
             }
+          }
         }
-    ],
-    series: [
+      ],
+      series: [
         {
-            name:'Systems on GCA',
-            type:'bar',
-            data: [
-                {
-                    value: 15.3,
-                    itemStyle: {color: '#3F97C4'},
-                },
-                {
-                    value: 16.5,
-                    itemStyle: {color: '#3F97C4'},
-                },
-                {
-                    value: 25,
-                    itemStyle: {color: '#3F97C4'},
-                },
-                {
-                    value: 35.6,
-                    itemStyle: {color: '#3F97C4'},
-                },
-                {
-                    value: 37.8,
-                    itemStyle: {color: '#F4774D'},
-                },
-                {
-                    value: 48,
-                    itemStyle: {color: 'rgba(0,0,0,0.1)'},
-                },
-                {
-                    value: 56,
-                    itemStyle: {color: 'rgba(0,0,0,0.1)'},
-                },
-                {
-                    value: 64,
-                    itemStyle: {color: 'rgba(0,0,0,0.1)'},
-                },
-                {
-                    value: 72,
-                    itemStyle: {color: 'rgba(0,0,0,0.1)'},
-                },
-                {
-                    value: 80,
-                    itemStyle: {color: 'rgba(0,0,0,0.1)'},
-                },
-                {
-                    value: 96,
-                    itemStyle: {color: 'rgba(0,0,0,0.1)'},
-                },
-                {
-                    value: 100,
-                    itemStyle: {color: 'rgba(0,0,0,0.1)'},
-                }
-            ],
+          name: 'Systems on GCA',
+          type: 'bar',
+          data: [
+            {
+              value: 15.3,
+              itemStyle: { color: '#3F97C4' },
+            },
+            {
+              value: 16.5,
+              itemStyle: { color: '#3F97C4' },
+            },
+            {
+              value: 25,
+              itemStyle: { color: '#3F97C4' },
+            },
+            {
+              value: 35.6,
+              itemStyle: { color: '#3F97C4' },
+            },
+            {
+              value: 37.8,
+              itemStyle: { color: '#F4774D' },
+            },
+            {
+              value: 48,
+              itemStyle: { color: 'rgba(0,0,0,0.1)' },
+            },
+            {
+              value: 56,
+              itemStyle: { color: 'rgba(0,0,0,0.1)' },
+            },
+            {
+              value: 64,
+              itemStyle: { color: 'rgba(0,0,0,0.1)' },
+            },
+            {
+              value: 72,
+              itemStyle: { color: 'rgba(0,0,0,0.1)' },
+            },
+            {
+              value: 80,
+              itemStyle: { color: 'rgba(0,0,0,0.1)' },
+            },
+            {
+              value: 96,
+              itemStyle: { color: 'rgba(0,0,0,0.1)' },
+            },
+            {
+              value: 100,
+              itemStyle: { color: 'rgba(0,0,0,0.1)' },
+            }
+          ],
         },
         {
-            name:'Target',
-            type:'line',
-            itemStyle: {color: '#F6C863'},
-            yAxisIndex: 1,
-            data: [8, 16, 24, 32, 40, 48, 56, 64, 72, 80, 96, 100]
+          name: 'Target',
+          type: 'line',
+          itemStyle: { color: '#F6C863' },
+          yAxisIndex: 1,
+          data: [8, 16, 24, 32, 40, 48, 56, 64, 72, 80, 96, 100]
         }
-    ]
+      ]
     };
     //table
     this.tableData = 
@@ -260,5 +273,9 @@ export class ReportComponent implements OnInit {
         "last_name": "De Marchi"
       }
     ];
+  }
+
+  selectChartTheme(theme: string): void {
+    this._chartThemeSelectorService.select(theme);
   }
 }

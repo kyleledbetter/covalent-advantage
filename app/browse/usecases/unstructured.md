@@ -1,0 +1,515 @@
+# Using Unstructured Data from ServiceNow in SQL Engine
+
+Sometimes you may have situations where you need to 'unstructure' your data to simplify your data streaming process.  In the following scenario, we leverage our near-real-time stream of unstructured ServiceNow data coming into our Teradata SQL Engine.  We then re-structure the data into rows and columns to leverage the in-system performance mechanisms and scalability of Teradata.
+> Note: The data in this scenario is 'tactical', and makes more sense in our situation to have this data in the SQL Engine as opposed to a 'data lake'
+
+# About the Author
+
+Jeremy Browne is a software application developer/engineer/architect at Teradata who has been building applications back-ended by the Teradata SQL Engine / Database since 2006.  He started using Teradata on V2R6 and earned his Teradata Master certification.  He still actively develops using TD16.20.
+
+# How to use this Dataset/Document
+
+#### If you want to 'dive right in' and experience the Teradata features hands-on, make sure you are logged into your Developer Workspace, (https://workspace.teradata.com) and download the `servicenow_json_experience.sql` file within this Git project.  Open `Teradata Studio` available from your Workspace desktop, and navigate to `File` > `Open File...`, select `Downloads` and then open the downloaded .sql file. Use the pre-configured `Shared Vantage System` profile for immediate access.  
+
+> Note: The Shared Vantage System profile is pre-configured with your Quicklook ID. When prompted for a password, enter your LAN/Network password.
+
+> If you want to learn more about the scenario, queries and explore the data set, the EXPLORE section of this document will allow you to experience features such as MERGE, EXISTS, JSON_KEYS, INSERT-SELECT and many other Teradata SQL Engine capabilities.  Copy & paste `SQL` code sections into your query editor to observe the behavior of various functions
+
+The **EXPERIENCE** section can be completed without any `PERM` space in your local database.  
+When proceeding to the **EXPLORE** section, please make sure you have expanded your personal database to have at least 150MB of available space.
+> Your currently available database space can be reviewed from your landing page
+
+# Background
+
+Within Teradata we use ServiceNow for our IT Service Management.  This includes configurations of assets, ticket information, users and organizations, etc. 
+Reporting in ServiceNow is satisfactory for many operations, but our goal was to centralize and leverage this information alongside our other business data. 
+ETL of data from a SaaS solution comes with unique challenges, and as part of this paradigm shift, we wanted to break from the 'traditional' periodic batch ETL method, and stream data in near-real-time.  
+
+For those not familiar with ServiceNow, application admins can (and frequently do) create, modify and extend table schemas (eg. incident, change_request, sys_user).  Which in a traditional ETL process would require a great deal of coordination to safely make changes, which includes defining/re-defining table schemas to load and operationalize the data... Let's not forget about the large number of independent (and frequently executed) ETL jobs would need to run for the dozens of affected tables with each change.  
+
+By going schema-free, the above complications can be easily addressed, but a number of additional considerations/challenges still remained, but will not be covered in detail
+
+|  Challenge  |  Solution  |
+|---|---|
+|Schema/Data Model|By converting the data-model in ServiceNow to JSON, it can be easily relayed and re-constructed on the receiving end through VIEWs, MERGE and/or INSERT-SELECT|
+|Connectivity/Transmission of Data|The connectivity/transmission of data is relayed through an on-premise ServiceNow "mid server". The midserver is a java app, so it could technically write directly to the database using JDBC, but it would dramatically slow the queue throughput. Making an HTTP POST to Listener would scale better|
+|Frequency/Volume of Ingest|Transmission of records is triggered by the creation/update/deletion of a record through business rules, and only the CDC (change data capture) of that record is sent|
+|Reliability/Durability of Delivery|ServiceNow logs the success/failure of mid-server activities through their "ECC Queue". If a record fails to be transmitted from ServiceNow can be re-tried. Once inside the network, Listener handles the delivery to the staging table within our SQL Engine|
+
+Here is where the unstructuring of data enables a business to move faster through rapid and availability of data...  
+
+# Our Unstructured Data
+
+Within ServiceNow we developed a set of business rules which take the `INSERT` action for a record (eg. a custom table "u_access_request") and converts it into a JSON object with all (currently) non-NULL valued columns.  
+
+## Example Baseline JSON Payload
+``` json
+{
+  "sys_id": "7c9b3713db0fe300fd79a9954b961967",
+  "sys_class_name": "u_access_request",
+  "friendly_ident": "ENG-ACCESS007376",
+  "txn_time": "2019-01-23 20:10:10",
+  "txn_by": "fm186003",
+  "impact_attrs": [{
+	    "made_sla": "true"
+	  }, {
+	    "u_is_resolved": "N"
+	  }, {
+	    "upon_reject": "cancel"
+	  }, {
+	    "number": "ENG-ACCESS007376"
+	  }, {
+	    "u_requester": "5e1468c7dbc3630039c1e3364896198a"
+	  }, {
+	    "opened_by": "bb2a0a18c1e4a000d0a72f968a87dab4"
+	  }, {
+	    "sys_created_on": "2019-01-22 18:23:55"
+	  }, {
+	    "sys_domain": "global"
+	  }, {
+	    "sys_created_by": "jb185097"
+	  }, {
+	    "knowledge": "false"
+	  }, {
+	    "order": "0"
+	  }, {
+	    "impact": "2"
+	  }, {
+	    "active": "true"
+	  }, {
+	    "u_catalog_view_only": "N"
+	  }, {
+	    "priority": "3"
+	  }, {
+	    "u_program_name": "Please select"
+	  }, {
+	    "u_service_name": "0713c3ab1382030002f756022244b06e"
+	  }, {
+	    "opened_at": "2019-01-22 18:23:55"
+	  }, {
+	    "approval_set": "2019-01-22 18:24:05"
+	  }, {
+	    "u_tech_last_cust_update": "2019-01-23 20:10:10"
+	  }, {
+	    "short_description": "Metcalf, Colin (cm250082) needs access to: Italy"
+	  }, {
+	    "assignment_group": "287ee6fea9fe198100ada7950d0b1b73"
+	  }, {
+	    "u_task_weight": "1"
+	  }, {
+	    "description": "Colin will be working on Jeremy Browne's team and will need access as part of his primary job function\n\n"
+	  }, {
+	    "sys_class_name": "u_access_request"
+	  }, {
+	    "contact_type": "self-service"
+	  }, {
+	    "urgency": "2"
+	  }, {
+	    "reassignment_count": "1"
+	  }, {
+	    "assigned_to": "732a86d8c1e4a000d0a72f968a87da0b"
+	  }, {
+	    "hierarchical_variables": "variable_pool"
+	  }, {
+	    "u_incorrect_class": "false"
+	  }, {
+	    "approval": "approved"
+	  }, {
+	    "u_category": "new"
+	  }, {
+	    "escalation": "0"
+	  }, {
+	    "upon_approval": "proceed"
+	  }, {
+	    "u_assignment_group_changes": "false"
+	  }, {
+	    "u_reopened_count": "0"
+	  }, {
+	    "u_service_account": "false"
+	  }, {
+	    "u_username": "cm250082"
+	  }]
+}
+```
+
+As JSON object sizes (string length) can vary significantly, re-transmitting an entire JSON object when a minor change occurs will quickly consume perm space... 
+Our approach was to include a business rule on the `UPDATE` event, and only transmit the impacted attributes ("impact_attrs"), resulting in a smaller payload.  
+
+## Example CDC JSON Payload
+``` json
+{
+  "sys_id": "7c9b3713db0fe300fd79a9954b961967",
+  "sys_class_name": "u_access_request",
+  "friendly_ident": "ENG-ACCESS007376",
+  "txn_time": "2019-01-28 18:36:47",
+  "txn_by": "fm186003",
+  "impact_attrs": [{
+    "u_is_resolved": "Y"
+  }, {
+    "closed_at": "2019-01-28 18:36:48"
+  }, {
+    "active": "false"
+  }, {
+    "u_resolved_at": "2019-01-28 18:36:47"
+  }, {
+    "u_tech_last_cust_update": "2019-01-28 18:36:47"
+  }, {
+    "closed_by": "732a86d8c1e4a000d0a72f968a87da0b"
+  }]
+}
+```
+
+> Note: Records are additive, to support an audit trail (temporal history) of changes.  
+
+> Note: Within Teradata, JSON records cannot have attributes selectively updated.  
+
+For ease of usability, we did repeat some top-level information about each transaction, such as the "sys_id" (guid of each record), "sys_class_name" (record type), "friendly_ident" (the user-recognizable name) as well as transaction executor and time.  This would allow for improved clarity when directly querying our JSON data.
+
+# EXPERIENCE
+
+**For these steps, open your preferred SQL editor (TD Studio / SQL Assistant / BTEQ / etc.) and connect to your workspace *Vantage* SQL Engine**
+> We will be using the sample database to understand the JSON queries and data
+
+## Review the ServiceNow Data
+``` sql
+LOCK ROW FOR ACCESS
+SELECT data.JSONExtractValue('$.friendly_ident') AS friendly_name -- Top-Level Information (friendly name) of each record
+	, data.JSONExtractValue('$.sys_class_name') AS class_name -- Top-Level Information (record/table type) of each record
+	, CAST(src.data AS VARCHAR(3000)) AS json_string -- Return the entire JSON string
+FROM ServiceNow_JSON.listener_servicenow_stage AS src
+WHERE data.JSONExtractValue('$.sys_class_name') = 'sys_user' -- Return all user records
+	AND data.JSONExtractValue('$.friendly_ident') = 'jb185097' -- For the username with this quicklook id
+	AND time_stamp BETWEEN '2019-01-01 00:00:00.000000' AND '2019-04-01 00:00:00.000000'
+```
+
+**The query should return 3 records with JSON objects containing one-to-many attributes.**  
+As mentioned above, these records only contain the changed data.  By applying creative SQL we could use the JSON as-is, but it's not ideal.
+
+`"impact_attrs":[{"calendar_integration":"0"},{"building":"5580a23f3dc42000d0a79202b5a97fe5"},{"notification":"2"},{"enable_multifactor_authn":"false"},{"sys_created_on":"2012-02-28 17:37:34"},{"sys_domain":"global"},{"u_object_guid":"DCRU10YZpEiN0JwwZs9OcQ=="},{"vip":"false"},{"sys_created_by":"admin"},{"zip":"92127"},{"u_reporting_manager":"8d96273a873a380041c06d5709434df4"},{"active":"true"},{"phone":"(858) 485-4921"},{"name":"Browne, Jeremy"},{"employee_number":"30300091014"},{"u_password_last_set":"2018-12-14 23:59:32"},{"password_needs_reset":"false"},{"city":"SAN DIEGO"},{"user_name":"jb185097"},{"failed_attempts":"0"},{"edu_status":"faculty"},{"title":"Engineering Manager"},{"sys_class_name":"sys_user"},{"u_employment_type":"Employee"},{"u_fml_org":"953643042"},{"ldap_server":"f6d70304132a030002f756022244b016"},{"internal_integration_user":"false"},{"street":"17095 VIA DEL CAMPO"},{"u_office":"A-2-L18"},{"company":"a42a0218c1e4a000d0a72f968a87da57"},{"department":"bf65f032283582401fd5dbf5d9b13b6d"},{"u_fmli_code":"CA1238"},{"first_name":"Jeremy"},{"email":"Jeremy.Browne@Teradata.com"},{"u_x500_department":"CG NDW R&D ENG ENG SUP&REAL"},{"manager":"8d96273a873a380041c06d5709434df4"},{"u_country_location":"United States"},{"locked_out":"false"},{"last_name":"Browne"},{"schedule":"2c3fc980bc9e200041c0678990f3f165"},{"u_object_sid":"AQUAAAAAAAUVAAAAxiU8UyTAdmrbIz49DXgAAA=="},{"location":"a73ece9cc1e4a000d0a72f968a87da7e"},{"u_organization":"76e974efc1792800d0a72f968a87dabc"},{"rebase":true}]`
+
+`"impact_attrs":[{"u_tdjobfunction":"ENG"}]`
+
+`"impact_attrs":[{"u_password_last_set":"2019-03-11 22:17:00"}]`
+
+**To understand why the data in this state isn't ideal, run the following variation of the above SQL**
+
+## Highlighting Challenges with Additive CDC
+``` sql
+LOCK ROW FOR ACCESS
+SELECT data.JSONExtractValue('$.friendly_ident') -- Top-Level Information (friendly name) of each record
+	, data.JSONExtractValue('$.sys_class_name') -- Top-Level Information (record/table type) of each record
+	, data.JSONExtractValue('$..u_password_last_set') -- Nested attribute
+	, data.JSONExtractValue('$..u_tdjobfunction') -- Nested attribute
+FROM ServiceNow_JSON.listener_servicenow_stage AS src
+WHERE data.JSONExtractValue('$.sys_class_name') = 'sys_user' -- Return all user records
+	AND data.JSONExtractValue('$.friendly_ident') = 'jb185097' -- For the username with this quicklook id
+	AND time_stamp BETWEEN '2019-01-01 00:00:00.000000' AND '2019-04-01 00:00:00.000000'
+```
+
+|  Friendly Name  |  Class Name  |  Password Last Set  |  Job Function  |
+|---|---|---|---|
+|  jb185097  | 	sys_user  |  2018-12-14 23:59:32  |  NULL  |
+|  jb185097  | 	sys_user  |  NULL  |  ENG  |
+|  jb185097  | 	sys_user  |  2019-03-11 22:17:00  |  NULL  |
+
+**If we wanted to query this data for the last time the user changed their password **and** their job function, we have a big problem!  A single record (row) doesn't contain the latest state of both attributes.**
+
+> Note: With this understanding, JSON records for tracking 'events' is acceptable (eg. P1's submitted or account lockout events), but when you want to fold the data into a 'stateful' format, you should shred the data.
+
+For example, we can generate a report of 'password change' events directly from the JSON data with the following SQL. The PPI on time_stamp helps (in fact, with PPI you could effectively do this to track recent events without risk of performance degradation), but again, we wouldn't be looking at 'stateful' data... and if your objective is to simply store masses of JSON event logs you should use a different (*Vantage-connected*) solution such as an object store / data lake.  
+
+``` sql
+LOCK ROW FOR ACCESS 
+SELECT data.JSONExtractValue('$.friendly_ident')
+	, data.JSONExtractValue('$..u_password_last_set')
+FROM ServiceNow_JSON.listener_servicenow_stage as src
+WHERE time_stamp BETWEEN '2019-01-01 00:00:00.000000' AND '2019-04-01 00:00:00.000000'
+	AND data.JSONExtractValue('$..u_password_last_set') IS NOT NULL
+```
+
+After building more complex conditions and extending the span of data,  
+What originally looks like this:
+```
+The size of Spool 1 is estimated with no confidence to be 44,242 rows
+ (121,886,710 bytes).  The estimated time for this step is *0.08* seconds.
+```
+Quickly becomes this:
+```
+The size of Spool 1 is estimated with no confidence to be 287,628 rows
+ (792,415,140 bytes).  The estimated time for this step is *4.46* seconds
+```
+
+To solve this, we must shred and normalize the data.
+
+# EXPLORE
+
+**For these steps, you will continue to use your preferred SQL editor and the same *Vantage* SQL Engine as the EXPERIENCE step, but MUST use your personal database account (see EXPLORE page from your Developer Workspace Landing Page)**
+> In these next steps, we will create a series of tables; shred, normalize and query the resulting data into your personal database space
+
+## Re-Create our Data Model
+
+The entire database schema (For *DOZENS* of tables in ServiceNow) *can* be implemented using only 3 tables (including the staging table)...
+> Note: Just because you *can* implement this with few tables doesn't mean it's the right implementation for your customer/business. Evaluate the pros and cons first.
+
+**Within your personal database, execute the following statements to create copies of the tables.**
+
+## Object Table
+``` sql
+CREATE SET TABLE My_ServiceNow_Objects ,FALLBACK ,
+	NO BEFORE JOURNAL,
+	NO AFTER JOURNAL,
+	CHECKSUM = DEFAULT,
+	DEFAULT MERGEBLOCKRATIO
+	(
+		Object_ID INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY
+			(START WITH 1 
+			INCREMENT BY 1 
+			MINVALUE 1 
+			MAXVALUE 2147483647 
+			NO CYCLE),
+		Object_Sys_ID CHAR(32) CHARACTER SET LATIN NOT CASESPECIFIC,
+		Object_Friendly_Ident VARCHAR(128) CHARACTER SET LATIN NOT CASESPECIFIC,
+		Object_Class VARCHAR(32) CHARACTER SET LATIN NOT CASESPECIFIC,
+		Object_Created TIMESTAMP(0),
+		Object_Active CHAR(1) CHARACTER SET LATIN NOT CASESPECIFIC DEFAULT 'Y' COMPRESS ('N','Y'),
+		Object_Deleted CHAR(1) CHARACTER SET LATIN NOT CASESPECIFIC DEFAULT 'N' COMPRESS ('N','Y'))
+UNIQUE PRIMARY INDEX ( Object_ID )
+UNIQUE INDEX Object_Sys_ID ( Object_Sys_ID )
+INDEX Object_Class ( Object_Class )
+INDEX Object_Deleted ( Object_Deleted );
+```
+
+## Object Metadata Table
+``` sql
+CREATE SET TABLE My_ServiceNow_Object_Metadata ,FALLBACK ,
+	NO BEFORE JOURNAL,
+	NO AFTER JOURNAL,
+	CHECKSUM = DEFAULT,
+	DEFAULT MERGEBLOCKRATIO
+	(
+		Object_ID INTEGER,
+		Metadata_Name VARCHAR(32) CHARACTER SET LATIN NOT CASESPECIFIC,
+		Metadata_Value VARCHAR(256) CHARACTER SET LATIN NOT CASESPECIFIC,
+		Effective_By CHAR(32) CHARACTER SET LATIN NOT CASESPECIFIC,
+		Effective_TS TIMESTAMP(0))
+PRIMARY INDEX ( Object_ID )
+INDEX Metadata_Name ( Metadata_Name )
+INDEX Effective_By ( Effective_By );
+```
+
+**Before we transform our JSON data, run the following query and take note of the number of unique objects**
+
+``` sql
+LOCK ServiceNow_JSON.listener_servicenow_stage FOR ACCESS
+
+/* Placeholder for insert statement */
+
+SELECT DISTINCT src.data.sys_id as sys_id
+	, src.data.friendly_ident as friendly_ident
+	, src.data.sys_class_name as sys_class_name
+FROM ServiceNow_JSON.listener_servicenow_stage as src
+WHERE NOT EXISTS (
+	SELECT DISTINCT Object_Sys_ID 
+	FROM My_ServiceNow_Objects
+	WHERE src.data.sys_id = Object_Sys_ID
+)
+AND src.time_stamp BETWEEN '2019-01-01 00:00:00.000000' AND CURRENT_TIMESTAMP
+QUALIFY ROW_NUMBER() OVER ( PARTITION BY src.data.sys_id ORDER BY CAST(src.data.txn_time AS TIMESTAMP(0)) DESC ) = 1;
+```
+> Note: The Qualify is necessary because we are looking at records over an extended period of time and must only have one row per "sys_id"  
+> While a friendly ident rarely changes, record types (class) can sometimes change (eg. an incident being re-classified as a change request)
+
+The query should return around 180,000 rows (unique object records), which may be users, departments, tickets, locations, etc.
+> Note: The data set was designed to contain a little under 250,000 rows of ServiceNow transactions, translating to 70,000 CDC updates
+
+Having reviewed the contents of the data, replace the prior SQL's placeholder with the following and re-execute
+
+
+``` sql
+	LOCK My_ServiceNow_Objects FOR WRITE 
+	INSERT INTO My_ServiceNow_Objects
+	(Object_Sys_ID, Object_Friendly_Ident, Object_Class)
+```
+
+**We have now defined and loaded the unique objects, and will transform their attributes in the following section**
+
+## Merging-in 'Dynamic' Attribute Data from our Nested JSON into a Normalized Structure
+
+In the earlier section, we created database records based on **known** attributes...  but what happens when the JSON payload has **NO** consistency (aside from the obvious `"impact_attrs": [{}]`)?
+
+> Note: Many factors can affect JSON shredding.  Such as case-sensitivity, order of attributes, presence-of or lack-of attributes
+
+Thankfully, there are ways to account for an unstructured JSON document and `MERGE` it into a known format.
+
+> Note: The following `MERGE` query could also be written as an insert-select statement, but I chose to use a merge for demonstration purposes
+
+The below SQL will take the JSON data and 'pivot' the attributes (keys) into individual rows using a cross-join / product-join technique, which is joined to the Object records (normalized ID).  If the combination of object ID, key name and transaction time don't already exist in the metadata table, it will be added.
+
+> Note: This operation is pretty cpu-intensive, so we will skip the SELECT beforehand and execute the MERGE directly
+
+``` sql
+LOCK TABLE ServiceNow_JSON.listener_servicenow_stage FOR ACCESS 
+LOCK TABLE My_ServiceNow_Objects FOR ACCESS 
+LOCK TABLE My_ServiceNow_Object_Metadata FOR WRITE
+
+MERGE INTO My_ServiceNow_Object_Metadata AS targetTbl
+USING ( 
+
+	SELECT ob.Object_ID AS obj_id
+		, JSONKeys AS keyName -- Clean up the key name to remove array name and indices (eg. [0].priority, [1].priority, [2].priority => priority)
+
+		, src.data.JSONExtractLargeValue('$.[*].'|| JSONKeys) AS keyVal -- Strings >4k characters must use JSONExtractLargeValue
+		, src.data.txn_by as txn_by
+		, src.data.txn_time as txn_time
+
+	FROM ServiceNow_JSON.listener_servicenow_stage AS src
+	INNER JOIN My_ServiceNow_Objects AS ob ON src.DATA.sys_id = ob.Object_Sys_ID -- Map the JSON to the Object record (to use the ID value in metadata table)
+	LEFT JOIN (
+	    SELECT DISTINCT
+		CASE WHEN POSITION( '.' IN CAST(JSONKeys AS VARCHAR(128)) ) > 0 THEN 
+			SUBSTR( CAST(JSONKeys AS VARCHAR(128)) , POSITION( '.' IN CAST(JSONKeys AS VARCHAR(128)) )+1 )
+		WHEN CAST(JSONKeys AS VARCHAR(128)) LIKE '%]' THEN
+			NULL
+		ELSE
+			CAST(JSONKeys AS VARCHAR(128))
+		END AS JSONKeys
+		FROM JSON_KEYS(
+			ON (
+				SELECT data
+				FROM ServiceNow_JSON.listener_servicenow_stage 
+				WHERE  time_stamp BETWEEN '2019-01-01 00:00:00.000000' AND CURRENT_TIMESTAMP
+				
+				/* Added to reduce query execution time for demo purposes */
+				AND
+				( 
+					( data.JSONExtractValue('$.sys_class_name') = 'sys_user'
+							AND data.JSONExtractValue('$.friendly_ident') IN ( 'jb185097' , 'md255020' ) )
+					OR (
+						 data.JSONExtractValue('$.sys_class_name') = 'incident'
+							AND data.JSONExtractValue('$.friendly_ident') IN ( 'ENG-INC054358' , 'ENG-INC054357' )
+					)
+				)
+
+			) USING QUOTES('N')
+		) AS json_data
+		WHERE JSONKeys <> 'impact_attrs' /* exclude multi-value */
+		AND JSONKeys LIKE '%[%]%' AND JSONKeys NOT LIKE ALL ( '%].variables', '%].u_assignment_group_changes' ) -- Excluding some attributes
+	) AS data ON 1=1 /* In order to shred all of the attributes into their own row, you need to cross join to all potential keys in the json string. Note: it's complicated... */
+
+	WHERE src.time_stamp BETWEEN '2019-01-01 00:00:00.000000' AND CURRENT_TIMESTAMP
+		AND keyName IS NOT NULL
+		AND keyVal IS NOT NULL
+		
+		/* Added to reduce query execution time for demo purposes */
+		AND
+		( 
+			( src.data.JSONExtractValue('$.sys_class_name') = 'sys_user'
+				AND src.data.JSONExtractValue('$.friendly_ident') IN ( 'jb185097' , 'md255020' ) )
+			OR (
+				 src.data.JSONExtractValue('$.sys_class_name') = 'incident'
+				AND src.data.JSONExtractValue('$.friendly_ident') IN ( 'ENG-INC054358' , 'ENG-INC054357' )
+			)
+		)
+
+    /* QUALIFY is similar to a WHERE and HAVING clause, and executes in the final order of operations after all other search conditions have completed (OLAP) */
+    /* To use QUALIFY, an OLAP function must be used. eg. <AGGREGATE> OVER() */
+    /* PARTITION works similar to a GROUP condition, except it doesn't affect the number of rows returned, it determines which rows are be calculated together */
+    /* ORDER is used in this query to sorts the results based on most recent transaction time */
+    /* The result of this line, is to 'only return the most recent transaction for each combination of sys_id + key'. This is important when merging large batches of data */
+	QUALIFY ROW_NUMBER() OVER ( PARTITION BY src.data.sys_id, JSONKeys ORDER BY src.data.txn_time DESC ) = 1
+
+) AS sourceData ( obj_id, keyName, keyVal, txn_by, txn_time ) 
+ON targetTbl.Object_Id = sourceData.Obj_Id 
+AND targetTbl.Metadata_Name = sourceData.keyName
+AND targetTbl.Effective_TS = sourceData.txn_time
+	
+WHEN NOT MATCHED THEN INSERT 
+(Object_ID, Metadata_Name, Metadata_Value, Effective_By, Effective_TS)
+VALUES ( sourceData.Obj_Id, sourceData.keyName, sourceData.keyVal, sourceData.txn_by, sourceData.txn_time );
+```
+
+> Note: If you were to compare the storage footprint of the raw JSON and re-structured data, the current (3-table) model is more costly in storage.  This is due to the Metadata table needing further normalization.  Metadata_Name should be a smallint pointing to a 'key' lookup table, and the Effective columns should be an integer/bigint pointing to an 'event' lookup table.  You could even go as far as using the Object ID of the user (Effective_By) within the event lookup.  There is no need to COMPRESS NULL for Metadata_Value, as null values should never occur (in this scenario).
+
+Once the data has been merged into the normalized state, run this query... You'll be surprised at what types of analysis you can do with such a tiny data model!
+
+## Viewing ServiceNow Data
+
+If you haven't yet realized, the data model we created is elastic.  It uses a single object table and a key-value pair metadata table.  If new 'columns' are added in ServiceNow they will be automatically (and safely) added into our data store without needing to manipulate any DDL.  To see this in practice, run the following query:
+
+``` sql
+LOCK ROW FOR ACCESS
+SELECT *
+FROM My_ServiceNow_Object_Metadata AS meta
+WHERE Object_ID IN (
+	SELECT Object_ID FROM My_ServiceNow_Objects WHERE Object_Friendly_Ident = 'jb185097' AND Object_Class = 'sys_user'
+)
+ORDER BY Effective_TS DESC;
+```
+
+If a new column were added in ServiceNow called "mary_poppins", you could simulate the effect by executing the following  
+``` sql
+INSERT INTO My_ServiceNow_Object_Metadata
+(Object_ID, Metadata_Name, Metadata_Value, Effective_By, Effective_TS)
+
+SELECT Object_ID, 'mary_poppins', 'supercalifragilisticexpialidocious', 'admin', CURRENT_TIMESTAMP(0)
+FROM My_ServiceNow_Objects WHERE Object_Friendly_Ident IN ( 'jb185097' , 'md255020' ) AND Object_Class = 'sys_user';
+```
+
+Go ahead and re-run the first query to look at the object metadata again.  
+
+> Note: If looking for the audit trail history of a record, you could use the above as-is. There are plenty of (event-based) use-cases where this would apply, such as 'which technician changes the priority of their tickets the most' or 'how long does it take a specific technician to respond to a ticket after it's assigned to them' or even looking for abnormal account lockout patterns. As stated before, event-based reporting can be done using the raw JSON, but performance would suffer when scanning through large volumes of data.
+
+## Turning this into *stateful* data based on known attributes
+
+> Note: The following queries could be created as persistent VIEWs by adding the following
+``` sql
+REPLACE VIEW <view_name> AS 
+```
+
+Here is an example for taking the object and merging in the attributes into their own 'columns'.  
+If you run an explain against this query, you should see a subsecond query that takes advantage of the indexes and was able to leverage the 'marry_poppins' column added in ServiceNow without having to modify table definitions or ETL jobs.
+
+``` sql
+LOCK ROW FOR ACCESS
+SELECT src_record.Object_Friendly_Ident AS ticket_number
+	, src_record.Object_Class AS ticket_type
+	, caller_object.Object_Friendly_Ident AS caller_username
+	, mpoppin.Metadata_Value AS mary_poppins
+	, short_description.Metadata_Value AS short_desc
+FROM My_ServiceNow_Objects AS src_record
+INNER JOIN My_ServiceNow_Object_Metadata AS caller ON src_record.Object_ID = caller.Object_ID AND caller.Metadata_Name = 'caller_id'
+	 AND caller.Effective_TS = ( SELECT MAX(Effective_TS) FROM My_ServiceNow_Object_Metadata WHERE Object_ID = caller.Object_ID AND Metadata_Name = caller.Metadata_Name )
+INNER JOIN My_ServiceNow_Objects AS caller_object ON caller_object.Object_Sys_ID = caller.Metadata_Value
+LEFT JOIN My_ServiceNow_Object_Metadata AS mpoppin ON caller_object.Object_ID = mpoppin.Object_ID AND mpoppin.Metadata_Name = 'mary_poppins'
+	 AND mpoppin.Effective_TS = ( SELECT MAX(Effective_TS) FROM My_ServiceNow_Object_Metadata WHERE Object_ID = mpoppin.Object_ID AND Metadata_Name = mpoppin.Metadata_Name )
+INNER JOIN My_ServiceNow_Object_Metadata AS short_description ON src_record.Object_ID = short_description.Object_ID AND short_description.Metadata_Name = 'short_description'
+	 AND short_description.Effective_TS = ( SELECT MAX(Effective_TS) FROM My_ServiceNow_Object_Metadata WHERE Object_ID = short_description.Object_ID AND Metadata_Name = short_description.Metadata_Name )
+WHERE src_record.Object_Class = 'incident' AND src_record.Object_Friendly_Ident IN ( 'ENG-INC054358' ,  'ENG-INC054357' )
+;
+```
+
+Now try adding an additional attribute (column) to this query.  For example, let's add "priority" (JSON is **case-sensitive**)
+
+```
+LEFT JOIN My_ServiceNow_Object_Metadata AS ticket_priority ON src_record.Object_ID = ticket_priority.Object_ID AND ticket_priority.Metadata_Name = 'priority'
+	 AND ticket_priority.Effective_TS = ( SELECT MAX(Effective_TS) FROM My_ServiceNow_Object_Metadata WHERE Object_ID = ticket_priority.Object_ID AND Metadata_Name = ticket_priority.Metadata_Name )
+```
+Don't forget to select the value of priority
+```
+, ticket_priority.Metadata_Value AS ticket_priority
+```
+
+
+> Note: Since the data is stored in a key:value design, each column is 'joined'. The above can be re-used for any number of attribute names, but remember to update the join alias and join conditions
+
+
+## Wrap-Up
+
+Since we're using an `IDENTITY` column for the My_ServiceNow_Objects table, we are unable to use `TEMPORARY` tables.  Due to this, we must manually `DROP` the tables to free up space at the conclusion of this use-case.
+
+Execute the following to remove the tables, and any additional views you may have defined.
+
+``` sql
+DROP TABLE My_ServiceNow_Object_Metadata;  
+DROP TABLE My_ServiceNow_Objects;
+```

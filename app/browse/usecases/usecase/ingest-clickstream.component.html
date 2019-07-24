@@ -1,0 +1,206 @@
+<mat-toolbar class="z-3">
+  <mat-toolbar-row>
+      <div flex layout="row" layout-align="start center">
+        <mat-icon class="push-left-sm push-right">store</mat-icon>
+        <span class="push-left-xs" layout="row" layout-align="start center">
+          <span [routerLink]="'/browse'" class="cursor-pointer">Browse</span> <mat-icon class="push-left push-right">chevron_right</mat-icon> <span [routerLink]="'/browse/usecases'" class="cursor-pointer">Use Cases</span> <mat-icon class="push-left push-right">chevron_right</mat-icon> <span>Use Case Details</span>
+        </span>
+        <span flex></span>
+        <a mat-stroked-button class="push-right-xs push-left-xs mat-button-sm">
+          <mat-icon>share</mat-icon>
+          <span class="text-upper push-left-xs">Share</span>
+        </a>
+        <a mat-stroked-button class="push-right-xs push-left-xs mat-button-sm">
+          <mat-icon>bookmark_outline</mat-icon>
+          <span class="text-upper push-left-xs">Bookmark</span>
+        </a>
+      </div>
+    </mat-toolbar-row>
+</mat-toolbar>
+<div layout-gt-sm="row" layout-align="center start" class="bgc-contrast z-2 mat-elevation-z1">
+  <div flex-xs="90" flex-sm="80" flex-md="80" flex-lg="75" flex-gt-lg="60" tdMediaToggle="gt-sm" class="pad-md">
+      <h3 class="mat-headline push-none">Ingest Clickstream Data</h3>
+      <mat-divider></mat-divider>
+      <div class="pad-top-sm pad-bottom-sm">
+        <p class="mat-body-1 push-none">
+          In this use case we’ll exercise APIs to get a valid use token, the use ingest APIs to import data, and finally we’ll
+          query the imported data via SQL and visualize the results.
+        </p>
+      </div>
+  </div>
+</div>
+<div layout-gt-sm="row" layout-align="center start" tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+  <div flex-xs="90" flex-sm="80" flex-md="80" flex-lg="75" flex-gt-lg="60">
+    <div layout-gt-sm="row">
+      <div flex-gt-sm="75">
+        <mat-card>
+          <mat-card-title>Description</mat-card-title>
+          <mat-divider></mat-divider>
+          <mat-card-content>
+            <td-flavored-markdown>
+## Get a secure token
+
+Vantage requires authentication to perform tasks. Authentication (authN) is the process of verifying the identity of a
+registered user who is accessing a service or application. It answers the question "who is the user".
+
+All services listed below will use the USER service for authentication. In order to interact with the APIs, you will
+need to authenticate to the USER service and get a JWT token. You can then use this token in any subsequent request.
+These steps need to be followed for any client or utility used to make REST calls.
+
+#### Curl script for a JWT (JSON web token)
+
+```json
+<![CDATA[
+curl -X POST "https://ecs-demo.labs.teradata.com/api/user/token" -H "Authorization:YOUR_TOKEN" -d
+'{"password":"your_password","username":"your_username"}'
+]]>
+```
+            </td-flavored-markdown>
+            <a mat-stroked-button color="primary" class="text-upper" href="https://appcenter.ux.ac.uda.io/developer/apis/token">Test this API</a>
+            <td-flavored-markdown>
+
+---
+
+### Ingest Data
+
+To stream clickstream data from your website you’ll need to use your token and create a streaming data source using the
+REST protocol.
+
+#### Curl script to create a streaming REST source
+
+```json
+<![CDATA[
+curl \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer TOKEN" \
+  -X POST \
+  -d '{
+    "name": "My source",
+    "description": "A superb source",
+    "source_type": "REST"
+  }' \
+  -i \
+  https://listener-app-services.teradata.com/v1/sources
+]]>
+```
+
+which produces the following response
+
+```json
+<![CDATA[
+{
+  "source_id": "758fbda4-accc-4f90-8f09-cc0a164c8c28",
+  "owner": ["jd123456"],
+  "created_at": "2015-07-04T10:20:00Z",
+  "created_by": "av012345",
+  "updated_at": "2015-12-20T10:20:00Z",
+  "updated_by": "jd123456",
+  "secret": "f8a9f620-e0e6-470b-a6b8-1f16b003c034",
+  "name": "My source",
+  "description": "A superb source",
+  "state": 1,
+  "production": false,
+  "source_type": "REST"
+}
+]]>
+```
+
+            </td-flavored-markdown>
+            <a mat-stroked-button color="primary" class="text-upper" href="https://appcenter.ux.ac.uda.io/developer/apis/config">Test this API</a>
+            <td-flavored-markdown>
+
+---
+
+### Query the imported data
+
+Now that streaming data is landing in Vantage, you can easily query it via the in-browser Vantage Editor for rapid,
+lightweight exploration to derive insights.
+
+```sql
+<![CDATA[
+SELECT * FROM mySandbox.myClickStreamData;
+
+TEST THIS SQL
+
+SELECT 
+CAST(event_path AS VARCHAR(20000)) AS path, 
+SUM(cnt) as cnt
+FROM npath (
+ON mySandbox.myClickStreamData
+        	PARTITION BY customer_id ORDER BY datestamp
+USING
+        mode(nonoverlapping)
+        pattern('event{1,8}.leave_site)
+        symbols(
+action <> 'LEAVE SITE' as event,
+            action = 'LEAVE SITE' as leave_site
+                    )
+                    result(
+accumulate(channel || ':' || action of event) as event_path, 
+count(action of event) as cnt
+                    )
+)
+GROUP BY 1
+]]>
+```
+
+#### Visualize the results
+
+Now that we have results properly queried using the Npath analytical function from Vantage, you can easily toggle
+between visualizations in the Vantage Playground and view a Sankey chart. By default the results are presented in a
+datatable.
+
+            </td-flavored-markdown>
+            <a mat-stroked-button color="primary" class="text-upper" href="https://appcenter.ux.ac.uda.io/editor/?scriptId=f875bf36-423f-45df-a857-e22efeae5a8c">Test this SQL</a>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div flex-gt-sm="25">
+        <div class="pad-sm">
+          <h2 class="mat-headline">Tags</h2>
+          <mat-divider></mat-divider>
+          <div class="pad-sm">
+            <mat-chip-list aria-label="tags">
+              <mat-chip color="primary" selected>Secure</mat-chip>
+              <mat-chip color="primary" selected>Ingest</mat-chip>
+              <mat-chip color="primary" selected>Visualize</mat-chip>
+              <mat-chip color="primary" selected>Token</mat-chip>
+            </mat-chip-list>
+          </div>
+        </div>
+        <div class="pad-sm">
+          <h2 class="mat-headline">Info</h2>
+          <mat-divider></mat-divider>
+          <div>
+            <mat-list>
+              <mat-list-item>
+                <p matLine><span class="text-md">Created date</span></p>
+                <h3 matLine><span class="text-lg">June 21, 2019</span></h3>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+              <mat-list-item>
+                <p matLine><span class="text-md">Last modified date</span></p>
+                <h3 matLine><span class="text-lg">June 22, 2019</span></h3>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+              <mat-list-item>
+                <p matLine><span class="text-md">Contributor</span></p>
+                <h3 matLine><span class="text-lg">jack.schemer</span></h3>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+              <mat-list-item>
+                <p matLine><span class="text-md">Status</span></p>
+                <h3 matLine><span class="text-lg">Production</span></h3>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+              <mat-list-item>
+                <p matLine><span class="text-md">Version</span></p>
+                <h3 matLine><span class="text-lg">2.1</span></h3>
+              </mat-list-item>
+            </mat-list>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

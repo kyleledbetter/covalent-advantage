@@ -1,0 +1,113 @@
+<mat-toolbar>
+  <mat-toolbar-row>
+    <div flex layout="row" layout-align="start center">
+      <mat-icon class="push-left-sm push-right">insert_chart</mat-icon>
+      <span class="push-left-xs" layout="row" layout-align="start center">
+          <span [routerLink]="'/monitoring'" class="cursor-pointer">Monitoring</span> <mat-icon class="push-left push-right">chevron_right</mat-icon> 
+          <span [routerLink]="'../dashboards'" class="cursor-pointer">Dashboards</span> <mat-icon class="push-left push-right">chevron_right</mat-icon> <span>Create</span>
+        </span>
+      <span flex></span>
+    </div>
+  </mat-toolbar-row>
+</mat-toolbar>
+<div layout-gt-xs="row" layout-align="center start" tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+  <div flex-xs="90" flex-sm="90" flex-md="85" flex-lg="75" flex-gt-lg="75" tdMediaToggle="gt-sm" [mediaClasses]="['pad-top-lg']">
+    <div class="pad-sm">
+      <h1 class="mat-display-1 push-none">Create Dashboard</h1>
+      <h3 class="mat-title push-none push-bottom-sm">Select a layout for your dashboard. This can be edited later.</h3>
+      <mat-divider></mat-divider>
+    </div>
+    <div layout-gt-xs="row" layout-wrap>
+      <div flex-sm="50" flex-gt-sm="25" layout-gt-xs="column">
+        <mat-card flex-gt-xs>
+          <mat-card-title class="text-lg">Layout 1</mat-card-title>
+          <div layout="row" layout-wrap class="bgc-contrast pad layout-cards">
+            <div flex="33">
+              <mat-card>&nbsp;</mat-card>
+            </div>
+            <div flex="33">
+              <mat-card>&nbsp;</mat-card>
+            </div>
+            <div flex="33">
+              <mat-card>&nbsp;</mat-card>
+            </div>
+            <div flex="60">
+              <mat-card>&nbsp;</mat-card>
+            </div>
+            <div flex="40">
+              <mat-card>&nbsp;</mat-card>
+            </div>
+          </div>
+          <mat-divider></mat-divider>
+          <mat-card-actions>
+            <a mat-button color="accent" class="text-upper" [routerLink]="'editor'">
+              <span>Select Layout</span>
+            </a>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+      <div flex-sm="50" flex-gt-sm="25" layout-gt-xs="column">
+        <mat-card flex-gt-xs>
+          <mat-card-title class="text-lg">Layout 2</mat-card-title>
+          <div layout="row" layout-wrap class="bgc-contrast pad layout-cards">
+            <div flex="60">
+              <mat-card>&nbsp;</mat-card>
+            </div>
+            <div flex="40">
+              <mat-card>&nbsp;</mat-card>
+            </div>
+            <div flex="60">
+              <mat-card>&nbsp;</mat-card>
+            </div>
+            <div flex="40">
+              <mat-card>&nbsp;</mat-card>
+            </div>
+          </div>
+          <mat-card-actions>
+            <a mat-button color="accent" class="text-upper" [routerLink]="'editor'">
+              <span>Select Layout</span>
+            </a>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+      <div flex-sm="50" flex-gt-sm="25" layout-gt-xs="column">
+        <mat-card flex-gt-xs>
+          <mat-card-title class="text-lg">Layout 3</mat-card-title>
+          <div layout="row" layout-wrap class="bgc-contrast pad layout-cards tall">
+            <div flex="30">
+              <mat-card>&nbsp;</mat-card>
+            </div>
+            <div flex="70">
+              <mat-card>&nbsp;</mat-card>
+            </div>
+          </div>
+          <mat-divider></mat-divider>
+          <mat-card-actions>
+            <a mat-button color="accent" class="text-upper" [routerLink]="'editor'">
+              <span>Select Layout</span>
+            </a>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+      <div flex-sm="50" flex-gt-sm="25" layout-gt-xs="column">
+        <mat-card flex-gt-xs>
+          <mat-card-title class="text-lg">Layout 4</mat-card-title>
+          <div layout="row" layout-wrap class="bgc-contrast pad layout-cards tall">
+            <div flex="50">
+              <mat-card>&nbsp;</mat-card>
+            </div>
+            <div flex="50">
+              <mat-card>&nbsp;</mat-card>
+            </div>
+          </div>
+          <mat-divider></mat-divider>
+          <mat-card-actions>
+            <a mat-button color="accent" class="text-upper" [routerLink]="'editor'">
+              <span>Select Layout</span>
+            </a>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>

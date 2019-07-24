@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import {
+  DraggableHelpWindowDialogComponent,
+  DraggableHelpWindowDialogService,
+  IHelpMenuDataItem,
+} from '@covalent/experimental/help';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'covalent-app',
@@ -7,6 +13,51 @@ import { Router } from '@angular/router';
   styleUrls: ['./main.component.css'],
 })
 export class MainComponent implements OnInit {
+
+  windowOpen: boolean = false;
+  ref: MatDialogRef<DraggableHelpWindowDialogComponent>;
+  currentItems: IHelpMenuDataItem[] = [
+    {
+      url: 'https://github.com/Teradata/design-system/blob/master/product/overview.md',
+      title: 'Overview',
+    },
+    {
+      url: 'https://github.com/Teradata/design-system/blob/master/product/color.md',
+      title: 'Color',
+    },
+    {
+      url: 'https://github.com/Teradata/design-system/blob/master/product/components.md',
+      title: 'Components',
+    },
+    {
+      url: 'https://github.com/Teradata/design-system/blob/master/product/iconography.md',
+      title: 'Iconography',
+    },
+    {
+      url: 'https://github.com/Teradata/design-system/blob/master/product/language-and-tone.md',
+      title: 'Language and Tone',
+    },
+    {
+      url: 'https://github.com/Teradata/design-system/blob/master/product/layouts.md',
+      title: 'Layouts',
+    },
+    {
+      url: 'https://github.com/Teradata/design-system/blob/master/product/logos.md',
+      title: 'Logos',
+    },
+    {
+      url: 'https://github.com/Teradata/design-system/blob/master/product/personality.md',
+      title: 'Personality',
+    },
+    {
+      url: 'https://github.com/Teradata/design-system/blob/master/product/templates.md',
+      title: 'Templates',
+    },
+    {
+      url: 'https://github.com/Teradata/design-system/blob/master/product/visualizations.md',
+      title: 'Visualizations',
+    },
+  ];
 
   APP_TITLE = 'VANTAGE';
 
@@ -20,7 +71,9 @@ export class MainComponent implements OnInit {
   developer: Object[] = [];
   analyst: Object[] = [];
 
-  constructor(private _router: Router) {
+  constructor(
+    private _router: Router,
+    private draggableHelpWindowDialogService: DraggableHelpWindowDialogService) {
   }
 
   ngOnInit(): void {
@@ -51,30 +104,26 @@ export class MainComponent implements OnInit {
         icon: 'view_compact',
         show: true,
       },
+      /*
       {
         title: 'Path',
-        route: '/',
+        link: 'https://vantage-path-analyzer.ac02.teratitan.com/',
         icon: 'call_split',
         show: true,
       },
       {
         title: 'Model',
-        route: '/',
+        link: 'https://vantage-modeler.ac02.teratitan.com/',
         icon: 'line_style',
         show: true,
       },
       {
-        title: 'Discover',
-        route: '/',
-        icon: 'new_releases',
-        show: true,
-      },
-      {
         title: 'Workflow',
-        route: '/',
+        link: 'https://cj02.teratitan.com/workflow/flows',
         icon: 'clear_all',
         show: true,
       }
+      */
     ];
     this.operations = [
       {
@@ -85,37 +134,37 @@ export class MainComponent implements OnInit {
       },
       {
         title: 'Engines',
-        route: '/',
+        route: '/operations',
         icon: 'developer_board',
         show: true,
       },
       {
         title: 'Resources',
-        route: '/browse',
+        route: '/operations',
         icon: 'memory',
         show: true,
       },
       {
         title: 'Network',
-        route: '/monitoring',
+        route: '/operations',
         icon: 'group_work',
         show: true,
       },
       {
         title: 'Deployments',
-        route: '/deployments',
+        route: '/operations',
         icon: 'cloud_upload',
         show: true,
       },
       {
         title: 'APIs & Services',
-        route: '/apis',
+        route: '/operations',
         icon: 'cast_connected',
         show: true,
       },
       {
         title: 'SSO & IAM',
-        route: '/identify',
+        route: '/operations/identity',
         icon: 'person_pin',
         show: true,
       }
@@ -171,6 +220,7 @@ export class MainComponent implements OnInit {
         icon: 'desktop_mac',
         show: true,
       },
+      /*
       {
         title: 'Editor',
         route: '/browse',
@@ -183,14 +233,38 @@ export class MainComponent implements OnInit {
         icon: 'widgets',
         show: true,
       },
+      */
     ];
   }
   // Theme toggle
   get activeTheme(): string {
-    return localStorage.getItem('theme');
+    return localStorage.getItem('vantage.theme');
   }
-  theme(theme: string): void {
-    localStorage.setItem('theme', theme);
+  theme(theme: string = undefined): void {
+    if (!theme) {
+      localStorage.removeItem('vantage.theme');
+    } else {
+      localStorage.setItem('vantage.theme', theme);
+    }
+    document.getElementsByTagName('body').item(0).className = theme;
   }
-  
+  // Help dialog
+  openDialog(): void {
+    if (this.windowOpen) {
+      this.closeDialog();
+    }
+    this.ref = this.draggableHelpWindowDialogService.open(this.currentItems, {
+      height: '90%',
+    });
+    this.ref.afterOpened().subscribe(() => {
+      this.windowOpen = true;
+    });
+
+    this.ref.afterClosed().subscribe(() => {
+      this.windowOpen = false;
+    });
+  }
+  closeDialog(): void {
+    this.ref.close();
+  }
 }

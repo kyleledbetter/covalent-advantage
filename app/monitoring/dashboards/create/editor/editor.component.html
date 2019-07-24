@@ -1,0 +1,353 @@
+<div flex layout="column" layout-fill>
+  <mat-toolbar flex="none" class="z-3">
+    <mat-toolbar-row>
+      <div flex layout="row" layout-align="start center">
+        <mat-icon class="push-left-sm push-right">insert_chart</mat-icon>
+        <span class="push-left-xs" layout="row" layout-align="start center">
+          <span [routerLink]="'/monitoring'" class="cursor-pointer">Monitoring</span>
+          <mat-icon class="push-left push-right">chevron_right</mat-icon>
+          <span [routerLink]="'/monitoring/dashboards'" class="cursor-pointer">Dashboards</span>
+          <mat-icon class="push-left push-right">chevron_right</mat-icon>
+          <span [routerLink]="'/monitoring/dashboards/create'" class="cursor-pointer">Create</span>
+        </span>
+        <span flex></span>
+        <a mat-flat-button color="primary" class="push-right-xs push-left-xs mat-button-sm">
+          <mat-icon>vertical_align_bottom</mat-icon>
+          <span class="text-upper push-left-xs">Save</span>
+        </a>
+        <a mat-stroked-button (click)="toggleCard()" color="primary" class="push-right-xs push-left-xs mat-button-sm">
+          <mat-icon>library_add</mat-icon>
+          <span class="text-upper push-left-xs">Add Card</span>
+        </a>
+        <a mat-stroked-button disabled color="primary" class="push-right-xs push-left-xs mat-button-sm">
+          <mat-icon>share</mat-icon>
+          <span class="text-upper push-left-xs">Share</span>
+        </a>
+        <a mat-stroked-button disabled color="primary" class="push-right-xs push-left-xs mat-button-sm">
+          <mat-icon>bookmark_outline</mat-icon>
+          <span class="text-upper push-left-xs">Bookmark</span>
+        </a>
+        <button mat-icon-button class="push-right-xs push-left-xs" matTooltip="Filters" (click)="filters.toggle()">
+          <mat-icon>filter_list</mat-icon>
+        </button>
+      </div>
+    </mat-toolbar-row>
+  </mat-toolbar>
+  <mat-sidenav-container fullscreen style="top:48px;">
+    <mat-sidenav opened layout="column" mode="side" #filters position="end">
+      <div class="pad-left pad-right" [style.height.px]="60" layout="row" layout-align="start center">
+        <span class="mat-title push-bottom-none" flex>
+          Dashboard Options
+        </span>
+        <button mat-icon-button matTooltip="Close" (click)="filters.close()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+      <div flex class="pad">
+        <div layout="row">
+          <mat-form-field appearance="outline" flex-gt-xs="80">
+            <mat-label>Name</mat-label>
+            <input matInput placeholder="Name">
+          </mat-form-field>
+        </div>
+        <div layout="row">
+          <mat-form-field appearance="outline" flex>
+            <mat-label>Description</mat-label>
+            <textarea matInput placeholder="Description"></textarea>
+          </mat-form-field>
+        </div>
+        <mat-divider class="push-top push-bottom"></mat-divider>
+        <div layout="row">
+          <mat-form-field flex>
+            <mat-chip-list #chipList aria-label="Tag selection">
+              <mat-chip *ngFor="let tag of tags" [selectable]="selectable" [removable]="removable" (removed)="remove(tag)">
+                {{tag.name}}
+                <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+              </mat-chip>
+              <input placeholder="New tag..." [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="add($event)">
+            </mat-chip-list>
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-sidenav>
+    <div tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+      <div class="mat-content">
+        <div layout-gt-xs="row" layout-wrap>
+          <div flex-gt-xs="100" *ngIf="newCard">
+            <mat-card tdMediaToggle="gt-sm" [mediaClasses]="['push-top']">
+              <mat-card-title>
+                <div layout="row">
+                  <span flex>{{title}}</span>
+                  <span>
+                    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                      <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu" xPosition="before">
+                      <button mat-menu-item>
+                        <mat-icon>aspect_ratio</mat-icon>
+                        <span>Maximize</span>
+                      </button>
+                      <button mat-menu-item>
+                        <mat-icon>share</mat-icon>
+                        <span>Share</span>
+                      </button>
+                      <button mat-menu-item>
+                        <mat-icon>remove_circle_outline</mat-icon>
+                        <span>Remove card</span>
+                      </button>
+                    </mat-menu>
+                  </span>
+                </div>
+              </mat-card-title>
+              <mat-card-subtitle>{{subtitle}}</mat-card-subtitle>
+              <mat-divider></mat-divider>
+              <mat-card-content *ngIf="!showChart">
+                <div layout="column" layout-align="center center" class="tc-grey-500 mat-typography pad-lg">
+                  <mat-icon matListAvatar class="text-super push-bottom">insert_chart</mat-icon>
+                  <h2>No content</h2>
+                  <h3>Add a report or content here</h3>
+                  <button mat-raised-button color="accent" class="text-upper" (click)="openDialog()">Add Report</button>
+                </div>
+              </mat-card-content>
+              <td-chart *ngIf="showChart" [style.height.px]="350">
+                <td-chart-tooltip [trigger]="'item'">
+                </td-chart-tooltip>
+                <td-chart-x-axis [show]="true" [position]="'top'" [type]="'time'" [splitLine]="{show: false}" [boundaryGap]="false">
+                </td-chart-x-axis>
+                <td-chart-y-axis [show]="true" [type]="'value'">
+                </td-chart-y-axis>
+                <td-chart-series td-line [symbolSize]="14" [data]="[{
+                                              'name': '2018-10-29T03:27:33.932Z',
+                                              'value': [
+                                                '2018-10-29T03:27:33.932Z',
+                                                200
+                                              ]
+                                            }, {
+                                              'name': '2018-10-30T03:27:33.932Z',
+                                              'value': [
+                                                '2018-10-30T03:27:33.932Z',
+                                                50
+                                              ]
+                                            },{
+                                              'name': '2018-10-31T03:27:33.932Z',
+                                              'value': [
+                                                '2018-10-31T03:27:33.932Z',
+                                                100
+                                              ]
+                                            }]" [name]="'Revenue'" [symbol]="'roundRect'" [color]="'#F2724B'">
+                  <td-chart-series-tooltip>
+                    <ng-template let-params let-ticket="ticket" tdTooltipFormatter>
+                      <ng-container *ngIf="params">
+                        <div layout="row" layout-align="start center">
+                          <mat-icon>
+                            <span class="tc-accent">account_balance</span>
+                          </mat-icon>
+                          <span class="mat-caption pad-left-sm">
+                            {{params.seriesName + ': ' + params.value[1]}}
+                          </span>
+                        </div>
+                        <div class="mat-caption">
+                          at {{(params.name | date:'medium')}}
+                        </div>
+                      </ng-container>
+                    </ng-template>
+                  </td-chart-series-tooltip>
+                </td-chart-series>
+                <td-chart-series td-line [symbolSize]="14" [data]="[{
+                                              'name': '2018-10-29T03:28:59.797Z',
+                                              'value': [
+                                                '2018-10-29T03:28:59.797Z',
+                                                200
+                                              ]
+                                            }, {
+                                              'name': '2018-10-29T13:28:59.797Z',
+                                              'value': [
+                                                '2018-10-29T13:28:59.797Z',
+                                                50
+                                              ]
+                                            }, {
+                                              'name': '2018-11-01T03:28:59.797Z',
+                                              'value': [
+                                                '2018-11-01T03:28:59.797Z',
+                                                100
+                                              ]
+                                            }]" [name]="'Sales'" [symbol]="'roundRect'" [color]="'#4CAFB1'">
+                  <td-chart-series-tooltip>
+                    <ng-template let-params let-ticket="ticket" tdTooltipFormatter>
+                      <ng-container *ngIf="params">
+                        <div layout="row" layout-align="start center">
+                          <mat-icon>
+                            <span class="tc-primary">attach_money</span>
+                          </mat-icon>
+                          <span class="mat-caption pad-left-sm">
+                            {{params.seriesName + ': ' + params.value[1]}}
+                          </span>
+                        </div>
+                        <div class="mat-caption">
+                          at {{(params.name | date:'medium')}}
+                        </div>
+                      </ng-container>
+                    </ng-template>
+                  </td-chart-series-tooltip>
+                </td-chart-series>
+              </td-chart>
+            </mat-card>
+          </div>
+          <div flex-gt-xs="60">
+            <mat-card tdMediaToggle="gt-sm" [mediaClasses]="['push-top']">
+              <mat-card-title>
+                <div layout="row">
+                  <span flex>Title</span>
+                  <span>
+                    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                      <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu" xPosition="before">
+                      <button mat-menu-item>
+                        <mat-icon>aspect_ratio</mat-icon>
+                        <span>Maximize</span>
+                      </button>
+                      <button mat-menu-item>
+                        <mat-icon>share</mat-icon>
+                        <span>Share</span>
+                      </button>
+                      <button mat-menu-item>
+                        <mat-icon>remove_circle_outline</mat-icon>
+                        <span>Remove card</span>
+                      </button>
+                    </mat-menu>
+                  </span>
+                </div>
+              </mat-card-title>
+              <mat-card-subtitle>Subtitle</mat-card-subtitle>
+              <mat-divider></mat-divider>
+              <mat-card-content>
+                <div layout="column" layout-align="center center" class="tc-grey-500 mat-typography pad-lg">
+                  <mat-icon matListAvatar class="text-super push-bottom">insert_chart</mat-icon>
+                  <h2>No content</h2>
+                  <h3>Add a report or content here</h3>
+                  <button mat-raised-button color="accent" class="text-upper" (click)="openDialog()">Add Report</button>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
+          <div flex-gt-xs="40">
+            <mat-card tdMediaToggle="gt-sm" [mediaClasses]="['push-top']">
+              <mat-card-title>
+                <div layout="row">
+                  <span flex>Title</span>
+                  <span>
+                    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                      <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu" xPosition="before">
+                      <button mat-menu-item>
+                        <mat-icon>aspect_ratio</mat-icon>
+                        <span>Maximize</span>
+                      </button>
+                      <button mat-menu-item>
+                        <mat-icon>share</mat-icon>
+                        <span>Share</span>
+                      </button>
+                      <button mat-menu-item>
+                        <mat-icon>remove_circle_outline</mat-icon>
+                        <span>Remove card</span>
+                      </button>
+                    </mat-menu>
+                  </span>
+                </div>
+              </mat-card-title>
+              <mat-card-subtitle>Subtitle</mat-card-subtitle>
+              <mat-divider></mat-divider>
+              <mat-card-content>
+                <div layout="column" layout-align="center center" class="tc-grey-500 mat-typography pad-lg">
+                  <mat-icon matListAvatar class="text-super push-bottom">insert_chart</mat-icon>
+                  <h2>No content</h2>
+                  <h3>Add a report or content here</h3>
+                  <button mat-raised-button color="accent" class="text-upper" (click)="openDialog()">Add Report</button>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
+          <div flex-gt-xs="60">
+            <mat-card tdMediaToggle="gt-sm" [mediaClasses]="['push-top']">
+              <mat-card-title>
+                <div layout="row">
+                  <span flex>Title</span>
+                  <span>
+                    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                      <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu" xPosition="before">
+                      <button mat-menu-item>
+                        <mat-icon>aspect_ratio</mat-icon>
+                        <span>Maximize</span>
+                      </button>
+                      <button mat-menu-item>
+                        <mat-icon>share</mat-icon>
+                        <span>Share</span>
+                      </button>
+                      <button mat-menu-item>
+                        <mat-icon>remove_circle_outline</mat-icon>
+                        <span>Remove card</span>
+                      </button>
+                    </mat-menu>
+                  </span>
+                </div>
+              </mat-card-title>
+              <mat-card-subtitle>Subtitle</mat-card-subtitle>
+              <mat-divider></mat-divider>
+              <mat-card-content>
+                <div layout="column" layout-align="center center" class="tc-grey-500 mat-typography pad-lg">
+                  <mat-icon matListAvatar class="text-super push-bottom">insert_chart</mat-icon>
+                  <h2>No content</h2>
+                  <h3>Add a report or content here</h3>
+                  <button mat-raised-button color="accent" class="text-upper" (click)="openDialog()">Add Report</button>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
+          <div flex-gt-xs="40">
+            <mat-card tdMediaToggle="gt-sm" [mediaClasses]="['push-top']">
+              <mat-card-title>
+                <div layout="row">
+                  <span flex>Title</span>
+                  <span>
+                    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                      <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu" xPosition="before">
+                      <button mat-menu-item>
+                        <mat-icon>aspect_ratio</mat-icon>
+                        <span>Maximize</span>
+                      </button>
+                      <button mat-menu-item>
+                        <mat-icon>share</mat-icon>
+                        <span>Share</span>
+                      </button>
+                      <button mat-menu-item>
+                        <mat-icon>remove_circle_outline</mat-icon>
+                        <span>Remove card</span>
+                      </button>
+                    </mat-menu>
+                  </span>
+                </div>
+              </mat-card-title>
+              <mat-card-subtitle>Subtitle</mat-card-subtitle>
+              <mat-divider></mat-divider>
+              <mat-card-content>
+                <div layout="column" layout-align="center center" class="tc-grey-500 mat-typography pad-lg">
+                  <mat-icon matListAvatar class="text-super push-bottom">insert_chart</mat-icon>
+                  <h2>No content</h2>
+                  <h3>Add a report or content here</h3>
+                  <button mat-raised-button color="accent" class="text-upper" (click)="openDialog()">Add Report</button>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-sidenav-container>
+</div>

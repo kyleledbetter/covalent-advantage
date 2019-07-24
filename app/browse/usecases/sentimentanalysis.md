@@ -1,0 +1,297 @@
+Sentiment Analysis - Online Retailer Product Delivery
+================
+Steven Smallberg, Software Engineer ([email](mailto:steven.smallberg@teradata.com))
+
+-   [Introduction](#introduction)
+-   [Using this document](#using-this-document)
+-   [About the data](#about-the-data)
+-   [EXPERIENCE](#experience)
+    -   [Step 1: Setup](#step-1-setup)
+    -   [Step 2: Establishing the Vantage connection](#step-2-establishing-the-vantage-connection)
+    -   [Step 3: Referencing data](#step-3-referencing-data)
+    -   [Step 4: Wrangling data](#step-4-wrangling-data)
+    -   [Step 5: Parsing text](#step-5-parsing-text)
+    -   [Step 6: Visualizing results](#step-6-visualizing-results)
+-   [EXPLORE](#explore)
+
+Introduction
+============
+
+Every online retailer wants to deliver a five-star experience to its customers. In this data science workflow, we will use **Vantage** and to identify product reviews that reference issues surrounding shipping and delivery, and compare five-star reviews with those that didn't quite get there. Our exploratory data analysis will address the business question:
+
+*What is the perception of our delivery service?*
+
+The **EXPERIENCE** section will walk through the process from referencing raw data stored in the Teradata database to creating a data visualization, all in the R environment. This demo will end having created a word cloud comparing relative word usage in four- and five-star reviews to determine whether delivery issues might make the difference.
+
+In just a few steps, we can harness the power of **Vantage** to analyze the "voice of the customer" and find answers. Through the Teradata R package `tdplyr`, we will connect to **Vantage**, manipulate the data, and generate a visual representation of customers' attitudes towards product delivery that will inform further analyses.
+
+![](https://gitlab-stage.labs.teradata.com/published/online-delivery-sentiment/raw/master/R-demo_files/figure-markdown_github/unnamed-chunk-9-1.png)
+
+Afterwards, we encourage you to **EXPLORE Vantage** capabilities with your own analyses.
+
+Using this document
+===================
+
+You can experience **Vantage** without writing code by downloading the RMarkdown version of this document (`R-demo.Rmd`) and opening it in RStudio. This developer workspace comes pre-loaded with RStudio and `tdplyr` installed and ready to use.
+
+You can run code in RStudio with the push of a button by using the "Run" menu in the upper right hand corner of this window. There are options to run selected lines, code chunks, and all of the code. The "Run" menu also shows keyboard shortcuts. Each code chunk also has a "Run Current Chunk" button on the far right and a "Run All Chunks Above" second from the right.
+
+![](https://gitlab-stage.labs.teradata.com/published/online-delivery-sentiment/raw/master/R-demo_files/figure-markdown_github/run_menu_capture.png)
+
+The **EXPERIENCE** section takes approximately 45 seconds to run in its entirety.
+
+About the data
+==============
+
+The `amazon_reviews_demo` dataset has 484,599 rows, each representing a unique product review, and 10 columns, representing the following features:
+
+-   `rev_id`: reviewer ID
+-   `aid`: product ID
+-   `rev_name`: reviewer name
+-   `helpful`: helpfulness rating of review (e.g. 2/3)
+-   `unixrevtime`: review time (Unix)
+-   `rev_text`: review text
+-   `rating`: product rating
+-   `revtime`: review time (human readable)
+-   `prodsummary`: review summary
+-   `category`: product category
+
+The dataset has not been modified from its raw form except to remove duplicate rows.
+
+EXPERIENCE
+==========
+
+#### Step 1: Setup
+
+First, we'll need to load `tdplyr` and additional packages used in this workflow. These packages come pre-installed on this workspace.
+
+We'll also define the colors that we'll use in our visualization later on.
+
+``` r
+# Load libraries
+library(tdplyr) # Teradata R package
+library(dbplyr) # dplyr backend for databases
+library(tidytext) # text mining
+library(tidyverse) # collection of data manipulation/exploration/viz packages
+library(wordcloud) # plot word clouds
+
+# Parameters
+TD_ORANGE <- "#F3753F"
+TD_BLUE <- "#394851"
+```
+
+#### Step 2: Establishing the Vantage connection
+
+Establishing a connection with **Vantage** is easy. We can create a connection using `td_create_context` and providing the same DSN, login, and password credentials used to log into BTEQ or Teradata Studio.
+
+``` r
+con <-
+  td_create_context(
+    dsn = "Vantage Sample System",
+    uid = "DevPlatform_ETL",
+    pwd = "DevPlatform_ETL",
+    database = "SIT_DataStore"
+  )
+```
+
+#### Step 3: Referencing data
+
+Creating the reference to a remote table from the database using `tbl` is just as simple. Let's retrieve the customer reviews dataset and take a look at its contents.
+
+``` r
+reviews_raw <- tbl(con, "amazon_reviews_demo")
+
+glimpse(reviews_raw)
+```
+
+    ## Observations: ??
+    ## Variables: 10
+    ## Database:  [Teradata 16.20.27.01]  [Teradata ODBC 16.20.00.048] [DEVPLATFORM_ETL@TDAP1050T2.LABS.TERADATA.COM/SIT_DATASTORE]
+    ## $ rev_id      <chr> "A1VRKQRR0EUXH6", "A115PPUEZ1654", "A2909S4G2Y2D7V",…
+    ## $ aid         <chr> "B008FT3PM8", "B00AZ1XIOY", "B002ULA2VE", "079215764…
+    ## $ rev_name    <chr> "STACKED", "g.cndcbxb", "Woman of 1,000 Hobbies", "J…
+    ## $ helpful     <chr> "[1, 2]", "[307, 385]", "[0, 0]", "[0, 0]", "[0, 1]"…
+    ## $ unixrevtime <S3: integer64> 1366070400, 1364428800, 1362182400, 105632…
+    ## $ rev_text    <chr> "I use this everyday.  I gave up soda and went to co…
+    ## $ rating      <dbl> 5, 5, 4, 5, 3, 4, 5, 5, 4, 2, 5, 5, 4, 4, 5, 5, 5, 3…
+    ## $ revtime     <chr> "04 16, 2013", "03 28, 2013", "03 2, 2013", "06 23, …
+    ## $ prodsummary <chr> "love it", "this is the best", "Very similar to MAC …
+    ## $ category    <chr> "Home_and_Kitchen", "androidapps", "Beauty", "movies…
+
+#### Step 4: Wrangling data
+
+`tdplyr` lets us wrangle data right here in our R environment. In this next step, we will:
+
+-   Create new columns, parsing feedback information of the form `[# "helpful" feedback, # total feedback]` to extract the numeric values.
+-   Give the columns more readable names.
+-   Convert numeric data to `int`s where appropriate.
+
+``` r
+reviews <- 
+  reviews_raw %>% 
+  mutate(
+    feedback_helpful = str_extract(helpful, "\\d+"), # extract first number
+    feedback_total = str_extract(helpful, "(?<= )\\d+") # extract second number (i.e. number following space)
+  ) %>% 
+  select(
+    reviewer_id = rev_id,
+    reviewer_name = rev_name,
+    time = revtime,
+    time_unix = unixrevtime,
+    item_id = aid,
+    item_category = category,
+    review_stars = rating,
+    review_summary = prodsummary,
+    review_text = rev_text,
+    feedback_helpful,
+    feedback_total
+  ) %>% 
+  mutate_at(
+    vars(c("review_stars", "feedback_helpful", "feedback_total")),
+    list(~as.integer)
+  )
+```
+
+Using `copy_to`, we can copy this table to the Teradata database. It's a temporary table, and will disappear once the current context is closed or overwritten.
+
+``` r
+copy_to(
+  con,
+  reviews,
+  "reviews",
+  temporary = TRUE
+)
+```
+
+To answer our specific business question, we'll perform some further data manipulation:
+
+-   Filter out reviews in categories (e.g. digital music) where physical package delivery isn't relevant.
+-   Subset data to reviews referencing "delivery", "packaging", and "shipping".
+-   Subset data to 4- and 5-star reviews to understand if and/or how word use differs between them.
+
+``` r
+reviews_delivery <- 
+  tbl(con, "reviews") %>% 
+  filter(
+    !item_category %in% c("Digital_Music", "androidapps", "instantvideo"),
+    review_stars %in% c(4, 5),
+    (
+      str_detect(review_text, "deliver") |
+      str_detect(review_text, "packag") |
+      str_detect(review_text, "shipp")
+    ),
+    str_length(review_text) < 500) %>% 
+  mutate(
+    stars_label = if_else(review_stars == 5L, "5-star reviews", "4-star reviews")
+  )
+
+glimpse(reviews_delivery)
+```
+
+    ## Observations: ??
+    ## Variables: 12
+    ## Database:  [Teradata 16.20.27.01]  [Teradata ODBC 16.20.00.048] [DEVPLATFORM_ETL@TDAP1050T2.LABS.TERADATA.COM/SIT_DATASTORE]
+    ## $ reviewer_id      <chr> "A2PWB7XW3MI66U", "A3E3L48LMUB0RV", "A2LY80X4P9…
+    ## $ reviewer_name    <chr> "Mike Indiana \"Mike\"", "JamesW", "Leeanne", "…
+    ## $ time             <chr> "02 1, 2013", "08 9, 2013", "01 1, 2014", "11 1…
+    ## $ time_unix        <S3: integer64> 1359676800, 1376006400, 1388534400, 1…
+    ## $ item_id          <chr> "B00542PSY2", "B003U0O3B4", "B000NNB36Y", "B004…
+    ## $ item_category    <chr> "moviesandtv", "toysandgames", "Health_and_Pers…
+    ## $ review_stars     <int> 5, 4, 5, 5, 4, 5, 4, 5, 5, 5, 4, 5, 5, 5, 5, 5,…
+    ## $ review_summary   <chr> "Great Movie", "Cheaper at Target", "For What T…
+    ## $ review_text      <chr> "I purchased this movie and was really happy wi…
+    ## $ feedback_helpful <int> 1, 2, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0,…
+    ## $ feedback_total   <int> 1, 3, 0, 0, 2, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0,…
+    ## $ stars_label      <chr> "5-star reviews", "4-star reviews", "5-star rev…
+
+#### Step 5: Parsing text
+
+With the data prepped for analysis, we'll leverage the Machine Learning Engine on **Vantage** to parse the review text. The MLE function **Text Parser** will tokenize the text so that the data is in one-word-per-row format. This is a key early step in many natural language processing workflows.
+
+``` r
+text_parser_out <- 
+  reviews_delivery %>%
+  # tdplyr wrapper for Text Parser
+  td_text_parser_mle(
+    text.column = "review_text",
+    to.lower.case = TRUE,
+    stemming = FALSE,
+    delimiter = "[ \\t\\f\\r\\n]+",
+    punctuation = "[\\[.,?!:;~()&-\\]]+",
+    accumulate = "stars_label",
+    token.column = "word",
+    list.positions = FALSE,
+    output.by.word = TRUE
+  )
+
+copy_to(
+  con,
+  text_parser_out$result,
+  "review_tokens",
+  temporary = TRUE
+)
+```
+
+Having tokenized the text and copied the result to the database, we'll further clean up the data by:
+
+-   Removing stop words (extremely common words such as "the", "a", and "in")
+-   Looking only at words that carry sentiment, to understand customer attitudes
+
+Open-source stop word and sentiment dictionaries are readily available. For this analysis, we'll use the Bing sentiment lexicon and the stop word lexicon available in the `tidytext` package.
+
+``` r
+copy_to(
+  con,
+  tidytext::stop_words,
+  "stop_word_lexicon",
+  temporary = TRUE
+)
+
+copy_to(
+  con,
+  tidytext::get_sentiments(lexicon = "bing"),
+  "bing_sentiment_lexicon",
+  temporary = TRUE
+)
+```
+
+#### Step 6: Visualizing results
+
+The final step in this data science workflow will be to create a visual representation of our findings. We have all of the data we need to create a word cloud of the sentiment in customer reviews referencing delivery and related topics.
+
+The `collect` function retrieves the data into a local R data frame, allowing us to leverage powerful open source R packages. In this case, we'll use the `wordcloud` library to create the visual.
+
+``` r
+# Set seed for reproducibility
+set.seed(1)
+
+tbl(con, "review_tokens") %>% 
+  anti_join(tbl(con, "stop_word_lexicon"), by = "word") %>% # filter out stop words
+  inner_join(tbl(con, "bing_sentiment_lexicon"), by = "word") %>% # subset to sentiment-carrying words
+  count(stars_label, word) %>% 
+  collect() %>% 
+  spread(stars_label, n, fill = 0L) %>% 
+  column_to_rownames(var = "word") %>%
+  wordcloud::comparison.cloud(
+    max.words = 100,
+    title.bg.colors = "white",
+    colors = c(TD_BLUE, TD_ORANGE)
+  )
+```
+
+![](R-demo_files/figure-markdown_github/unnamed-chunk-9-1.png)
+
+The visualization suggests that there may be key differences between 4- and 5-star reviews that reference delivery services. The key sentiment words in 5-star reviews are almost universally positive, whereas the four-star reviews feature more ambivalent sentiment explicitly referencing the delivery experience.
+
+In six steps, we've created a data visualization by connecting to **Vantage** in the RStudio environment. The key processing step was the MLE function **Text Parser**, which broke up review text into one-row-per column format. There are plenty of text processing analyses that could build on this tokenizing step and leverage the insights captured in this visualization.
+
+EXPLORE
+=======
+
+This type of exploratory workflow is an important step in a natural language processing analysis, but only scratches the surface of **Vantage**'s capability. In this section, we encourage you to **EXPLORE Vantage** and generate your own answers. You may find the `tdplyr` [user guide](https://docs.teradata.com/reader/EZAbQ2BX~vKBrWDQ3v7fPQ/qPSuQaTN2CYD~KUvLxY7mg) and [function reference](https://docs.teradata.com/reader/2PawNCsNx4~wW3LHnC4kPw/_1PFyXH__pLNlBXb1r3Row) helpful.
+
+With the complete dataset pre-loaded in your sandbox, there are infinitely many directions to take an analysis. Here are a few suggestions to provoke exploration:
+
+-   **Assess review quality**: What makes a helpful review?
+-   **Evaluate specific products**: How does a certain product line compare to its competitors in terms of customer feedback?
+-   **Track sentiment over time**: How does sentiment around products change over time?

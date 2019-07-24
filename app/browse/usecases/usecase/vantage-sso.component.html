@@ -1,0 +1,335 @@
+<mat-toolbar class="z-3">
+  <mat-toolbar-row>
+      <div flex layout="row" layout-align="start center">
+        <mat-icon class="push-left-sm push-right">store</mat-icon>
+        <span class="push-left-xs" layout="row" layout-align="start center">
+          <span [routerLink]="'/browse'" class="cursor-pointer">Browse</span> <mat-icon class="push-left push-right">chevron_right</mat-icon> <span [routerLink]="'/browse/usecases'" class="cursor-pointer">Use Cases</span> <mat-icon class="push-left push-right">chevron_right</mat-icon> <span>Use Case Details</span>
+        </span>
+        <span flex></span>
+        <a mat-stroked-button class="push-right-xs push-left-xs mat-button-sm">
+          <mat-icon>share</mat-icon>
+          <span class="text-upper push-left-xs">Share</span>
+        </a>
+        <a mat-stroked-button class="push-right-xs push-left-xs mat-button-sm">
+          <mat-icon>bookmark_outline</mat-icon>
+          <span class="text-upper push-left-xs">Bookmark</span>
+        </a>
+      </div>
+    </mat-toolbar-row>
+</mat-toolbar>
+<div layout-gt-sm="row" layout-align="center start" class="bgc-contrast z-2 mat-elevation-z1">
+  <div flex-xs="90" flex-sm="80" flex-md="80" flex-lg="75" flex-gt-lg="60" tdMediaToggle="gt-sm" class="pad-md">
+      <h3 class="mat-headline push-none">Vantage Single-Sign-On (SSO)</h3>
+      <mat-divider></mat-divider>
+      <div class="pad-top-sm pad-bottom-sm">
+        <p class="mat-body-1 push-none">
+          This document provides a high level design for providing a Single Sign On (SSO) mechanism for the Teradata ecosystem and
+          a couple of use cases to use a token to query logs and systems.
+        </p>
+      </div>
+  </div>
+</div>
+<div layout-gt-sm="row" layout-align="center start" tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+  <div flex-xs="90" flex-sm="80" flex-md="80" flex-lg="75" flex-gt-lg="60">
+    <div layout-gt-sm="row">
+      <div flex-gt-sm="75">
+        <mat-card>
+          <mat-card-title>Description</mat-card-title>
+          <mat-divider></mat-divider>
+          <mat-card-content>
+            <td-flavored-markdown>
+## Single Sign On
+
+Single sign-on (SSO) allows a user to use a single ID to gain access to multiple independent systems. The access works seamlessly: After an initial login, users can access each system without the need to re-enter their credentials. Conversely, single sign-off is the property whereby a single action of signing out terminates access to multiple software systems. SSO is usually accomplished by using a central entity for verifying and managing user identities.
+
+## Authentication and Authorization
+
+To understand what the proposal for SSO will and will not include initially, it is necessary to define and distinguish between authentication and authorization:
+
+- Authentication (authN) is the process of verifying the identity of a registered user who is accessing a service or application. It answers the question "who is the user".
+- Authorization (authZ) is the process of verifying the permissions a user has, e.g. for accessing or manipulating resources. It answers the question "what is the user allowed to do".
+
+## Protocols
+
+### OAuth2
+
+To be precise, OAuth is not strictly an authentication scheme but an authorization protocol: it provides a way for the users to grant access on their own behalf to other websites or applications using some access keys. The main purpose of the protocol is to exchange the access credentials required for the authorization and not the authentication itself.
+
+### OpenID Connect (OIDC)
+
+OpenID Connect is a simple identity layer on top of the OAuth 2.0 protocol. It enables Clients to verify the identity of the End-User based on the authentication performed by an Authorization Server, as well as to obtain basic profile information about the End-User in an interoperable and REST-like manner.
+
+---
+
+# Test the APIs
+
+All services listed above use the USER service for authentication. In order to interact with the APIs, you will need to authenticate to the USER service and get a JWT token. You can then use this token in any subsequent request. These steps need to be followed for any client or utility used to make REST calls. Screenshots below for using the interactive UI.
+> Use following accounts for demo purposes: user1/user1
+
+### Get JWT Token from the User Service
+
+Authenticate:
+
+```json
+<![CDATA[
+curl -X POST "https://vantage.teradata.com/api/user/token" -H "Authorization:YOUR_TOKEN" -d
+'{"password":"user1","username":"user1"}'
+]]>
+```
+
+Upon successful authentication, you will get a response of the format:
+
+```json
+<![CDATA[
+{
+  "username": "user1",
+  "display_name": "user1 user1",
+  "access_token": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJJT21Zd3E0WWtoRmQxOHV3OE50T1hfc1FQYVlBWnYyNlQ5N2NqQVNNQWNVIn0.eyJqdGkiOiJlMjVjMDBjNy0xYzdkLTRiZjctOWY3Yi00NDRiYWU0OThjNmMiLCJleHAiOjE1NTc0NDc2NzEsIm5iZiI6MCwiaWF0IjoxNTU3NDQwNDcxLCJpc3MiOiJodHRwczovL2Vjcy1kZW1vLmxhYnMudGVyYWRhdGEuY29tL2F1dGgvcmVhbG1zL3VkYSIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiIwYzE0NjIzMi0zZjIxLTRmZWQtOTcyMS04MjJmMTFhMGFjMmEiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJ1c2VyLXNlcnZpY2UiLCJhdXRoX3RpbWUiOjAsInNlc3Npb25fc3RhdGUiOiIyM2MxODExOS0wZGMxLTQ2NTAtYmU4NS01NjYwZjFiYzg5MjgiLCJhY3IiOiIxIiwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6Im9wZW5pZCBlbWFpbCBwcm9maWxlIiwic3ViIjoidXNlcjEiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsIm5hbWUiOiJ1c2VyMSB1c2VyMSIsInByZWZlcnJlZF91c2VybmFtZSI6InVzZXIxIiwiZ2l2ZW5fbmFtZSI6InVzZXIxIiwiZmFtaWx5X25hbWUiOiJ1c2VyMSIsInVzZXJuYW1lIjoidXNlcjEifQ.dEqWsfjomoK6h00Nu14r3Dnq_Br3ZgVJ3QON5qneRl3RiT70t_jcpWf2KKJWWnL0omlWAFXFHyGnI9HufPtGiYd-5dMymRZ_QrUTuiwIG_T6fBBcGi5Rxr-S_tEBYv6URFHGpEPj5_kESozWax8Eg8DnbtVdYddtNnek7b8MOmJRndurMM8CCR4_Df1NBJrHEbjBIPajhEaujJcWL6r5fmkxaQB3sndqKlQ9HDpT_QeQAYHpPKVdSElQLBcmXzdgNpj6Bs_73P5rB7R3uciGtczdg-MvVEMMgwVZ3oaCJ5o2ppTTRCw6K_GtO4TnDc5_X4wjgTDi7lAqU7azI-fakA",
+  "token_type": "Bearer",
+  "expires_in": 7200000,
+  "expires_at": "2019-05-10T00:21:11Z",
+  "token_in": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJJT21Zd3E0WWtoRmQxOHV3OE50T1hfc1FQYVlBWnYyNlQ5N2NqQVNNQWNVIn0.eyJqdGkiOiJlMjVjMDBjNy0xYzdkLTRiZjctOWY3Yi00NDRiYWU0OThjNmMiLCJleHAiOjE1NTc0NDc2NzEsIm5iZiI6MCwiaWF0IjoxNTU3NDQwNDcxLCJpc3MiOiJodHRwczovL2Vjcy1kZW1vLmxhYnMudGVyYWRhdGEuY29tL2F1dGgvcmVhbG1zL3VkYSIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiIwYzE0NjIzMi0zZjIxLTRmZWQtOTcyMS04MjJmMTFhMGFjMmEiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJ1c2VyLXNlcnZpY2UiLCJhdXRoX3RpbWUiOjAsInNlc3Npb25fc3RhdGUiOiIyM2MxODExOS0wZGMxLTQ2NTAtYmU4NS01NjYwZjFiYzg5MjgiLCJhY3IiOiIxIiwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6Im9wZW5pZCBlbWFpbCBwcm9maWxlIiwic3ViIjoidXNlcjEiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsIm5hbWUiOiJ1c2VyMSB1c2VyMSIsInByZWZlcnJlZF91c2VybmFtZSI6InVzZXIxIiwiZ2l2ZW5fbmFtZSI6InVzZXIxIiwiZmFtaWx5X25hbWUiOiJ1c2VyMSIsInVzZXJuYW1lIjoidXNlcjEifQ.dEqWsfjomoK6h00Nu14r3Dnq_Br3ZgVJ3QON5qneRl3RiT70t_jcpWf2KKJWWnL0omlWAFXFHyGnI9HufPtGiYd-5dMymRZ_QrUTuiwIG_T6fBBcGi5Rxr-S_tEBYv6URFHGpEPj5_kESozWax8Eg8DnbtVdYddtNnek7b8MOmJRndurMM8CCR4_Df1NBJrHEbjBIPajhEaujJcWL6r5fmkxaQB3sndqKlQ9HDpT_QeQAYHpPKVdSElQLBcmXzdgNpj6Bs_73P5rB7R3uciGtczdg-MvVEMMgwVZ3oaCJ5o2ppTTRCw6K_GtO4TnDc5_X4wjgTDi7lAqU7azI-fakA",
+  "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJiNThkMmNlYy1mNGRhLTRlMDgtYTk1MC00YjFhODYxZmJjZTEifQ.eyJqdGkiOiI5ZWU4YTkwNi1iNjFjLTQ4YjQtOGUxOC00NTRhNzFkMThmZDMiLCJleHAiOjE1NTc0NDc2NzEsIm5iZiI6MCwiaWF0IjoxNTU3NDQwNDcxLCJpc3MiOiJodHRwczovL2Vjcy1kZW1vLmxhYnMudGVyYWRhdGEuY29tL2F1dGgvcmVhbG1zL3VkYSIsImF1ZCI6Imh0dHBzOi8vZWNzLWRlbW8ubGFicy50ZXJhZGF0YS5jb20vYXV0aC9yZWFsbXMvdWRhIiwic3ViIjoiMGMxNDYyMzItM2YyMS00ZmVkLTk3MjEtODIyZjExYTBhYzJhIiwidHlwIjoiUmVmcmVzaCIsImF6cCI6InVzZXItc2VydmljZSIsImF1dGhfdGltZSI6MCwic2Vzc2lvbl9zdGF0ZSI6IjIzYzE4MTE5LTBkYzEtNDY1MC1iZTg1LTU2NjBmMWJjODkyOCIsInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJvcGVuaWQgZW1haWwgcHJvZmlsZSJ9.M59N2LLAZ0FIGgxIOXef0Snc8c11FglCBqBJFDiV0qk"
+}
+]]>
+```
+
+            </td-flavored-markdown>
+            <a mat-stroked-button color="primary" class="text-upper" href="https://appcenter.ux.ac.uda.io/developer/apis/token">Test this API</a>
+            <td-flavored-markdown>
+
+---
+
+#### Pass token to API
+
+Pass the access_token derived above as the bearer token in the authorization header of the REST API.
+Eg., to see all audit log messages:
+
+```
+<![CDATA[
+curl \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer TOKEN" \
+  -X POST \
+  -d '{
+    "name": "My source",
+    "description": "A superb source",
+    "source_type": "REST"
+  }' \
+  -i \
+  https://vantage.teradata.com/v1/sources
+]]>
+```
+
+which produces the following response
+
+```json
+<![CDATA[
+{
+  "source_id": "758fbda4-accc-4f90-8f09-cc0a164c8c28",
+  "owner": ["jd123456"],
+  "created_at": "2015-07-04T10:20:00Z",
+  "created_by": "av012345",
+  "updated_at": "2015-12-20T10:20:00Z",
+  "updated_by": "jd123456",
+  "secret": "f8a9f620-e0e6-470b-a6b8-1f16b003c034",
+  "name": "My source",
+  "description": "A superb source",
+  "state": 1,
+  "production": false,
+  "source_type": "REST"
+}
+]]>
+```
+
+            </td-flavored-markdown>
+            <a mat-stroked-button color="primary" class="text-upper" href="https://appcenter.ux.ac.uda.io/developer/apis/config">Test this API</a>
+            <td-flavored-markdown>
+
+---
+
+### Query Audit Logs via SQL
+
+Alternatively you can use SQL to query the list of Audit logs:
+
+```sql
+<![CDATA[
+SELECT * FROM mySandbox.logs;
+
+TEST THIS SQL
+
+SELECT 
+CAST(event_path AS VARCHAR(20000)) AS path, 
+SUM(cnt) as cnt
+FROM npath (
+ON mySandbox.logs
+        	PARTITION BY app_id ORDER BY datestamp
+USING
+        mode(nonoverlapping)
+        pattern('event{1,8}.leave_site)
+        symbols(
+action <> 'LEAVE SITE' as event,
+            action = 'LEAVE SITE' as leave_site
+                    )
+                    result(
+accumulate(channel || ':' || action of event) as event_path, 
+count(action of event) as cnt
+                    )
+)
+GROUP BY 1
+]]>
+```
+
+            </td-flavored-markdown>
+            <a mat-stroked-button color="primary" class="text-upper" href="https://appcenter.ux.ac.uda.io/editor/?scriptId=f875bf36-423f-45df-a857-e22efeae5a8c">Test this SQL</a>
+            <td-flavored-markdown>
+
+---
+
+## Use cases
+
+### Hello World controller using curl
+The template application has a Greetings controller that we can call to make sure it is working. In order to call the controller, we need to authenticate with the service by providing a JWT token (more on this later). The following bash script will get a token from the user service using the super secret default root user credentials and then call the Greetings controller in the template application.
+
+```bash
+<![CDATA[
+#!/usr/bin/env bash
+  
+command -v jq >/dev/null 2>&1 || { echo "Dependency 'jq' is missing. Please install."; exit 1; }
+TOKEN=$(curl -s -X POST \
+  http://localhost:8001/token/ \
+  -H 'accept: application/json' \
+  -H 'content-type: application/json' \
+  -d '{ "username": "root", "password": "teradata" }' | jq .access_token)
+ 
+TOKEN="${TOKEN%\"}"
+TOKEN="${TOKEN#\"}"
+ 
+curl -s -X GET \
+  http://localhost:6221/ \
+  -H 'accept: application/json' \
+  -H "authorization: Bearer $TOKEN"
+]]>
+```
+
+          </td-flavored-markdown>
+          <a mat-stroked-button color="primary" class="text-upper" href="https://appcenter.ux.ac.uda.io/developer/apis/config">Test this
+            API</a>
+          <td-flavored-markdown>
+
+---
+## Create a new system with your token
+
+Seed the System Service with one or more systems. Here is a sample script that does that:
+
+```bash
+<![CDATA[
+#!/usr/bin/env bash
+ 
+command -v jq >/dev/null 2>&1 || { echo "Dependency 'jq' is missing. Please install."; exit 1; }
+TOKEN=$(curl -s -X POST \
+  http://localhost:8001/token/ \
+  -H 'accept: application/json' \
+  -H 'content-type: application/json' \
+  -d '{ "username": "root", "password": "teradata" }' | jq .access_token)
+ 
+TOKEN="${TOKEN%\"}"
+TOKEN="${TOKEN#\"}"
+ 
+# create a system
+curl -X POST \
+  http://localhost:9380/systems/ \
+  -H 'accept: application/json' \
+  -H "authorization: Bearer $TOKEN" \
+  -H 'content-type: application/json' \
+  -d '{
+        "nickname": "sdt04914",
+        "host": "sdt04914.labs.teradata.com",
+        "port": 1025,
+        "system_type": "TERADATA",
+        "system_attributes": {
+            "attributes": {
+            "database": "dbc",
+            "log_mech": "TD2",
+            "char_set": "utf8",
+            "t_mode": "tera",
+            "username": "dbc"
+            }
+        }
+    }'
+]]>
+```
+          </td-flavored-markdown>
+          <a mat-stroked-button color="primary" class="text-upper" href="https://appcenter.ux.ac.uda.io/developer/apis/systems">Test this
+            API</a>
+          <td-flavored-markdown>
+
+---
+## System Service
+
+The System Service provides a central repository of the systems (Teradata, Presto, Kafka, HDFS, Hive, etc.) that are connected to the Vantage platform.
+
+### Query a list of systems
+
+Now that we have a system we can use SQL to query the system service and retrieve a list of registered systems:
+
+```sql
+<![CDATA[
+SELECT * FROM ${targetVantage}.systems;
+]]>
+```
+          </td-flavored-markdown>
+          <a mat-stroked-button color="primary" class="text-upper"
+            href="https://appcenter.ux.ac.uda.io/editor/?scriptId=f875bf36-423f-45df-a857-e22efeae5a8c">Test this SQL</a>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div flex-gt-sm="25">
+        <div class="pad-sm">
+          <h2 class="mat-headline">Tags</h2>
+          <mat-divider></mat-divider>
+          <div class="pad-sm">
+            <mat-chip-list aria-label="tags">
+              <mat-chip color="primary" selected>Secure</mat-chip>
+              <mat-chip color="primary" selected>Ingest</mat-chip>
+              <mat-chip color="primary" selected>Visualize</mat-chip>
+              <mat-chip color="primary" selected>Token</mat-chip>
+            </mat-chip-list>
+          </div>
+        </div>
+        <div class="pad-sm">
+          <h2 class="mat-headline">Info</h2>
+          <mat-divider></mat-divider>
+          <div>
+            <mat-list>
+              <mat-list-item>
+                <p matLine><span class="text-md">Created date</span></p>
+                <h3 matLine><span class="text-lg">June 21, 2019</span></h3>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+              <mat-list-item>
+                <p matLine><span class="text-md">Last modified date</span></p>
+                <h3 matLine><span class="text-lg">June 22, 2019</span></h3>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+              <mat-list-item>
+                <p matLine><span class="text-md">Contributor</span></p>
+                <h3 matLine><span class="text-lg">jack.schemer</span></h3>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+              <mat-list-item>
+                <p matLine><span class="text-md">Status</span></p>
+                <h3 matLine><span class="text-lg">Production</span></h3>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+              <mat-list-item>
+                <p matLine><span class="text-md">Version</span></p>
+                <h3 matLine><span class="text-lg">2.1</span></h3>
+              </mat-list-item>
+            </mat-list>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,237 @@
+<td-layout-manage-list flex #manageList>
+  <mat-toolbar td-sidenav-content>
+    <mat-toolbar-row>
+      <div flex layout="row" layout-align="start center">
+        <mat-icon class="push-left-sm push-right">account_circle</mat-icon>
+        <span class="push-left-xs" layout="row" layout-align="start center">
+          <span>Profile</span>
+        </span>
+        <span flex></span>
+      </div>
+    </mat-toolbar-row>
+  </mat-toolbar>
+  <mat-nav-list td-sidenav-content>
+    <a mat-list-item class="active">
+      <mat-icon matListIcon>recent_actors</mat-icon> Overview
+    </a>
+    <a mat-list-item [routerLink]="'/profile'">
+      <mat-icon matListIcon>face</mat-icon> Personal Info
+    </a>
+    <a mat-list-item [routerLink]="'/profile'">
+      <mat-icon matListIcon>playlist_add_check</mat-icon> Interests
+    </a>
+    <a mat-list-item [routerLink]="'/profile'">
+      <mat-icon matListIcon>bookmarks</mat-icon> Bookmarks
+    </a>
+    <a mat-list-item [routerLink]="'/profile'">
+      <mat-icon matListIcon>view_module</mat-icon> Workspaces
+    </a>
+    <a mat-list-item [routerLink]="'/profile'">
+      <mat-icon matListIcon>dashboard</mat-icon> Dashboards &amp; Reports
+    </a>
+    <a mat-list-item [routerLink]="'/profile'">
+      <mat-icon matListIcon>insert_chart</mat-icon> Visualization Options
+    </a>
+    <a mat-list-item [routerLink]="'/profile'">
+      <mat-icon matListIcon>code</mat-icon> Editor Options
+    </a>
+  </mat-nav-list>
+  <mat-toolbar>
+    <div layout="row" layout-align="start center" flex>
+      <button mat-icon-button tdLayoutManageListOpen [hideWhenOpened]="true">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <span>Overview</span>
+      <span flex></span>
+    </div>
+  </mat-toolbar>
+  <div tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+    <div>
+      <div>
+        <div class="pad-sm">
+          <h1 class="mat-headline push-none" tdMediaToggle="gt-md" [mediaClasses]="['mat-display-1']">Welcome, Jack Schemer</h1>
+          <h3 class="mat-subheading-2 push-none push-bottom-sm" tdMediaToggle="gt-md" [mediaClasses]="['mat-title']">
+            Manage your personal info, interests, bookmarks and workspaces here.</h3>
+          <mat-divider></mat-divider>
+        </div>
+        <div layout-gt-xs="row">
+          <div flex-gt-xs>
+            <mat-card>
+              <mat-card-title>Setup Multi-factor authentication (MFA)</mat-card-title>
+              <mat-card-content>
+                <div layout="row">
+                  <p flex class="mat-body-2 push-right">Enable multi-factor authentication for your corporate account to ensure the top level of security when accessing any
+                  data when viewing dashboards, reports, notebooks, and all the features of Vantage.</p>
+                  <mat-icon class="tc-td-orange text-super pull-right-md">person</mat-icon>
+                  <mat-icon class="tc-td-teal text-super push-right-md">lock</mat-icon>
+                </div>
+              </mat-card-content>
+              <mat-divider></mat-divider>
+              <mat-card-actions>
+                <a mat-button color="primary" class="text-upper" [routerLink]="'identity'">
+                  <span>Setup MFA</span>
+                </a>
+              </mat-card-actions>
+            </mat-card>
+          </div>
+        </div>
+        <div layout-gt-xs="row">
+          <div flex-gt-xs="50">
+            <mat-card>
+              <mat-card-title>Manage Interests</mat-card-title>
+              <mat-card-subtitle>Update your interests at any time to update recommendations</mat-card-subtitle>
+              <mat-divider></mat-divider>
+              <mat-nav-list dense>
+                <ng-template let-last="last" ngFor [ngForOf]="[0,1,2,3,4]">
+                  <a mat-list-item>
+                    <mat-icon matListAvatar>playlist_add_check</mat-icon>
+                    <h4 mat-line><span class="text-wrap">Interest</span></h4>
+                    <p mat-line>An item of interest</p>
+                    <span>
+                      <button mat-icon-button [matMenuTriggerFor]="menu3" aria-label="Options">
+                        <mat-icon>more_vert</mat-icon>
+                      </button>
+                      <mat-menu #menu3="matMenu" xPosition="before">
+                        <button mat-menu-item>
+                          <mat-icon>aspect_ratio</mat-icon>
+                          <span>Configure</span>
+                        </button>
+                        <button mat-menu-item>
+                          <mat-icon>bookmark_border</mat-icon>
+                          <span>Bookmark</span>
+                        </button>
+                      </mat-menu>
+                    </span>
+                  </a>
+                  <mat-divider *ngIf="!last"></mat-divider>
+                </ng-template>
+              </mat-nav-list>
+              <mat-divider></mat-divider>
+              <mat-card-actions>
+                <a mat-button color="primary" class="text-upper">
+                  <span>Manage Interests</span>
+                </a>
+              </mat-card-actions>
+            </mat-card>
+          </div>
+          <div flex-gt-xs="50">
+            <mat-card>
+              <mat-card-title>Manage Bookmarks</mat-card-title>
+              <mat-card-subtitle>Re-order, add, edit or delete bookmarks</mat-card-subtitle>
+              <mat-divider></mat-divider>
+              <mat-nav-list dense>
+                <ng-template let-last="last" ngFor [ngForOf]="[0,1,2,3,4]">
+                  <a mat-list-item>
+                    <mat-icon matListAvatar>dashboard</mat-icon>
+                    <h4 mat-line><span class="text-wrap">Bookmarked content</span></h4>
+                    <p mat-line>An item that's been bookmarked</p>
+                    <span>
+                      <button mat-icon-button [matMenuTriggerFor]="menu3" aria-label="Options">
+                        <mat-icon>more_vert</mat-icon>
+                      </button>
+                      <mat-menu #menu3="matMenu" xPosition="before">
+                        <button mat-menu-item>
+                          <mat-icon>aspect_ratio</mat-icon>
+                          <span>Configure</span>
+                        </button>
+                        <button mat-menu-item>
+                          <mat-icon>bookmark_border</mat-icon>
+                          <span>Bookmark</span>
+                        </button>
+                      </mat-menu>
+                    </span>
+                  </a>
+                  <mat-divider *ngIf="!last"></mat-divider>
+                </ng-template>
+              </mat-nav-list>
+              <mat-divider></mat-divider>
+              <mat-card-actions>
+                <a mat-button color="primary" class="text-upper">
+                  <span>Manage Bookmarks</span>
+                </a>
+              </mat-card-actions>
+            </mat-card>
+          </div>
+        </div>
+        <div layout-gt-xs="row">
+          <div flex-gt-xs="50">
+            <mat-card>
+              <mat-card-title>Manage Workspaces</mat-card-title>
+              <mat-card-subtitle>Mange your experimentation workspaces</mat-card-subtitle>
+              <mat-divider></mat-divider>
+              <mat-nav-list dense>
+                <ng-template let-last="last" ngFor [ngForOf]="[0,1,2]">
+                  <a mat-list-item>
+                    <mat-icon matListAvatar>view_module</mat-icon>
+                    <h4 mat-line><span class="text-wrap">js185823.td.teradata.com</span></h4>
+                    <p mat-line>Workspace for finance experimentation</p>
+                    <span>
+                      <button mat-icon-button [matMenuTriggerFor]="menu3" aria-label="Options">
+                        <mat-icon>more_vert</mat-icon>
+                      </button>
+                      <mat-menu #menu3="matMenu" xPosition="before">
+                        <button mat-menu-item>
+                          <mat-icon>aspect_ratio</mat-icon>
+                          <span>Configure</span>
+                        </button>
+                        <button mat-menu-item>
+                          <mat-icon>bookmark_border</mat-icon>
+                          <span>Bookmark</span>
+                        </button>
+                      </mat-menu>
+                    </span>
+                  </a>
+                  <mat-divider *ngIf="!last"></mat-divider>
+                </ng-template>
+              </mat-nav-list>
+              <mat-divider></mat-divider>
+              <mat-card-actions>
+                <a mat-button color="primary" class="text-upper">
+                  <span>Manage Workspaces</span>
+                </a>
+              </mat-card-actions>
+            </mat-card>
+          </div>
+          <div flex-gt-xs="50">
+            <mat-card>
+              <mat-card-title>Manage Dashboards &amp; Reports</mat-card-title>
+              <mat-card-subtitle>Mange your monitoring dashboards and reports</mat-card-subtitle>
+              <mat-divider></mat-divider>
+              <mat-nav-list dense>
+                <ng-template let-last="last" ngFor [ngForOf]="[0,1,2]">
+                  <a mat-list-item>
+                    <mat-icon matListAvatar>dashboard</mat-icon>
+                    <h4 mat-line><span class="text-wrap">Finance Dashboard</span></h4>
+                    <p mat-line>Dashboard description</p>
+                    <span>
+                      <button mat-icon-button [matMenuTriggerFor]="menu3" aria-label="Options">
+                        <mat-icon>more_vert</mat-icon>
+                      </button>
+                      <mat-menu #menu3="matMenu" xPosition="before">
+                        <button mat-menu-item>
+                          <mat-icon>aspect_ratio</mat-icon>
+                          <span>Configure</span>
+                        </button>
+                        <button mat-menu-item>
+                          <mat-icon>bookmark_border</mat-icon>
+                          <span>Bookmark</span>
+                        </button>
+                      </mat-menu>
+                    </span>
+                  </a>
+                  <mat-divider *ngIf="!last"></mat-divider>
+                </ng-template>
+              </mat-nav-list>
+              <mat-divider></mat-divider>
+              <mat-card-actions>
+                <a mat-button color="primary" class="text-upper">
+                  <span>Manage Dashboards &amp; Reports</span>
+                </a>
+              </mat-card-actions>
+            </mat-card>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</td-layout-manage-list>

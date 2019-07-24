@@ -13,23 +13,23 @@
           <mat-icon>vertical_align_bottom</mat-icon>
           <span class="text-upper push-left-xs">Save</span>
         </a>
-        <a mat-stroked-button color="primary" class="push-right-xs push-left-xs mat-button-sm">
+        <a mat-stroked-button class="push-right-xs push-left-xs mat-button-sm">
           <mat-icon>share</mat-icon>
           <span class="text-upper push-left-xs">Share</span>
         </a>
-        <a mat-stroked-button color="primary" class="push-right-xs push-left-xs mat-button-sm" [routerLink]="'/'">
+        <a mat-stroked-button class="push-right-xs push-left-xs mat-button-sm" [routerLink]="'/'">
           <mat-icon>home</mat-icon>
           <span class="text-upper push-left-xs">Pin to home</span>
         </a>
-        <a mat-stroked-button color="primary" class="push-right-xs push-left-xs mat-button-sm">
+        <a mat-stroked-button class="push-right-xs push-left-xs mat-button-sm">
             <mat-icon>bookmark_outline</mat-icon>
             <span class="text-upper push-left-xs">Bookmark</span>
           </a>
-        <a mat-stroked-button color="primary" class="push-right-xs push-left-xs mat-button-sm">
+        <a mat-stroked-button class="push-right-xs push-left-xs mat-button-sm">
           <mat-icon>vertical_align_top</mat-icon>
           <span class="text-upper push-left-xs">Add Data</span>
         </a>
-        <a mat-stroked-button color="primary" class="push-right-xs push-left-xs mat-button-sm">
+        <a mat-stroked-button class="push-right-xs push-left-xs mat-button-sm" [routerLink]="'/monitoring/reports/create/editor'">
           <mat-icon>edit</mat-icon>
           <span class="text-upper push-left-xs">Edit</span>
         </a>
@@ -43,118 +43,86 @@
   </mat-toolbar>
   <mat-sidenav-container fullscreen style="top:48px;">
     <mat-sidenav opened layout="column" mode="side" #filters position="end">
-      <div class="pad-left pad-right"
-            [style.height.px]="60"
-            layout="row"
-            layout-align="start center">
-        <span class="mat-title push-bottom-none" flex>
-          Filters
-        </span>
-        <button mat-icon-button
-                matTooltip="Close"
-                (click)="filters.close()">
-          <mat-icon>close</mat-icon>
-        </button>
-      </div>
-      <div flex class="pad">
-        <div layout="row">
-          <mat-form-field appearance="outline" flex>
-            <mat-label>Cars</mat-label>
-            <mat-select>
-              <mat-option value="volvo">Volvo</mat-option>
-              <mat-option value="saab">Saab</mat-option>
-              <mat-option value="mercedes">Mercedes</mat-option>
-              <mat-option value="audi">Audi</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-        <div layout="row">
-          <mat-form-field appearance="outline" flex>
-            <mat-label>Cars</mat-label>
-            <mat-select>
-              <mat-option value="volvo">Volvo</mat-option>
-              <mat-option value="saab">Saab</mat-option>
-              <mat-option value="mercedes">Mercedes</mat-option>
-              <mat-option value="audi">Audi</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-        <div layout="row">
-          <mat-form-field appearance="outline" flex>
-            <mat-label>Cars</mat-label>
-            <mat-select>
-              <mat-option value="volvo">Volvo</mat-option>
-              <mat-option value="saab">Saab</mat-option>
-              <mat-option value="mercedes">Mercedes</mat-option>
-              <mat-option value="audi">Audi</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-        <div layout="row">
-          <mat-form-field appearance="outline" flex>
-            <mat-label>Cars</mat-label>
-            <mat-select>
-              <mat-option value="volvo">Volvo</mat-option>
-              <mat-option value="saab">Saab</mat-option>
-              <mat-option value="mercedes">Mercedes</mat-option>
-              <mat-option value="audi">Audi</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-        <div layout="row">
-          <mat-form-field appearance="outline" flex>
-            <mat-label>Cars</mat-label>
-            <mat-select>
-              <mat-option value="volvo">Volvo</mat-option>
-              <mat-option value="saab">Saab</mat-option>
-              <mat-option value="mercedes">Mercedes</mat-option>
-              <mat-option value="audi">Audi</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-        <mat-divider class="push-top push-bottom"></mat-divider>
-        <span class="mat-title push-bottom-md" flex>
-          Chart options
-        </span>
-        <div layout="row" layout-wrap>
-          <mat-button-toggle class="push-xs" value="1">
-            <mat-icon>table_chart</mat-icon>
-          </mat-button-toggle>
-          <mat-button-toggle class="push-xs" value="1">
-            <mat-icon>bar_chart</mat-icon>
-          </mat-button-toggle>
-          <mat-button-toggle class="push-xs" value="1">
-            <mat-icon>show_chart</mat-icon>
-          </mat-button-toggle>
-          <mat-button-toggle class="push-xs" value="1">
-            <mat-icon>bubble_chart</mat-icon>
-          </mat-button-toggle>
-          <mat-button-toggle class="push-xs" value="1">
-            <mat-icon>multiline_chart</mat-icon>
-          </mat-button-toggle>
-          <mat-button-toggle class="push-xs" value="1">
-            <mat-icon>timeline</mat-icon>
-          </mat-button-toggle>
-          <mat-button-toggle class="push-xs" value="1">
-            <mat-icon>equalizer</mat-icon>
-          </mat-button-toggle>
-          <mat-button-toggle class="push-xs" value="1">
-            <mat-icon>waves</mat-icon>
-          </mat-button-toggle>
-          <mat-button-toggle class="push-xs" value="1">
-            <mat-icon>scatter_plot</mat-icon>
-          </mat-button-toggle>
-          <mat-button-toggle class="push-xs" value="1">
-            <mat-icon>score</mat-icon>
-          </mat-button-toggle>
-          <mat-button-toggle class="push-xs" value="1">
-            <mat-icon>grain</mat-icon>
-          </mat-button-toggle>
-          <mat-button-toggle class="push-xs" value="1">
-            <mat-icon>attach_money</mat-icon>
-          </mat-button-toggle>
-        </div>
-      </div>
+      <td-sidesheet>
+        <td-sidesheet-header>
+          <td-sidesheet-title>Filters</td-sidesheet-title>
+          <button mat-icon-button td-sidesheet-header-action>
+            <mat-icon matTooltipPosition="before" matTooltip="Close" (click)="filters.toggle()">close</mat-icon>
+          </button>
+        </td-sidesheet-header>
+        <td-sidesheet-content>
+          <div>
+            <div layout="row">
+              <mat-form-field appearance="outline" flex>
+                <mat-label>Color Scheme:</mat-label>
+                <mat-select [(value)]="selectedTheme" (valueChange)="selectChartTheme($event)">
+                  <mat-option *ngFor="let theme of themes;" [value]="theme">
+                    {{theme}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div layout="row">
+              <mat-form-field appearance="outline" flex>
+                <input matInput [matDatepicker]="picker" placeholder="Start date">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+            </div>
+            <div layout="row">
+              <mat-form-field appearance="outline" flex>
+                <input matInput [matDatepicker]="picker2" placeholder="End date">
+                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                <mat-datepicker #picker2></mat-datepicker>
+              </mat-form-field>
+            </div>
+            <div layout="row">
+              <mat-form-field appearance="outline" flex>
+                <mat-label>Select Geo/Region</mat-label>
+                <mat-select>
+                  <mat-option value="volvo">Volvo</mat-option>
+                  <mat-option value="saab">Saab</mat-option>
+                  <mat-option value="mercedes">Mercedes</mat-option>
+                  <mat-option value="audi">Audi</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div layout="row">
+              <mat-form-field appearance="outline" flex>
+                <mat-label>Select Organization</mat-label>
+                <mat-select>
+                  <mat-option value="volvo">Volvo</mat-option>
+                  <mat-option value="saab">Saab</mat-option>
+                  <mat-option value="mercedes">Mercedes</mat-option>
+                  <mat-option value="audi">Audi</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div layout="row">
+              <mat-form-field appearance="outline" flex>
+                <mat-label>Select Content Type</mat-label>
+                <mat-select>
+                  <mat-option value="volvo">Volvo</mat-option>
+                  <mat-option value="saab">Saab</mat-option>
+                  <mat-option value="mercedes">Mercedes</mat-option>
+                  <mat-option value="audi">Audi</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div layout="row">
+              <mat-form-field appearance="outline" flex>
+                <mat-label>Select Customer Segment</mat-label>
+                <mat-select>
+                  <mat-option value="volvo">Volvo</mat-option>
+                  <mat-option value="saab">Saab</mat-option>
+                  <mat-option value="mercedes">Mercedes</mat-option>
+                  <mat-option value="audi">Audi</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        </td-sidesheet-content>
+      </td-sidesheet>
     </mat-sidenav>
     <div tdMediaToggle="gt-xs" [mediaClasses]="['push']">
     <div class="mat-content">
@@ -187,18 +155,10 @@
             </mat-card-title>
             <mat-card-subtitle>Yearly progress report</mat-card-subtitle>
             <mat-divider></mat-divider>
-            <td-chart [style.height.px]="600"
+            <td-chart [themeName]="themeSelector.selected$ | async"
+                      [style.height.px]="600"
                       [config]="chart1">
             </td-chart>
-            <mat-divider></mat-divider>
-            <mat-card-actions>
-              <a mat-button color="primary" class="text-upper" [routerLink]="'../report'">
-                <span>View Report</span>
-              </a>
-              <a mat-button class="tc-grey-600 text-upper">
-                <span>Edit Code</span>
-              </a>
-            </mat-card-actions>
           </mat-card>
         </div>
       </div>

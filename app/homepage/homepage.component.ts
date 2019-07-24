@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { TdMediaService } from '@covalent/core';
 
 @Component({
   selector: 'covalent-homepage',
   templateUrl: './homepage.component.html',
-  styleUrls: ['./homepage.component.css'],
+  styleUrls: ['./homepage.component.scss'],
 })
 export class HomepageComponent implements OnInit {
   // Chart data
@@ -14,11 +15,42 @@ export class HomepageComponent implements OnInit {
   chart4: any;
   chart5: any;
   data: any = [["2015-01-01",65],["2015-01-02",79],["2015-01-03",200],["2015-01-04",226],["2015-01-05",122],["2015-01-06",60],["2015-01-07",85],["2015-01-08",190],["2015-01-09",105],["2015-01-10",208],["2015-01-11",59],["2015-01-12",160],["2015-01-13",211],["2015-01-14",265],["2015-01-15",386],["2015-01-16",118],["2015-01-17",89],["2015-01-18",94],["2015-01-19",77],["2015-01-20",113],["2015-01-22",143],["2015-01-23",257],["2015-01-24",117],["2015-01-25",185],["2015-01-26",119],["2015-01-28",65],["2015-01-29",87],["2015-01-31",60],["2015-02-01",108],["2015-02-02",188],["2015-02-03",143],["2015-02-05",62],["2015-02-06",100],["2015-02-09",152],["2015-02-10",166],["2015-02-11",55],["2015-02-12",59],["2015-02-13",175],["2015-02-14",293],["2015-02-15",326],["2015-02-16",153],["2015-02-18",73],["2015-02-19",267],["2015-02-20",183],["2015-02-21",394],["2015-02-22",158],["2015-02-23",86],["2015-02-24",207]];
-
-  constructor(private _router: Router) {
+    updates: any;
+    
+    constructor(
+        private _router: Router,
+        public media: TdMediaService) {
   }
 
-  ngOnInit(): void {
+    ngOnInit(): void {
+    // updates
+    this.updates = [
+        {
+            title: 'A user bookmarked your Performance to target (report)',
+            icon: 'info_outline',
+            date: '22 minutes ago',
+        },
+        {
+            title: 'A user pinned your Performance to target (report)',
+            icon: 'info_outline',
+            date: '46 minutes ago',
+        },
+        {
+            title: 'Finance dataset failed to synchronize',
+            icon: 'warning',
+            date: '3 hours ago',
+        },
+        {
+            title: 'Website data stopped streaming data',
+            icon: 'warning',
+            date: '6 hours ago',
+        },
+        {
+            title: 'Your sandbox is nearing its size quota',
+            icon: 'info_outline',
+            date: '2 days ago',
+        },
+    ];
     // chart1
     this.chart1 = {
       tooltip: {

@@ -1,0 +1,10 @@
+:host ::ng-deep {
+  .layout-cards .mat-card {
+    height: 50px;
+    margin: 4px;
+    border-radius: 4px;
+  }
+  .layout-cards.tall .mat-card {
+    height: 108px;
+  }
+}
